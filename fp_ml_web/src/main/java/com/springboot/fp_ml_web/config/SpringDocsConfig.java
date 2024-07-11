@@ -17,7 +17,7 @@ public class SpringDocsConfig {
 
     @Bean
     public GroupedOpenApi dbOpenApi() {
-        String[] paths = {"/"};
+        String[] paths = {"/**"};
 
         return GroupedOpenApi.builder()
                 .group("테스트 v1")
