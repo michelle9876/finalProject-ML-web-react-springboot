@@ -1,12 +1,12 @@
+// components/Subject.js
+
 import React from 'react';
 
-function Subject(props) {
-  console.log('Subject render');
+const Subject = ({ title }) => {
   return (
-    <header>
-      <h1><a href='/'>{props.title}</a></h1>
-      {props.sub}
-    </header>
+    <div className="subject-container">
+      <h1 className="subject-title">{title}</h1>
+    </div>
   );
 }
 
