@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class IndustryCorrelationRankingService {
@@ -13,16 +14,12 @@ public class IndustryCorrelationRankingService {
     @Autowired
     private IndustryCorrelationRankingRepository repository;
 
-    public List<String> getDistinctServiceIndustryNames() {
-        return repository.findDistinctByServiceIndustryName()
-                .stream()
-                .map(IndustryCorrelationRanking::getServiceIndustryName)
-                .distinct()
-                .toList();
+    public List<IndustryCorrelationRanking> getByServiceIndustryName(String serviceIndustryName) {
+        return repository.findDistinctByServiceIndustryName(serviceIndustryName);
     }
 
-    public List<String> getDistinctFactors() {
-        return repository.findDistinctByFactor()
+    public List<String> getDistinctFactors(String factorName) {
+        return repository.findDistinctByFactor(factorName)
                 .stream()
                 .map(IndustryCorrelationRanking::getFactor)
                 .distinct()
