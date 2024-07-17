@@ -13,8 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
-public class :q
-SelectionController {
+public class SelectionController {
     @Autowired
     private SelectionService selectionService;
 
