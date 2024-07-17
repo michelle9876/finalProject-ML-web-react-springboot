@@ -16,7 +16,7 @@ public class ShowingMap {
     private int showingMap_id;
     private int selectionForMap_id;
     private int ranking_num;
-    private String industry_name;
+    private String service_industry_name;
     private String district_name;
 
 }
