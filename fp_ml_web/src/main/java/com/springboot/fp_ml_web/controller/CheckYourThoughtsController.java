@@ -2,6 +2,7 @@ package com.springboot.fp_ml_web.controller;
 
 import com.springboot.fp_ml_web.data.entity.CheckingThought;
 import com.springboot.fp_ml_web.data.entity.IndustryCorrelationRanking;
+import com.springboot.fp_ml_web.dto.CheckYourThoughtsRequest;
 import com.springboot.fp_ml_web.service.CheckingThoughtService;
 import com.springboot.fp_ml_web.service.IndustryCorrelationRankingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
@@ -22,21 +22,20 @@ public class CheckYourThoughtsController {
     private CheckingThoughtService checkingThoughtService;
 
     @GetMapping("/industries")
-    public List<IndustryCorrelationRanking> getIndustries(@RequestParam String serviceIndustryName) {
-        System.out.println(serviceIndustryName);
-        return industryCorrelationRankingService.getByServiceIndustryName(serviceIndustryName);
+    public List<String> getIndustries() {
+        return industryCorrelationRankingService.getDistinctServiceIndustryNames();
     }
 
     @GetMapping("/factors")
-    public List<String> getFactors(@RequestParam String factorName) {
-        return industryCorrelationRankingService.getDistinctFactors(factorName);
+    public List<String> getFactors() {
+        return industryCorrelationRankingService.getDistinctFactors();
     }
 
     @PostMapping("/check-your-thoughts")
-    public ResponseEntity<String> checkYourThoughts(@RequestBody Map<String, String> params) {
-        String industry = params.get("industry");
-        String factor = params.get("factor");
-        String condition = params.get("condition");
+    public ResponseEntity<List<IndustryCorrelationRanking>> checkYourThoughts(@RequestBody CheckYourThoughtsRequest request) {
+        String industry = request.getIndustry();
+        String factor = request.getFactor();
+        String condition = request.getCondition();
 
         CheckingThought checkingThought = new CheckingThought();
         checkingThought.setUserId(1); // 사용자의 아이디를 설정해야 합니다. 예시로 1로 설정했습니다.
@@ -48,11 +47,11 @@ public class CheckYourThoughtsController {
 
         List<IndustryCorrelationRanking> results;
         if ("높으면".equals(condition)) {
-            results = industryCorrelationRankingService.getPositiveCorrelationCoefficients("0");
+            results = industryCorrelationRankingService.getByServiceIndustryNameAndFactor(industry, factor);
         } else {
-            results = industryCorrelationRankingService.getNegativeCorrelationCoefficients("0");
+            results = industryCorrelationRankingService.getByServiceIndustryNameAndFactor(industry, factor);
         }
 
-        return ResponseEntity.ok("결과 데이터: " + results.size());
+        return ResponseEntity.ok(results);
     }
 }
