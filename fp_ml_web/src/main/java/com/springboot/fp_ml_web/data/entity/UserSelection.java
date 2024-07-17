@@ -1,8 +1,6 @@
 package com.springboot.fp_ml_web.data.entity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,6 +19,8 @@ public class UserSelection {
     private String district_name;
     private String administrative_dong_name;
     private String business_district_name;
+    @Column(nullable = true)
     private int rent_fee_select ;
+    @Column(nullable = true)
     private int rent_area;
 }
