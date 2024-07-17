@@ -15,7 +15,7 @@ public class Ranking {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int ranking_id;
     private int userSelection_id;
-    private String industry_name ;
+    private String service_industry_name ;
     private String district_name;
     private int sales_amount_month;
     private String rent_fee_scale;
