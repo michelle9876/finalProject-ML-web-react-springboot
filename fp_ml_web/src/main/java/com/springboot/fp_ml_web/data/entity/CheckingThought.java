@@ -15,7 +15,7 @@ public class CheckingThought {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int checkingThought_id;
     private int userId;
-    private String industry_name;
+    private String service_industry_name;
     private String reasons_columns ;
     private String up_and_down;
 }
