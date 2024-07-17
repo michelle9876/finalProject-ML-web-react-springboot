@@ -10,12 +10,10 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-public class SelectionForMap {
+public class Service_industry {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int selectionForMap_id;
-    private int userId;
+    private int serviceIndustry_id;
     private String service_industry_category;
     private String service_industry_name;
-
 }

@@ -15,6 +15,6 @@ public class SelectionForHoliday {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int selectionForHoliday_id;
     private int userId;
-    private String industry_name;
+    private String service_industry_name;
     private String district_name;
 }
