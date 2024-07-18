@@ -2,7 +2,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 400px; /* 필요에 따라 높이 조정 */
+    height: 300px; /* 필요에 따라 높이 조정 */
     background-color: #f7f7ff; /* 선택 사항: 배경색 추가 */
   }
   

@@ -3,18 +3,17 @@ import { Typography, Button, Grid, Chip, Stack, Box } from '@mui/material';
 import axios from 'axios';
 import './CommonFilter.css';  // CSS 파일 import
 
-const BusinessTypeFilter = ({ onSelect, singleSelect = false, initialAllData, initialCategories, maxSelect = 5 }) => {
-  const [allData, setAllData] = useState(initialAllData || []);
-  const [categories, setCategories] = useState(initialCategories || []);
+const BusinessTypeFilter = ({ onSelect, singleSelect = false }) => {
+  const [allData, setAllData] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [businessTypes, setBusinessTypes] = useState([]);
   const [selectedBusinessTypes, setSelectedBusinessTypes] = useState([]);
 
   useEffect(() => {
-    if (!initialAllData || !initialCategories) {
-      fetchData();
-    }
-  }, [initialAllData, initialCategories]);
+    fetchData();
+  }, []);
+
 
   useEffect(() => {
     if (categories.length > 0 && !selectedCategory) {
@@ -52,13 +51,8 @@ const BusinessTypeFilter = ({ onSelect, singleSelect = false, initialAllData, in
         const newSelection = prev.some(b => b.code === businessType.code) 
           ? prev.filter(b => b.code !== businessType.code) 
           : [...prev, businessType];
-        if (newSelection.length <= maxSelect) {
-          onSelect(newSelection);
-          return newSelection;
-        } else {
-          // 최대 선택 개수를 초과했을 때 사용자에게 알림을 줄 수 있습니다.
-          return prev;
-        }
+        onSelect(newSelection);
+        return newSelection;
       });
     }
   };
