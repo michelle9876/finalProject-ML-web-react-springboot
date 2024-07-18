@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Typography, Button, Grid, Chip, Stack, Box } from '@mui/material';
 import axios from 'axios';
-import './RegionFilter.css';  // CSS 파일 import
-
-
+import './CommonFilter.css';  // CSS 파일 import
 
 const RegionFilter = ({ onSelect }) => {
   const [allData, setAllData] = useState([]);
@@ -17,6 +15,12 @@ const RegionFilter = ({ onSelect }) => {
   useEffect(() => {
     fetchData();
   }, []);
+
+  useEffect(() => {
+    if (districts.length > 0 && !selectedDistrict) {
+      handleDistrictSelect(districts[0]);
+    }
+  }, [districts]);
 
   const fetchData = async () => {
     try {
@@ -59,74 +63,79 @@ const RegionFilter = ({ onSelect }) => {
   };
 
   return (
-    <Box className="scroll-box" sx={{ maxHeight: '600px', overflow: 'auto' }}>
-      <Typography variant="h6" gutterBottom>지역선택(상권)</Typography>
-      {/* <Button variant="outlined" sx={{ mb: 2 }}>지도로 선택</Button> */}
-      <Grid container spacing={2}>
-        <Grid item xs={4}>
-          <Typography variant="subtitle2">구 선택</Typography>
-          <Box className="scroll-box" sx={{ maxHeight: '300px', overflow: 'auto' }}>
+    <Box className="filter-container">
+      <Typography variant="h6" className="filter-title">지역선택(상권)</Typography>
+      <Grid container spacing={2} >
+        <Grid item xs={4} className="filter-column">
+          <Typography variant="subtitle2" className="filter-subtitle">구 선택</Typography>
+          <Box className="scroll-box">
             {districts.map(district => (
               <Button 
                 key={district.name} 
                 onClick={() => handleDistrictSelect(district)}
                 variant={selectedDistrict?.name === district.name ? "contained" : "outlined"}
-                fullWidth
-                sx={{ mb: 1 }}
+                className="filter-button"
               >
                 {district.name}
               </Button>
             ))}
           </Box>
         </Grid>
-        <Grid item xs={4}>
-          <Typography variant="subtitle2">동 선택</Typography>
-          <Box className="scroll-box" sx={{ maxHeight: '300px', overflow: 'auto' }}>
+        <Grid item xs={4} className="filter-column">
+          <Typography variant="subtitle2" className="filter-subtitle">동 선택</Typography>
+          <Box className="scroll-box">
             {neighborhoods.map(neighborhood => (
               <Button 
                 key={neighborhood.name} 
                 onClick={() => handleNeighborhoodSelect(neighborhood)}
                 variant={selectedNeighborhood?.name === neighborhood.name ? "contained" : "outlined"}
-                fullWidth
-                sx={{ mb: 1 }}
+                className="filter-button"
               >
                 {neighborhood.name}
               </Button>
             ))}
           </Box>
         </Grid>
-        <Grid item xs={4}>
-          <Typography variant="subtitle2">상권 선택</Typography>
-          <Box className="scroll-box" sx={{ maxHeight: '300px', overflow: 'auto' }}>
+        <Grid item xs={4} className="filter-column">
+          <Typography variant="subtitle2" className="filter-subtitle">상권 선택</Typography>
+          <Box className="scroll-box">
             {commercialAreas.length > 0 ? (
               commercialAreas.map(area => (
                 <Button 
                   key={area.name} 
                   onClick={() => handleCommercialAreaToggle(area)}
                   variant={selectedCommercialAreas.some(a => a.name === area.name) ? "contained" : "outlined"}
-                  fullWidth
-                  sx={{ mb: 1 }}
+                  className="filter-button"
                 >
                   {area.name}
                 </Button>
               ))
             ) : (
-              <Typography variant="body2">선택 가능한 상권이 없습니다.</Typography>
+              <Typography variant="body2">동을 선택해주세요</Typography>
             )}
           </Box>
         </Grid>
       </Grid>
-      <Typography variant="subtitle2" sx={{ mt: 2 }}>선택한 상권</Typography>
-      <Stack direction="row" spacing={1} flexWrap="wrap">
-        {selectedCommercialAreas.map(area => (
-          <Chip
-            key={area.name}
-            label={area.name}
-            onDelete={() => handleCommercialAreaToggle(area)}
-            variant="outlined"
-          />
-        ))}
-      </Stack>
+      <Typography variant="subtitle2" className="filter-subtitle" style={{ marginTop: '1rem' }}>선택한 상권</Typography>
+      <Box className="selected-items-container">
+        {selectedCommercialAreas.length > 0 ? (
+          <Stack direction="row" spacing={1} flexWrap="wrap" sx={{ '& .filter-chip': { margin: '3px' } }}>
+            {selectedCommercialAreas.map(area => (
+              <Chip
+                key={area.name}
+                label={area.name}
+                onDelete={() => handleCommercialAreaToggle(area)}
+                variant="outlined"
+                className="filter-chip"
+              />
+            ))}
+          </Stack>
+        ) : (
+          <Typography variant="body2" className="selected-items-message">
+            상권을 선택하세요
+          </Typography>
+        )}
+      </Box>
     </Box>
   );
 };
