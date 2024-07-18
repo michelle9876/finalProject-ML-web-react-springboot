@@ -31,7 +31,7 @@ const Navigation = () => {
   return (
     <AppBar position="static" color="primary">
       <Toolbar>
-        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+        <Typography variant="h6" component="div" sx={{ flexGrow: 1 ,cursor: 'pointer',}} onClick={() => navigate('/')}>
           사장님 구해요
         </Typography>
         <Button color="inherit" onClick={() => navigate('/')}>홈</Button>

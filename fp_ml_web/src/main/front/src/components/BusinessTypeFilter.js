@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Typography, Button, Grid, Chip, Stack, Box } from '@mui/material';
 import axios from 'axios';
-import './RegionFilter.css';  // 스크롤 스타일을 위해 CSS 파일 import
+import './CommonFilter.css';  // CSS 파일 import
 
 const BusinessTypeFilter = ({ onSelect, singleSelect = false }) => {
   const [allData, setAllData] = useState([]);
@@ -13,6 +13,13 @@ const BusinessTypeFilter = ({ onSelect, singleSelect = false }) => {
   useEffect(() => {
     fetchData();
   }, []);
+
+
+  useEffect(() => {
+    if (categories.length > 0 && !selectedCategory) {
+      handleCategorySelect(categories[0]);
+    }
+  }, [categories]);
 
   const fetchData = async () => {
     try {
@@ -51,35 +58,33 @@ const BusinessTypeFilter = ({ onSelect, singleSelect = false }) => {
   };
 
   return (
-    <Box className="scroll-box" sx={{ maxHeight: '600px', overflow: 'auto' }}>
-      <Typography variant="h6" gutterBottom>업종선택</Typography>
+    <Box className="filter-container">
+      <Typography variant="h6" className="filter-title">업종선택</Typography>
       <Grid container spacing={2}>
-        <Grid item xs={6}>
-          <Typography variant="subtitle2">대카테고리 선택</Typography>
-          <Box className="scroll-box" sx={{ maxHeight: '300px', overflow: 'auto' }}>
+        <Grid item xs={6} className="filter-column">
+          <Typography variant="subtitle2" className="filter-subtitle">대카테고리 선택</Typography>
+          <Box className="scroll-box">
             {categories.map(category => (
               <Button 
                 key={category.name} 
                 onClick={() => handleCategorySelect(category)}
                 variant={selectedCategory?.name === category.name ? "contained" : "outlined"}
-                fullWidth
-                sx={{ mb: 1 }}
+                className="filter-button"
               >
                 {category.name}
               </Button>
             ))}
           </Box>
         </Grid>
-        <Grid item xs={6}>
-          <Typography variant="subtitle2">업종 선택</Typography>
-          <Box className="scroll-box" sx={{ maxHeight: '300px', overflow: 'auto' }}>
+        <Grid item xs={6} className="filter-column">
+          <Typography variant="subtitle2" className="filter-subtitle">업종 선택</Typography>
+          <Box className="scroll-box">
             {businessTypes.map(businessType => (
               <Button 
                 key={businessType.code} 
                 onClick={() => handleBusinessTypeToggle(businessType)}
                 variant={selectedBusinessTypes.some(b => b.code === businessType.code) ? "contained" : "outlined"}
-                fullWidth
-                sx={{ mb: 1 }}
+                className="filter-button"
               >
                 {businessType.name}
               </Button>
@@ -89,17 +94,26 @@ const BusinessTypeFilter = ({ onSelect, singleSelect = false }) => {
       </Grid>
       {!singleSelect && (
         <>
-          <Typography variant="subtitle2" sx={{ mt: 2 }}>선택한 업종</Typography>
-          <Stack direction="row" spacing={1} flexWrap="wrap">
-            {selectedBusinessTypes.map(businessType => (
-              <Chip
-                key={businessType.code}
-                label={businessType.name}
-                onDelete={() => handleBusinessTypeToggle(businessType)}
-                variant="outlined"
-              />
-            ))}
-          </Stack>
+          <Typography variant="subtitle2" className="filter-subtitle" style={{ marginTop: '1rem' }}>선택한 업종</Typography>
+          <Box className="selected-items-container">
+            {selectedBusinessTypes.length > 0 ? (
+              <Stack direction="row" spacing={1} flexWrap="wrap" sx={{ '& .filter-chip': { margin: '3px' } }}>
+                {selectedBusinessTypes.map(businessType => (
+                  <Chip
+                    key={businessType.code}
+                    label={businessType.name}
+                    onDelete={() => handleBusinessTypeToggle(businessType)}
+                    variant="outlined"
+                    className="filter-chip"
+                  />
+                ))}
+              </Stack>
+            ) : (
+              <Typography variant="body2" className="selected-items-message">
+                업종을 선택하세요
+              </Typography>
+            )}
+          </Box>
         </>
       )}
     </Box>
