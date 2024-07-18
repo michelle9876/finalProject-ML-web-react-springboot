@@ -90,7 +90,7 @@ const Content1 = () => {
             <RegionFilter onSelect={handleRegionSelect} />
           </Grid>
           <Grid item xs={12} md={6}>
-          <BusinessTypeFilter onSelect={handleBusinessTypeSelect} singleSelect={false} />
+          <BusinessTypeFilter onSelect={handleBusinessTypeSelect} singleSelect={false} maxSelect = {500} />
           </Grid>
           <Grid item xs={12} md={6}>
             <Typography variant="subtitle2" gutterBottom>임대료 (만원)</Typography>
