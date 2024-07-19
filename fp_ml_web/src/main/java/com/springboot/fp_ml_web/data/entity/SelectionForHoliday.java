@@ -13,8 +13,8 @@ import lombok.Setter;
 public class SelectionForHoliday {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int selectionForHoliday_id;
+    private int selectionForHolidayId;
     private int userId;
-    private String service_industry_name;
-    private String district_name;
+    private String serviceIndustryName;
+    private String districtName;
 }
