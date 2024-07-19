@@ -4,6 +4,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ElementCollection;
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,8 +15,16 @@ import lombok.Setter;
 public class ResultHoliday {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int resultHolidayId;
+    private int selectionForHolidayId;
+    private String holidayGraph;
 
-    private int resultHoliday_id;
-    private int selectionForHoliday_id;
-    private String holiday_graph;
+    @ElementCollection
+    private List<Long> industry;
+
+    @ElementCollection
+    private List<Long> allRegions;
+
+    @ElementCollection
+    private List<Long> allIndustries;
 }
