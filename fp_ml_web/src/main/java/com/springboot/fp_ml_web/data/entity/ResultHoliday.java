@@ -1,10 +1,12 @@
 package com.springboot.fp_ml_web.data.entity;
 
+import com.springboot.fp_ml_web.data.converter.JsonLongListConverter;
+
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ElementCollection;
 import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,12 +21,12 @@ public class ResultHoliday {
     private int selectionForHolidayId;
     private String holidayGraph;
 
-    @ElementCollection
+    @Convert(converter = JsonLongListConverter.class)
     private List<Long> industry;
 
-    @ElementCollection
+    @Convert(converter = JsonLongListConverter.class)
     private List<Long> allRegions;
 
-    @ElementCollection
+    @Convert(converter = JsonLongListConverter.class)
     private List<Long> allIndustries;
 }
