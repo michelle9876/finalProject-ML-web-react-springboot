@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Typography, Button, Grid, Chip, Stack, Box } from '@mui/material';
 import axios from 'axios';
-import './CommonFilter.css';  // CSS 파일 import
+import './CommonFilter.css';
 
-const RegionFilter = ({ onSelect }) => {
-  const [allData, setAllData] = useState([]);
+const RegionFilter = ({ onSelect, onDataFetched, singleSelect = false, initialData, maxSelect = 5 }) => {
+  const [allData, setAllData] = useState(initialData || []);
   const [districts, setDistricts] = useState([]);
   const [selectedDistrict, setSelectedDistrict] = useState(null);
   const [neighborhoods, setNeighborhoods] = useState([]);
@@ -13,23 +13,29 @@ const RegionFilter = ({ onSelect }) => {
   const [selectedCommercialAreas, setSelectedCommercialAreas] = useState([]);
 
   useEffect(() => {
-    fetchData();
-  }, []);
-
-  useEffect(() => {
-    if (districts.length > 0 && !selectedDistrict) {
-      handleDistrictSelect(districts[0]);
+    if (!initialData) {
+      fetchData();
+    } else {
+      processData(initialData);
     }
-  }, [districts]);
+  }, [initialData]);
 
   const fetchData = async () => {
     try {
       const response = await axios.get('/api/districts');
       setAllData(response.data);
-      const uniqueDistricts = [...new Set(response.data.map(item => item.district_name))];
-      setDistricts(uniqueDistricts.map(name => ({ name })));
+      onDataFetched(response.data);
+      processData(response.data);
     } catch (error) {
-      console.error('Error fetching data:', error);
+      console.error('Error fetching region data:', error);
+    }
+  };
+
+  const processData = (data) => {
+    const uniqueDistricts = [...new Set(data.map(item => item.district_name))];
+    setDistricts(uniqueDistricts.map(name => ({ name })));
+    if (uniqueDistricts.length > 0) {
+      handleDistrictSelect({ name: uniqueDistricts[0] });
     }
   };
 
@@ -53,13 +59,24 @@ const RegionFilter = ({ onSelect }) => {
   };
 
   const handleCommercialAreaToggle = (area) => {
-    setSelectedCommercialAreas(prev => {
-      const newSelection = prev.some(a => a.name === area.name) 
-        ? prev.filter(a => a.name !== area.name) 
-        : [...prev, area];
-      onSelect(newSelection);  // 여기서 바로 부모 컴포넌트에 알림
-      return newSelection;
-    });
+    if (singleSelect) {
+      const newSelection = [area];
+      setSelectedCommercialAreas(newSelection);
+      onSelect(newSelection);
+    } else {
+      setSelectedCommercialAreas(prev => {
+        const newSelection = prev.some(a => a.name === area.name) 
+          ? prev.filter(a => a.name !== area.name) 
+          : [...prev, area];
+        if (newSelection.length <= maxSelect) {
+          onSelect(newSelection);
+          return newSelection;
+        } else {
+          // 최대 선택 개수를 초과했을 때 사용자에게 알림을 줄 수 있습니다.
+          return prev;
+        }
+      });
+    }
   };
 
   return (
@@ -116,26 +133,30 @@ const RegionFilter = ({ onSelect }) => {
           </Box>
         </Grid>
       </Grid>
-      <Typography variant="subtitle2" className="filter-subtitle" style={{ marginTop: '1rem' }}>선택한 상권</Typography>
-      <Box className="selected-items-container">
-        {selectedCommercialAreas.length > 0 ? (
-          <Stack direction="row" spacing={1} flexWrap="wrap" sx={{ '& .filter-chip': { margin: '3px' } }}>
-            {selectedCommercialAreas.map(area => (
-              <Chip
-                key={area.name}
-                label={area.name}
-                onDelete={() => handleCommercialAreaToggle(area)}
-                variant="outlined"
-                className="filter-chip"
-              />
-            ))}
-          </Stack>
-        ) : (
-          <Typography variant="body2" className="selected-items-message">
-            상권을 선택하세요
-          </Typography>
-        )}
-      </Box>
+      {!singleSelect && (
+        <>
+          <Typography variant="subtitle2" className="filter-subtitle" style={{ marginTop: '1rem' }}>선택한 상권</Typography>
+          <Box className="selected-items-container">
+            {selectedCommercialAreas.length > 0 ? (
+              <Stack direction="row" spacing={1} flexWrap="wrap" sx={{ '& .filter-chip': { margin: '3px' } }}>
+                {selectedCommercialAreas.map(area => (
+                  <Chip
+                    key={area.name}
+                    label={area.name}
+                    onDelete={() => handleCommercialAreaToggle(area)}
+                    variant="outlined"
+                    className="filter-chip"
+                  />
+                ))}
+              </Stack>
+            ) : (
+              <Typography variant="body2" className="selected-items-message">
+                상권을 선택하세요
+              </Typography>
+            )}
+          </Box>
+        </>
+      )}
     </Box>
   );
 };

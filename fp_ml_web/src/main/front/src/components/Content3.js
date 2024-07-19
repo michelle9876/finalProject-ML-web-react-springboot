@@ -13,6 +13,7 @@ const Content3 = () => {
   const [nickname, setNickname] = useState('');
   const [results, setResults] = useState([]);
   const [hasSubmitted, setHasSubmitted] = useState(false);
+  const [businessTypeData, setBusinessTypeData] = useState(null);
 
   useEffect(() => {
     fetchFactors();
@@ -67,6 +68,10 @@ const Content3 = () => {
     } catch (error) {
       console.error('Error submitting hypotheses:', error);
     }
+  };
+
+  const handleBusinessTypeDataFetched = (data) => {
+    setBusinessTypeData(data);
   };
 
   const handleIndustrySelect = (selected, index) => {
@@ -206,6 +211,8 @@ const Content3 = () => {
               <Box sx={{ mt: 2, mb: 2 }}>
                 <BusinessTypeFilter
                   onSelect={(selected) => handleIndustrySelect(selected, index)}
+                  onDataFetched={handleBusinessTypeDataFetched}
+                  initialData={businessTypeData}
                   singleSelect={true}
                 />
               </Box>

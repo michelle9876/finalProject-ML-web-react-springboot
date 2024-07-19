@@ -1,38 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { Container, Paper, Typography, Grid, TextField, MenuItem, Button, Box } from '@mui/material';
+import React, { useState, useEffect, useCallback } from 'react';
+import { Container, Paper, Typography, Grid, TextField, Button, Box } from '@mui/material';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
-
-// 목업 데이터
-const mockApiResponse = {
-  "홍대입구": {
-    "편의점": {
-      "recommendedDay": "월",
-      "chartData": {
-        "industry": [500, 600, 700, 800, 900, 1000, 1100],
-        "allRegions": [5000, 5500, 6000, 6500, 7000, 7500, 8000],
-        "allIndustries": [10000, 11000, 12000, 13000, 14000, 15000, 16000]
-      }
-    },
-    "커피전문점": {
-      "recommendedDay": "화",
-      "chartData": {
-        "industry": [600, 550, 700, 750, 800, 900, 1000],
-        "allRegions": [1000, 7000, 6000, 6500, 7000, 7500, 8000],
-        "allIndustries": [11000, 10000, 12000, 13000, 14000, 15000, 16000]
-      }
-    },
-    "한식음식점": {
-      "recommendedDay": "수",
-      "chartData": {
-        "industry": [700, 750, 650, 800, 850, 900, 1000],
-        "allRegions": [9000, 6500, 5500, 7000, 7500, 8000, 8500],
-        "allIndustries": [12000, 13000, 11000, 14000, 15000, 16000, 17000]
-      }
-    }
-  },
-  // 다른 지역에 대한 데이터도 비슷한 구조로 추가
-};
+import axios from 'axios';
+import BusinessTypeFilter from './BusinessTypeFilter';
+import RegionFilter from './RegionFilter';
 
 const Content4 = () => {
   const [industry, setIndustry] = useState('');
@@ -43,36 +15,77 @@ const Content4 = () => {
     allRegions: [],
     allIndustries: []
   });
+  const [showBusinessTypeFilter, setShowBusinessTypeFilter] = useState(false);
+  const [showRegionFilter, setShowRegionFilter] = useState(false);
+  const [userId, setUserId] = useState(null);
+  const [businessTypeData, setBusinessTypeData] = useState(null);
+  const [regionData, setRegionData] = useState(null);
 
-  const industries = ['편의점', '커피전문점', '한식음식점'];
-  const regions = ['홍대입구'];
   const days = ['월', '화', '수', '목', '금', '토', '일'];
 
   useEffect(() => {
-    if (industry && region) {
-      fetchMockData();
-    }
-  }, [industry, region]);
+    const storedUserId = localStorage.getItem('userId');
+    setUserId(storedUserId);
+  }, []);
 
-  const fetchMockData = () => {
-    const data = mockApiResponse[region][industry];
-    setRecommendedDay(data.recommendedDay);
-    setChartData(data.chartData);
+  useEffect(() => {
+    if (industry && region && userId) {
+      fetchRecommendationData();
+    }
+  }, [industry, region, userId]);
+
+  const fetchRecommendationData = async () => {
+    try {
+      const response = await axios.post('/api/holiday-recommendation', null, {
+        params: {
+          serviceIndustryName: industry,
+          businessDistrictName: region,
+          userId: userId
+        }
+      });
+      const data = response.data;
+      setRecommendedDay(data.recommendedDay);
+      setChartData(data.chartData);
+    } catch (error) {
+      console.error('Error fetching recommendation data:', error);
+    }
   };
 
+  const handleIndustrySelect = (selected) => {
+    if (selected && selected.length > 0) {
+      setIndustry(selected[0].name);
+      setShowBusinessTypeFilter(false);
+    }
+  };
+
+  const handleRegionSelect = (selected) => {
+    if (selected && selected.length > 0) {
+      setRegion(selected[0].name);
+      setShowRegionFilter(false);
+    }
+  };
+
+  const handleBusinessTypeDataFetched = useCallback((data) => {
+    setBusinessTypeData(data);
+  }, []);
+
+  const handleRegionDataFetched = useCallback((data) => {
+    setRegionData(data);
+  }, []);
+
   const generateAnalysisText = (data, type) => {
-    const recommendedDayIndex = days.indexOf(recommendedDay);
+    const recommendedDayIndex = days.indexOf(recommendedDay.slice(0, 1));
     const recommendedDaySales = data[recommendedDayIndex];
     const sortedData = [...data].sort((a, b) => a - b);
     const rank = sortedData.indexOf(recommendedDaySales) + 1;
 
     switch (type) {
       case 'industry':
-        return `${recommendedDay}요일은 ${region}의 ${industry} 기준 ${rank}번째로 매출이 적으며`;
+        return `${recommendedDay}은 ${region}의 ${industry} 기준 ${rank}번째로 매출이 적으며`;
       case 'allRegions':
-        return `${recommendedDay}요일은 전체 ${industry} 기준 ${rank}번째로 매출이 적은날이에요`;
+        return `${recommendedDay}은 전체 ${industry} 기준 ${rank}번째로 매출이 적은날이에요`;
       case 'allIndustries':
-        return `${recommendedDay}요일은 ${region}의 전체 업종 기준 ${rank}번째로 매출이 적은날이에요`;
+        return `${recommendedDay}은 ${region}의 전체 업종 기준 ${rank}번째로 매출이 적은날이에요`;
       default:
         return '';
     }
@@ -83,7 +96,7 @@ const Content4 = () => {
     title: { text: title },
     subtitle: { text: generateAnalysisText(data, type) },
     xAxis: { categories: days },
-    yAxis: { title: { text: '매출 (만원)' } },
+    yAxis: { title: { text: '매출 (원)' } },
     series: [{ name: '매출', data }],
     plotOptions: {
       column: {
@@ -106,47 +119,61 @@ const Content4 = () => {
         <Grid container spacing={2} sx={{ mb: 3 }}>
           <Grid item xs={12} sm={6}>
             <TextField
-              select
               fullWidth
               label="업종 선택"
               value={industry}
-              onChange={(e) => setIndustry(e.target.value)}
-            >
-              {industries.map((option) => (
-                <MenuItem key={option} value={option}>
-                  {option}
-                </MenuItem>
-              ))}
-            </TextField>
+              onClick={() => setShowBusinessTypeFilter(!showBusinessTypeFilter)}
+              InputProps={{ readOnly: true }}
+            />
+            {showBusinessTypeFilter && (
+              <Box sx={{ mt: 2, mb: 2 }}>
+                <BusinessTypeFilter
+                  onSelect={handleIndustrySelect}
+                  onDataFetched={handleBusinessTypeDataFetched}
+                  initialData={businessTypeData}
+                  singleSelect={true}
+                />
+              </Box>
+            )}
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField
-              select
               fullWidth
               label="지역 선택"
               value={region}
-              onChange={(e) => setRegion(e.target.value)}
-            >
-              {regions.map((option) => (
-                <MenuItem key={option} value={option}>
-                  {option}
-                </MenuItem>
-              ))}
-            </TextField>
+              onClick={() => setShowRegionFilter(!showRegionFilter)}
+              InputProps={{ readOnly: true }}
+            />
+            {showRegionFilter && (
+              <Box sx={{ mt: 2, mb: 2 }}>
+                <RegionFilter
+                  onSelect={handleRegionSelect}
+                  onDataFetched={handleRegionDataFetched}
+                  initialData={regionData}
+                  singleSelect={true}
+                />
+              </Box>
+            )}
           </Grid>
         </Grid>
 
-        <Button variant="contained" color="primary" onClick={fetchMockData} fullWidth>
+        <Button 
+          variant="contained" 
+          color="primary" 
+          onClick={fetchRecommendationData} 
+          fullWidth
+          disabled={!industry || !region || !userId}
+        >
           휴일 추천받기
         </Button>
 
         {recommendedDay && (
           <Box sx={{ mt: 3, p: 2, bgcolor: 'background.paper', borderRadius: 1 }}>
             <Typography variant="h6" gutterBottom>
-              추천 휴일: {recommendedDay}요일
+              추천 휴일: {recommendedDay}
             </Typography>
             <Typography variant="body1">
-              {region}의 {industry} 업종에서 가장 적절한 휴무일은 {recommendedDay}요일입니다.
+              {region}의 {industry} 업종에서 가장 적절한 휴무일은 {recommendedDay}입니다.
             </Typography>
           </Box>
         )}
