@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { 
-  TextField, 
-  Button, 
-  Snackbar, 
-  Dialog, 
-  DialogTitle, 
-  DialogContent, 
+import {
+  TextField,
+  Button,
+  Snackbar,
+  Dialog,
+  DialogTitle,
+  DialogContent,
   DialogActions,
   Typography,
   Box
@@ -65,6 +65,10 @@ const NicknameInput = () => {
     setOpenErrorToast(false);
   };
 
+  const handleCloseDialog = () => {
+    setOpenDialog(false); // 닉네임 입력 다이얼로그 닫기
+  };
+
   return (
     <>
       <Dialog open={openDialog} onClose={() => {}} aria-labelledby="nickname-dialog-title">
@@ -91,6 +95,9 @@ const NicknameInput = () => {
         <DialogActions>
           <Button onClick={handleSubmit} color="primary" variant="contained" fullWidth>
             확인
+          </Button>
+          <Button onClick={handleCloseDialog} color="inherit" variant="contained" fullWidth>
+            취소
           </Button>
         </DialogActions>
       </Dialog>
