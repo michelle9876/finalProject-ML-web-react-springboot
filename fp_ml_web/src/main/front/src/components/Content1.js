@@ -19,6 +19,8 @@ const Content1 = () => {
   const [areaMax, setAreaMax] = useState('');
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [businessTypeData, setBusinessTypeData] = useState(null);
+  const [regionData, setRegionData] = useState(null);
 
   useEffect(() => {
     const savedNickname = localStorage.getItem('nickname');
@@ -33,6 +35,14 @@ const Content1 = () => {
 
   const handleBusinessTypeSelect = (businessTypes) => {
     setSelectedBusinessTypes(businessTypes);
+  };
+
+  const handleBusinessTypeDataFetched = (data) => {
+    setBusinessTypeData(data);
+  };
+
+  const handleRegionDataFetched = (data) => {
+    setRegionData(data);
   };
 
   const handleRecommendation = async () => {
@@ -77,6 +87,8 @@ const Content1 = () => {
     setOpenSnackbar(false);
   };
 
+
+
   return (
     <Container maxWidth="lg" sx={{ mt: 4 }}>
       <Paper sx={{ p: 3 }}>
@@ -87,10 +99,20 @@ const Content1 = () => {
 
         <Grid container spacing={3}>
           <Grid item xs={12} md={6}>
-            <RegionFilter onSelect={handleRegionSelect} />
+            <RegionFilter 
+              onSelect={handleRegionSelect} 
+              onDataFetched={handleRegionDataFetched}
+              initialData={regionData}
+            />
           </Grid>
           <Grid item xs={12} md={6}>
-          <BusinessTypeFilter onSelect={handleBusinessTypeSelect} singleSelect={false} maxSelect = {500} />
+            <BusinessTypeFilter 
+              onSelect={handleBusinessTypeSelect} 
+              onDataFetched={handleBusinessTypeDataFetched}
+              initialData={businessTypeData}
+              singleSelect={false} 
+              maxSelect={500} 
+            />
           </Grid>
           <Grid item xs={12} md={6}>
             <Typography variant="subtitle2" gutterBottom>임대료 (만원)</Typography>

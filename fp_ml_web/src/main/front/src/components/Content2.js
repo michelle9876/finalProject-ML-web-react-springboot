@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Box, Typography, Paper } from '@mui/material';
 import BusinessTypeFilter from './BusinessTypeFilter';
+import axios from 'axios';
 
 // 미리 정의된 색상 배열
 const predefinedColors = ["#FF5733", "#33FF57", "#3357FF", "#FF33E9", "#33FFF6"];
@@ -45,6 +46,7 @@ const Content2 = () => {
   const [selectedBusinessTypes, setSelectedBusinessTypes] = useState([]);
   const [markers, setMarkers] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [businessTypeData, setBusinessTypeData] = useState(null);
 
   useEffect(() => {
     const script = document.createElement('script');
@@ -76,13 +78,16 @@ const Content2 = () => {
     }
   }, [map, selectedBusinessTypes]);
 
+  const handleBusinessTypeDataFetched = useCallback((data) => {
+    setBusinessTypeData(data);
+  }, []);
+
   const handleBusinessTypeSelect = useCallback((selected) => {
     if (selected.length <= 5) {
       console.log('선택된 업종:', selected);
       setSelectedBusinessTypes(selected);
     } else {
       console.log('최대 5개의 업종만 선택할 수 있습니다.');
-      // 여기에 사용자에게 알림을 주는 로직을 추가할 수 있습니다.
     }
   }, []);
 
@@ -138,9 +143,9 @@ const Content2 = () => {
         <Paper elevation={3} sx={{ p: 2 }}>
           <BusinessTypeFilter
             onSelect={handleBusinessTypeSelect}
+            onDataFetched={handleBusinessTypeDataFetched}
+            initialData={businessTypeData}
             singleSelect={false}
-            allData={mockBusinessTypes}
-            categories={categories}
             maxSelect={5}
           />
         </Paper>

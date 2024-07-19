@@ -1,35 +1,39 @@
 import React, { useState, useEffect } from 'react';
 import { Typography, Button, Grid, Chip, Stack, Box } from '@mui/material';
 import axios from 'axios';
-import './CommonFilter.css';  // CSS 파일 import
+import './CommonFilter.css';
 
-const BusinessTypeFilter = ({ onSelect, singleSelect = false, initialAllData, initialCategories, maxSelect = 5 }) => {
-  const [allData, setAllData] = useState(initialAllData || []);
-  const [categories, setCategories] = useState(initialCategories || []);
+const BusinessTypeFilter = ({ onSelect, onDataFetched, singleSelect = false, initialData, maxSelect = 5 }) => {
+  const [allData, setAllData] = useState(initialData || []);
+  const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [businessTypes, setBusinessTypes] = useState([]);
   const [selectedBusinessTypes, setSelectedBusinessTypes] = useState([]);
 
   useEffect(() => {
-    if (!initialAllData || !initialCategories) {
+    if (!initialData) {
       fetchData();
+    } else {
+      processData(initialData);
     }
-  }, [initialAllData, initialCategories]);
-
-  useEffect(() => {
-    if (categories.length > 0 && !selectedCategory) {
-      handleCategorySelect(categories[0]);
-    }
-  }, [categories]);
+  }, [initialData]);
 
   const fetchData = async () => {
     try {
       const response = await axios.get('/api/service-industries');
       setAllData(response.data);
-      const uniqueCategories = [...new Set(response.data.map(item => item.service_industry_category))];
-      setCategories(uniqueCategories.map(name => ({ name })));
+      onDataFetched(response.data);
+      processData(response.data);
     } catch (error) {
-      console.error('Error fetching data:', error);
+      console.error('Error fetching business type data:', error);
+    }
+  };
+
+  const processData = (data) => {
+    const uniqueCategories = [...new Set(data.map(item => item.service_industry_category))];
+    setCategories(uniqueCategories.map(name => ({ name })));
+    if (uniqueCategories.length > 0) {
+      handleCategorySelect({ name: uniqueCategories[0] });
     }
   };
 
@@ -56,7 +60,6 @@ const BusinessTypeFilter = ({ onSelect, singleSelect = false, initialAllData, in
           onSelect(newSelection);
           return newSelection;
         } else {
-          // 최대 선택 개수를 초과했을 때 사용자에게 알림을 줄 수 있습니다.
           return prev;
         }
       });
