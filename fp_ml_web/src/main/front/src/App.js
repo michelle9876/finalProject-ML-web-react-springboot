@@ -49,7 +49,7 @@ const Home = () => {
   const navigate = useNavigate();
   const contents = [
     { id: 1, title: ['어디에 어떤 업종?', 'AI맞춤추천'], path: '/content1' },
-    { id: 2, title: ['지도로 한눈에 확인', '랭킹 in 지도'], path: '/content2' },
+    { id: 2, title: ['지도로 한눈에 확인', '랭킹 IN 지도'], path: '/content2' },
     { id: 3, title: ['내 생각이 맞을까?', '확인하기'], path: '/content3' },
     { id: 4, title: ['휴일 추천해요', '휴일추천'], path: '/content4' },
   ];
@@ -67,19 +67,41 @@ const Home = () => {
               color="secondary"
               fullWidth
               onClick={() => navigate(item.path)}
-              sx={{ 
+              sx={{
                 height: '100px',
                 '&:hover': {
                   backgroundColor: theme.palette.secondary.dark,
                 },
               }}
             >
-              {item.title.map((line, index) => (
-                <React.Fragment key={index}>
-                  {line}
-                  {index < item.title.length - 1 && <br />}
-                </React.Fragment>
-              ))}
+              <Typography component="div">
+                {item.title.map((line, index) => (
+                  <React.Fragment key={index}>
+                    {index === 1 ? (
+                      <span
+                        style={{
+                          fontSize: '1.4rem', // 글자 크기 조정
+                          fontWeight: 'bold', // 글자 굵게
+                          display: 'block', // 블록 요소로 설정하여 줄간격 적용 가능
+                          lineHeight: '0.7', // 줄간격 설정
+                        }}
+                      >
+                        {line}
+                      </span>
+                    ) : (
+                      <span
+                        style={{
+                          display: 'block', // 블록 요소로 설정하여 줄간격 적용 가능
+                          lineHeight: '0.7', // 줄간격 설정
+                        }}
+                      >
+                        {line}
+                      </span>
+                    )}
+                    {index < item.title.length - 1 && <br />}
+                  </React.Fragment>
+                ))}
+              </Typography>
             </Button>
           </Grid>
         ))}

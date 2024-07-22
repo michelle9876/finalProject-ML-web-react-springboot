@@ -102,13 +102,14 @@ const Content2 = () => {
       const areas = mockTopCommercialAreas[businessType.name];
       const color = predefinedColors[index % predefinedColors.length];
       
-      if (areas) {
-        areas.forEach(area => {
+     if (areas) {
+        areas.forEach((area, areaIndex) => {
+          const markerColor = predefinedColors[area.rank % predefinedColors.length];
           const marker = new window.naver.maps.Marker({
             position: new window.naver.maps.LatLng(area.latitude, area.longitude),
             map: map,
             icon: {
-              content: `<div style="background-color:${color};color:white;border-radius:50%;width:30px;height:30px;line-height:30px;text-align:center;font-weight:bold;">${area.rank}</div>`,
+              content: `<div style="background-color:${markerColor};color:white;border-radius:50%;width:30px;height:30px;line-height:30px;text-align:center;font-weight:bold;">${area.rank}</div>`,
               anchor: new window.naver.maps.Point(15, 15)
             },
             title: `${area.commercial_area_name} (${businessType.name} ${area.rank}위)`
@@ -118,7 +119,11 @@ const Content2 = () => {
 
           window.naver.maps.Event.addListener(marker, 'click', () => {
             const infoWindow = new window.naver.maps.InfoWindow({
-              content: `<div style="padding:10px;"><strong>${area.commercial_area_name}</strong><br>${businessType.name} ${area.rank}위</div>`
+              content: `
+                <div style="padding:10px; border-radius: 12px; background-color: white; border: 1px solid #ddd;">
+                  <strong>${area.commercial_area_name}</strong><br>
+                  ${businessType.name} ${area.rank}위
+                </div>`
             });
             infoWindow.open(map, marker);
           });
