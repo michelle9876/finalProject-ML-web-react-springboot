@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Box, Typography, Paper } from '@mui/material';
 import BusinessTypeFilter from './BusinessTypeFilter';
+import CustomMapMarker from './CustomMapMarker';
 import axios from 'axios';
 
+
 // 미리 정의된 색상 배열
-const predefinedColors = ["#FF5733", "#33FF57", "#3357FF", "#FF33E9", "#33FFF6"];
+const predefinedColors = ["#FF8C66 ", "#66FF8C", "#66A3FF", "#FF66D", "#66FFE6"];
 
 // 목업 데이터
 const mockBusinessTypes = [
@@ -93,30 +95,31 @@ const Content2 = () => {
 
   const updateMarkers = useCallback(() => {
     if (!map || !window.naver) return;
-
+  
     // 기존 마커 제거
     markers.forEach(marker => marker.setMap(null));
-
+  
     const newMarkers = [];
+    const viewportWidth = window.innerWidth; // 뷰포트 너비 가져오기
+  
     selectedBusinessTypes.forEach((businessType, index) => {
       const areas = mockTopCommercialAreas[businessType.name];
       const color = predefinedColors[index % predefinedColors.length];
-      
-     if (areas) {
-        areas.forEach((area, areaIndex) => {
-          const markerColor = predefinedColors[area.rank % predefinedColors.length];
+  
+      if (areas) {
+        areas.forEach(area => {
           const marker = new window.naver.maps.Marker({
             position: new window.naver.maps.LatLng(area.latitude, area.longitude),
             map: map,
             icon: {
-              content: `<div style="background-color:${markerColor};color:white;border-radius:50%;width:30px;height:30px;line-height:30px;text-align:center;font-weight:bold;">${area.rank}</div>`,
-              anchor: new window.naver.maps.Point(15, 15)
+              content: CustomMapMarker({ title1: area.commercial_area_name, rank: area.rank, title2: businessType.name, windowWidth: viewportWidth, color: color }),
+              anchor: new window.naver.maps.Point(7, 5)
             },
             title: `${area.commercial_area_name} (${businessType.name} ${area.rank}위)`
           });
-
+  
           newMarkers.push(marker);
-
+  
           window.naver.maps.Event.addListener(marker, 'click', () => {
             const infoWindow = new window.naver.maps.InfoWindow({
               content: `
@@ -130,8 +133,10 @@ const Content2 = () => {
         });
       }
     });
+  
     setMarkers(newMarkers);
   }, [map, selectedBusinessTypes]);
+  
 
   return (
     <Box sx={{ position: 'relative', height: '94vh' }}>
