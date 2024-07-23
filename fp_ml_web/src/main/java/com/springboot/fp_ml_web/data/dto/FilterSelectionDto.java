@@ -30,8 +30,8 @@ public class FilterSelectionDto {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class RentFee {
-        private Integer min;
-        private Integer max;
+        private Double min;
+        private Double max;
     }
 
     @Getter
@@ -39,8 +39,8 @@ public class FilterSelectionDto {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class RentArea {
-        private Float min;
-        private Float max;
+        private Double min;
+        private Double max;
     }
 
 }
