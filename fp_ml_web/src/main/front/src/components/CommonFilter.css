@@ -1,0 +1,100 @@
+/* CommonFilter.css */
+
+.filter-container {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  border-radius: 4px;
+  box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+}
+
+.filter-title {
+  font-size: 1.25rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
+}
+
+.filter-subtitle {
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.filter-column {
+  flex: 1;
+}
+
+.filter-column .MuiButton-root {
+  margin-bottom: 5px;
+}
+
+.scroll-box {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.scroll-box::-webkit-scrollbar {
+  width: 1vw;
+}
+
+.scroll-box::-webkit-scrollbar-track {
+  background-color: #ffffff;
+}
+
+.scroll-box::-webkit-scrollbar-thumb {
+  background-color: #1976d2;
+  border: 0.3vw solid #ffffff;
+  border-radius: 5vw;
+}
+
+.scroll-box::-webkit-scrollbar-thumb:hover {
+  background-color: #1565c0;
+}
+
+.filter-button {
+  width: 100%;
+  text-align: left;
+  justify-content: flex-start;
+  margin-bottom: 0.5rem;
+}
+
+.selected-items-container {
+  height: 66px;
+  overflow-y: auto;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  padding: 8px;
+  margin-top: 8px;
+}
+
+.selected-items-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.selected-items-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.selected-items-container::-webkit-scrollbar-thumb {
+  background-color: #1976d2;
+  border-radius: 3px;
+}
+
+.selected-items-container::-webkit-scrollbar-thumb:hover {
+  background-color: #1565c0;
+}
+
+.selected-items-message {
+  color: rgba(0, 0, 0, 0.6);
+  line-height: 50px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%; /* 부모 컨테이너의 높이를 100%로 설정 */
+}
+
+.filter-chip {
+  margin: 3px;
+}
