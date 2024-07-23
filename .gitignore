@@ -43,4 +43,4 @@ gen
 plaintext
 .gradle/
 fp_ml_web/.env
-.env
+*.env
