@@ -27,16 +27,16 @@ public class FilterSelection {
     private String businessDistricts;
 
     @Column(name = "rent_fee_min")
-    private Integer rentFeeMin;
+    private Double rentFeeMin;
 
     @Column(name = "rent_fee_max")
-    private Integer rentFeeMax;
+    private Double rentFeeMax;
 
     @Column(name = "rent_area_min")
-    private Float rentAreaMin;
+    private Double rentAreaMin;
 
     @Column(name = "rent_area_max")
-    private Float rentAreaMax;
+    private Double rentAreaMax;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
