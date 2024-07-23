@@ -1,39 +1,34 @@
 import React, { useState, useEffect } from 'react';
 import { Typography, Button, Grid, Chip, Stack, Box } from '@mui/material';
 import axios from 'axios';
-import './CommonFilter.css';
+import './CommonFilter.css';  // CSS 파일 import
 
-const BusinessTypeFilter = ({ onSelect, onDataFetched, singleSelect = false, initialData, maxSelect = 5 }) => {
-  const [allData, setAllData] = useState(initialData || []);
+const BusinessTypeFilter = ({ onSelect, singleSelect = false }) => {
+  const [allData, setAllData] = useState([]);
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [businessTypes, setBusinessTypes] = useState([]);
   const [selectedBusinessTypes, setSelectedBusinessTypes] = useState([]);
 
   useEffect(() => {
-    if (!initialData) {
-      fetchData();
-    } else {
-      processData(initialData);
+    fetchData();
+  }, []);
+
+
+  useEffect(() => {
+    if (categories.length > 0 && !selectedCategory) {
+      handleCategorySelect(categories[0]);
     }
-  }, [initialData]);
+  }, [categories]);
 
   const fetchData = async () => {
     try {
       const response = await axios.get('/api/service-industries');
       setAllData(response.data);
-      onDataFetched(response.data);
-      processData(response.data);
+      const uniqueCategories = [...new Set(response.data.map(item => item.service_industry_category))];
+      setCategories(uniqueCategories.map(name => ({ name })));
     } catch (error) {
-      console.error('Error fetching business type data:', error);
-    }
-  };
-
-  const processData = (data) => {
-    const uniqueCategories = [...new Set(data.map(item => item.service_industry_category))];
-    setCategories(uniqueCategories.map(name => ({ name })));
-    if (uniqueCategories.length > 0) {
-      handleCategorySelect({ name: uniqueCategories[0] });
+      console.error('Error fetching data:', error);
     }
   };
 
@@ -56,12 +51,8 @@ const BusinessTypeFilter = ({ onSelect, onDataFetched, singleSelect = false, ini
         const newSelection = prev.some(b => b.code === businessType.code) 
           ? prev.filter(b => b.code !== businessType.code) 
           : [...prev, businessType];
-        if (newSelection.length <= maxSelect) {
-          onSelect(newSelection);
-          return newSelection;
-        } else {
-          return prev;
-        }
+        onSelect(newSelection);
+        return newSelection;
       });
     }
   };
