@@ -2,9 +2,7 @@
 
 .filter-container {
   width: 100%;
-  max-width: 300px; /* 최대 너비를 300px로 줄임 */
-  margin: 0 auto;
-  padding: 15px; /* 패딩 줄임 */
+  padding: 15px;
   border-radius: 4px;
   box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
 }
@@ -30,7 +28,7 @@
 }
 
 .scroll-box {
-  max-height: 300px;
+  max-height: 200px;
   overflow-y: auto;
 }
 
@@ -100,9 +98,9 @@
 }
 
 
-/* 모바일 화면을 위한 스타일 추가 */
+/* 모바일 화면을 위한 스타일 */
 @media (max-width: 600px) {
-  .filter-container {
+  .mobile-responsive .filter-container {
     position: fixed;
     top: 0;
     left: 0;
@@ -115,11 +113,11 @@
     transition: transform 0.3s ease-in-out;
   }
 
-  .filter-container.open {
+  .mobile-responsive .filter-container.open {
     transform: translateY(0);
   }
 
-  .filter-toggle-button {
+  .mobile-responsive .filter-toggle-button {
     position: fixed;
     bottom: 20px;
     right: 20px;

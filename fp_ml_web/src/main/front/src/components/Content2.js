@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { Box, Typography, Paper } from '@mui/material';
+import { Box, Typography, Paper, Button, Fade } from '@mui/material';
+import FilterListIcon from '@mui/icons-material/FilterList';
 import BusinessTypeFilter from './BusinessTypeFilter';
 import CustomMapMarker from './CustomMapMarker';
 import axios from 'axios';
@@ -49,6 +50,7 @@ const Content2 = () => {
   const [markers, setMarkers] = useState([]);
   const [categories, setCategories] = useState([]);
   const [businessTypeData, setBusinessTypeData] = useState(null);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   useEffect(() => {
     const script = document.createElement('script');
@@ -64,6 +66,7 @@ const Content2 = () => {
       document.head.removeChild(script);
     };
   }, []);
+  
 
   const initializeMap = useCallback(() => {
     if (!window.naver) return;
@@ -136,30 +139,51 @@ const Content2 = () => {
   
     setMarkers(newMarkers);
   }, [map, selectedBusinessTypes]);
+
+  const toggleFilter = () => {
+    setIsFilterOpen(!isFilterOpen);
+  };
   
 
   return (
     <Box sx={{ position: 'relative', height: '94vh' }}>
       <Typography variant="h4" gutterBottom>랭킹 in 지도</Typography>
-      <Box
+      <Button
+        variant="contained"
+        onClick={toggleFilter}
         sx={{
           position: 'absolute',
           top: 16,
           left: 16,
-          zIndex: 10,
-          width: '400px',
+          zIndex: 11,
         }}
       >
-        <Paper elevation={3} sx={{ p: 2 }}>
-          <BusinessTypeFilter
-            onSelect={handleBusinessTypeSelect}
-            onDataFetched={handleBusinessTypeDataFetched}
-            initialData={businessTypeData}
-            singleSelect={false}
-            maxSelect={5}
-          />
-        </Paper>
-      </Box>
+        <FilterListIcon sx={{ mr: 1 }} />
+        {isFilterOpen ? '필터 닫기' : '필터 열기'}
+      </Button>
+      <Fade in={isFilterOpen}>
+        <Box
+          sx={{
+            position: 'absolute',
+            top: 70, // 버튼 아래로 위치 조정
+            left: 16,
+            zIndex: 10,
+            width: { xs: 'calc(100% - 32px)', sm: '400px' },
+            display: isFilterOpen ? 'block' : 'none',
+          }}
+        >
+          <Paper elevation={3} sx={{ p: 2 }}>
+            <BusinessTypeFilter
+              onSelect={handleBusinessTypeSelect}
+              onDataFetched={handleBusinessTypeDataFetched}
+              initialData={businessTypeData}
+              singleSelect={false}
+              maxSelect={5}
+              mobileResponsive={true}
+            />
+          </Paper>
+        </Box>
+      </Fade>
       <Box
         sx={{
           position: 'absolute',
