@@ -3,7 +3,7 @@ import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 
 const BarChart = ({ title, data, type, days, recommendedDay, region, industry }) => {
-  const generateAnalysisText = () => {
+    const generateAnalysisText = () => {
     const recommendedDayIndex = days.indexOf(recommendedDay.slice(0, 1));
     const recommendedDaySales = data[recommendedDayIndex];
     const sortedData = [...data].sort((a, b) => a - b);
@@ -18,6 +18,43 @@ const BarChart = ({ title, data, type, days, recommendedDay, region, industry })
         return `${recommendedDay}은 ${region}의 전체 업종 기준 ${rank}번째로 매출이 적은날이에요`;
       default:
         return '';
+    }
+  };
+
+  const getChartColor = () => {
+    switch (type) {
+      case 'industry':
+        return {
+          linearGradient: { x1: 0, x2: 0, y1: 0, y2: 1 },
+          stops: [
+            [0, '#003399'],
+            [1, '#3366AA']
+          ]
+        };
+      case 'allRegions':
+        return {
+          linearGradient: { x1: 0, x2: 0, y1: 0, y2: 1 },
+          stops: [
+            [0, '#00A86B'],
+            [1, '#32CD32']
+          ]
+        };
+      case 'allIndustries':
+        return {
+          linearGradient: { x1: 0, x2: 0, y1: 0, y2: 1 },
+          stops: [
+            [0, '#FF4500'],
+            [1, '#FF6347']
+          ]
+        };
+      default:
+        return {
+          linearGradient: { x1: 0, x2: 0, y1: 0, y2: 1 },
+          stops: [
+            [0, '#003399'],
+            [1, '#3366AA']
+          ]
+        };
     }
   };
 
@@ -69,13 +106,7 @@ const BarChart = ({ title, data, type, days, recommendedDay, region, industry })
     series: [{
       name: '매출',
       data: data,
-      color: {
-        linearGradient: { x1: 0, x2: 0, y1: 0, y2: 1 },
-        stops: [
-          [0, '#003399'],
-          [1, '#3366AA']
-        ]
-      }
+      color: getChartColor()
     }],
     plotOptions: {
       column: {
