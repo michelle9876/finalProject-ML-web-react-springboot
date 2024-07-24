@@ -72,7 +72,7 @@ const BusinessTypeFilter = ({ onSelect, onDataFetched, singleSelect = false, ini
       <Grid container spacing={2}>
         <Grid item xs={6} className="filter-column">
           <Typography variant="subtitle2" className="filter-subtitle">대카테고리 선택</Typography>
-          <Box className="scroll-box">
+          <Box className="scroll-box" sx={{ maxHeight: '205px', overflowY: 'auto' }}>
             {categories.map(category => (
               <Button 
                 key={category.name} 
@@ -87,7 +87,7 @@ const BusinessTypeFilter = ({ onSelect, onDataFetched, singleSelect = false, ini
         </Grid>
         <Grid item xs={6} className="filter-column">
           <Typography variant="subtitle2" className="filter-subtitle">업종 선택</Typography>
-          <Box className="scroll-box">
+          <Box className="scroll-box" sx={{ maxHeight: '205px', overflowY: 'auto' }}>
             {businessTypes.map(businessType => (
               <Button 
                 key={businessType.code} 
