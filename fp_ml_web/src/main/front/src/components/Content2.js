@@ -6,7 +6,7 @@ import axios from 'axios';
 
 
 // 미리 정의된 색상 배열
-const predefinedColors = ["#FF8C66 ", "#66FF8C", "#66A3FF", "#FF66D", "#66FFE6"];
+const predefinedColors = ["#FFB399", "#99FFB3", "#99C2FF", "#FF99EE", "#99FFED"];
 
 // 목업 데이터
 const mockBusinessTypes = [
