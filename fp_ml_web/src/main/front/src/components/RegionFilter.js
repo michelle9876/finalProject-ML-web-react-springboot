@@ -3,7 +3,7 @@ import { Typography, Button, Grid, Chip, Stack, Box } from '@mui/material';
 import axios from 'axios';
 import './CommonFilter.css';
 
-const RegionFilter = ({ onSelect, onDataFetched, singleSelect = false, initialData, maxSelect = 5 }) => {
+const RegionFilter = ({ onSelect, onDataFetched, singleSelect = false, initialData, maxSelect = 5, mobileResponsive = false }) => {
   const [allData, setAllData] = useState(initialData || []);
   const [districts, setDistricts] = useState([]);
   const [selectedDistrict, setSelectedDistrict] = useState(null);
@@ -80,12 +80,12 @@ const RegionFilter = ({ onSelect, onDataFetched, singleSelect = false, initialDa
   };
 
   return (
-    <Box className="filter-container">
+    <Box className={`filter-container ${mobileResponsive ? 'mobile-responsive' : ''}`}>
       <Typography variant="h6" className="filter-title">지역선택(상권)</Typography>
-      <Grid container spacing={2} >
+      <Grid container spacing={1}>
         <Grid item xs={4} className="filter-column">
           <Typography variant="subtitle2" className="filter-subtitle">구 선택</Typography>
-          <Box className="scroll-box" sx={{ maxHeight: '205px', overflowY: 'auto' }}>
+          <Box className="scroll-box">
             {districts.map(district => (
               <Button 
                 key={district.name} 
@@ -100,7 +100,7 @@ const RegionFilter = ({ onSelect, onDataFetched, singleSelect = false, initialDa
         </Grid>
         <Grid item xs={4} className="filter-column">
           <Typography variant="subtitle2" className="filter-subtitle">동 선택</Typography>
-          <Box className="scroll-box" sx={{ maxHeight: '205px', overflowY: 'auto' }}>
+          <Box className="scroll-box">
             {neighborhoods.map(neighborhood => (
               <Button 
                 key={neighborhood.name} 
@@ -135,10 +135,10 @@ const RegionFilter = ({ onSelect, onDataFetched, singleSelect = false, initialDa
       </Grid>
       {!singleSelect && (
         <>
-          <Typography variant="subtitle2" className="filter-subtitle" style={{ marginTop: '1rem' }}>선택한 상권</Typography>
+          <Typography variant="subtitle2" className="filter-subtitle">선택한 상권</Typography>
           <Box className="selected-items-container">
             {selectedCommercialAreas.length > 0 ? (
-              <Stack direction="row" spacing={1} flexWrap="wrap" sx={{ '& .filter-chip': { margin: '3px' } }}>
+              <Stack direction="row" spacing={1} flexWrap="wrap">
                 {selectedCommercialAreas.map(area => (
                   <Chip
                     key={area.name}

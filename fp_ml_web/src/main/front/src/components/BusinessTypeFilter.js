@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Typography, Button, Grid, Chip, Stack, Box } from '@mui/material';
 import axios from 'axios';
-import './CommonFilter.css';
 
-const BusinessTypeFilter = ({ onSelect, onDataFetched, singleSelect = false, initialData, maxSelect = 5 }) => {
-  const [allData, setAllData] = useState(initialData || []);
+const BusinessTypeFilter = ({ onSelect, onDataFetched, singleSelect = false, initialData, maxSelect = 5, mobileResponsive = false}) => {  const [allData, setAllData] = useState(initialData || []);
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [businessTypes, setBusinessTypes] = useState([]);
@@ -67,81 +65,70 @@ const BusinessTypeFilter = ({ onSelect, onDataFetched, singleSelect = false, ini
     }
   };
 
-  return (
-    <>
-      <Box className={`filter-container ${isFilterOpen ? 'open' : ''}`}>
-        <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
-          <Typography variant="h6" className="filter-title">업종선택</Typography>
-          <IconButton onClick={toggleFilter} sx={{ display: { xs: 'block', sm: 'none' } }}>
-            <CloseIcon />
-          </IconButton>
-        </Box>
-        <Grid container spacing={2}>
-          <Grid item xs={6} className="filter-column">
-            <Typography variant="subtitle2" className="filter-subtitle">대카테고리 선택</Typography>
-            <Box className="scroll-box" sx={{ maxHeight: '205px', overflowY: 'auto' }}>
-              {categories.map(category => (
-                <Button
-                  key={category.name}
-                  onClick={() => handleCategorySelect(category)}
-                  variant={selectedCategory?.name === category.name ? "contained" : "outlined"}
-                  className="filter-button"
-                >
-                  {category.name}
-                </Button>
-              ))}
-            </Box>
-          </Grid>
-          <Grid item xs={6} className="filter-column">
-            <Typography variant="subtitle2" className="filter-subtitle">업종 선택</Typography>
-            <Box className="scroll-box" sx={{ maxHeight: '205px', overflowY: 'auto' }}>
-              {businessTypes.map(businessType => (
-                <Button
-                  key={businessType.code}
-                  onClick={() => handleBusinessTypeToggle(businessType)}
-                  variant={selectedBusinessTypes.some(b => b.code === businessType.code) ? "contained" : "outlined"}
-                  className="filter-button"
-                >
-                  {businessType.name}
-                </Button>
-              ))}
-            </Box>
-          </Grid>
+  const toggleFilter = () => {
+    setIsFilterOpen(!isFilterOpen);
+  };
+
+return (
+  <Box className={`filter-container ${mobileResponsive ? 'mobile-responsive' : ''}`}>
+      <Typography variant="h6" className="filter-title">업종선택</Typography>
+      <Grid container spacing={1}>
+        <Grid item xs={6} className="filter-column">
+          <Typography variant="subtitle2" className="filter-subtitle">대카테고리 선택</Typography>
+          <Box className="scroll-box">
+            {categories.map(category => (
+              <Button 
+                key={category.name} 
+                onClick={() => handleCategorySelect(category)}
+                variant={selectedCategory?.name === category.name ? "contained" : "outlined"}
+                className="filter-button"
+              >
+                {category.name}
+              </Button>
+            ))}
+          </Box>
         </Grid>
-        {!singleSelect && (
-          <>
-            <Typography variant="subtitle2" className="filter-subtitle" style={{ marginTop: '1rem' }}>선택한 업종</Typography>
-            <Box className="selected-items-container">
-              {selectedBusinessTypes.length > 0 ? (
-                <Stack direction="row" spacing={1} flexWrap="wrap" sx={{ '& .filter-chip': { margin: '3px' } }}>
-                  {selectedBusinessTypes.map(businessType => (
-                    <Chip
-                      key={businessType.code}
-                      label={businessType.name}
-                      onDelete={() => handleBusinessTypeToggle(businessType)}
-                      variant="outlined"
-                      className="filter-chip"
-                    />
-                  ))}
-                </Stack>
-              ) : (
-                <Typography variant="body2" className="selected-items-message">
-                  업종을 선택하세요
-                </Typography>
-              )}
-            </Box>
-          </>
-        )}
-      </Box>
-      <Button
-        variant="contained"
-        className="filter-toggle-button"
-        onClick={toggleFilter}
-        sx={{ display: { xs: 'block', sm: 'none' } }}
-      >
-        <FilterListIcon />
-      </Button>
-    </>
+        <Grid item xs={6} className="filter-column">
+          <Typography variant="subtitle2" className="filter-subtitle">업종 선택</Typography>
+          <Box className="scroll-box">
+            {businessTypes.map(businessType => (
+              <Button 
+                key={businessType.code} 
+                onClick={() => handleBusinessTypeToggle(businessType)}
+                variant={selectedBusinessTypes.some(b => b.code === businessType.code) ? "contained" : "outlined"}
+                className="filter-button"
+              >
+                {businessType.name}
+              </Button>
+            ))}
+          </Box>
+        </Grid>
+      </Grid>
+      {!singleSelect && (
+        <>
+          <Typography variant="subtitle2" className="filter-subtitle">선택한 업종</Typography>
+          <Box className="selected-items-container">
+            {selectedBusinessTypes.length > 0 ? (
+              <Stack direction="row" spacing={1} flexWrap="wrap">
+                {selectedBusinessTypes.map(businessType => (
+                  <Chip
+                    key={businessType.code}
+                    label={businessType.name}
+                    onDelete={() => handleBusinessTypeToggle(businessType)}
+                    variant="outlined"
+                    className="filter-chip"
+                  />
+                ))}
+              </Stack>
+            ) : (
+              <Typography variant="body2" className="selected-items-message">
+                업종을 선택하세요
+              </Typography>
+            )}
+          </Box>
+        </>
+      )}
+    </Box>
   );
 };
 
