@@ -85,7 +85,7 @@ const RegionFilter = ({ onSelect, onDataFetched, singleSelect = false, initialDa
       <Grid container spacing={2} >
         <Grid item xs={4} className="filter-column">
           <Typography variant="subtitle2" className="filter-subtitle">구 선택</Typography>
-          <Box className="scroll-box">
+          <Box className="scroll-box" sx={{ maxHeight: '205px', overflowY: 'auto' }}>
             {districts.map(district => (
               <Button 
                 key={district.name} 
@@ -100,7 +100,7 @@ const RegionFilter = ({ onSelect, onDataFetched, singleSelect = false, initialDa
         </Grid>
         <Grid item xs={4} className="filter-column">
           <Typography variant="subtitle2" className="filter-subtitle">동 선택</Typography>
-          <Box className="scroll-box">
+          <Box className="scroll-box" sx={{ maxHeight: '205px', overflowY: 'auto' }}>
             {neighborhoods.map(neighborhood => (
               <Button 
                 key={neighborhood.name} 
