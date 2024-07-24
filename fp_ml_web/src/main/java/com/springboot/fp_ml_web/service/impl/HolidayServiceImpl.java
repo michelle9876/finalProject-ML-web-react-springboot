@@ -1,9 +1,13 @@
 package com.springboot.fp_ml_web.service.impl;
 
-import com.springboot.fp_ml_web.data.entity.WeeklySalesData;
+import com.springboot.fp_ml_web.data.entity.DistrictWeeklySales;
+import com.springboot.fp_ml_web.data.entity.InduDistWeeklySales;
+import com.springboot.fp_ml_web.data.entity.IndustryWeeklySales;
 import com.springboot.fp_ml_web.data.entity.ResultHoliday;
 import com.springboot.fp_ml_web.data.entity.SelectionForHoliday;
-import com.springboot.fp_ml_web.data.repository.WeeklySalesDataRepository;
+import com.springboot.fp_ml_web.data.repository.DistrictWeeklySalesRepository;
+import com.springboot.fp_ml_web.data.repository.InduDistWeeklySalesRepository;
+import com.springboot.fp_ml_web.data.repository.IndustryWeeklySalesRepository;
 import com.springboot.fp_ml_web.data.repository.ResultHolidayRepository;
 import com.springboot.fp_ml_web.data.repository.SelectionForHolidayRepository;
 import com.springboot.fp_ml_web.dto.HolidayRecommendationResponse;
@@ -13,14 +17,19 @@ import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Service
 public class HolidayServiceImpl implements HolidayService {
 
     @Autowired
-    private WeeklySalesDataRepository weeklySalesDataRepository;
+    private DistrictWeeklySalesRepository districtWeeklySalesRepository;
+
+    @Autowired
+    private InduDistWeeklySalesRepository induDistWeeklySalesRepository;
+
+    @Autowired
+    private IndustryWeeklySalesRepository industryWeeklySalesRepository;
 
     @Autowired
     private SelectionForHolidayRepository selectionForHolidayRepository;
@@ -31,16 +40,16 @@ public class HolidayServiceImpl implements HolidayService {
     @Override
     public HolidayRecommendationResponse recommendHoliday(String serviceIndustryName, String businessDistrictName, int userId) {
         // 업종과 상권을 모두 고려한 매출 데이터
-        List<WeeklySalesData> industryAndRegionSalesDataList = weeklySalesDataRepository.findByServiceIndustryNameAndBusinessDistrictName(serviceIndustryName, businessDistrictName);
-        long[] industrySalesAmounts = calculateAverageSales(industryAndRegionSalesDataList);
+        InduDistWeeklySales industryAndRegionSalesData = induDistWeeklySalesRepository.findByServiceIndustryNameAndBusinessDistrictName(serviceIndustryName, businessDistrictName);
+        long[] industrySalesAmounts = extractSalesAmounts(industryAndRegionSalesData);
 
         // 상권만 고려한 매출 데이터
-        List<WeeklySalesData> regionSalesDataList = weeklySalesDataRepository.findByBusinessDistrictName(businessDistrictName);
-        long[] regionSalesAmounts = calculateAverageSales(regionSalesDataList);
+        DistrictWeeklySales regionSalesData = districtWeeklySalesRepository.findByBusinessDistrictName(businessDistrictName);
+        long[] regionSalesAmounts = extractSalesAmounts(regionSalesData);
 
         // 업종만 고려한 매출 데이터
-        List<WeeklySalesData> allIndustrySalesDataList = weeklySalesDataRepository.findByServiceIndustryName(serviceIndustryName);
-        long[] allIndustrySalesAmounts = calculateAverageSales(allIndustrySalesDataList);
+        IndustryWeeklySales allIndustrySalesData = industryWeeklySalesRepository.findByServiceIndustryName(serviceIndustryName);
+        long[] allIndustrySalesAmounts = extractSalesAmounts(allIndustrySalesData);
 
         // 가장 매출이 적은 요일을 찾기 (업종과 상권 모두 고려)
         String recommendedDay = findLowestSalesDay(industrySalesAmounts);
@@ -82,37 +91,55 @@ public class HolidayServiceImpl implements HolidayService {
         return response;
     }
 
-    private long[] calculateAverageSales(List<WeeklySalesData> salesDataList) {
+    private long[] extractSalesAmounts(Object salesData) {
         long[] salesAmounts = new long[7];
-        if (salesDataList.isEmpty()) {
-            return salesAmounts; // 모든 값을 0으로 반환
-        }
-
-        for (WeeklySalesData data : salesDataList) {
-            salesAmounts[0] += data.getMondaySalesAmount();
-            salesAmounts[1] += data.getTuesdaySalesAmount();
-            salesAmounts[2] += data.getWednesdaySalesAmount();
-            salesAmounts[3] += data.getThursdaySalesAmount();
-            salesAmounts[4] += data.getFridaySalesAmount();
-            salesAmounts[5] += data.getSaturdaySalesAmount();
-            salesAmounts[6] += data.getSundaySalesAmount();
-        }
-        for (int i = 0; i < salesAmounts.length; i++) {
-            salesAmounts[i] /= salesDataList.size();
+        if (salesData instanceof InduDistWeeklySales) {
+            InduDistWeeklySales data = (InduDistWeeklySales) salesData;
+            salesAmounts[0] = data.getMondaySalesAmount();
+            salesAmounts[1] = data.getTuesdaySalesAmount();
+            salesAmounts[2] = data.getWednesdaySalesAmount();
+            salesAmounts[3] = data.getThursdaySalesAmount();
+            salesAmounts[4] = data.getFridaySalesAmount();
+            salesAmounts[5] = data.getSaturdaySalesAmount();
+            salesAmounts[6] = data.getSundaySalesAmount();
+        } else if (salesData instanceof DistrictWeeklySales) {
+            DistrictWeeklySales data = (DistrictWeeklySales) salesData;
+            salesAmounts[0] = data.getMondaySalesAmount();
+            salesAmounts[1] = data.getTuesdaySalesAmount();
+            salesAmounts[2] = data.getWednesdaySalesAmount();
+            salesAmounts[3] = data.getThursdaySalesAmount();
+            salesAmounts[4] = data.getFridaySalesAmount();
+            salesAmounts[5] = data.getSaturdaySalesAmount();
+            salesAmounts[6] = data.getSundaySalesAmount();
+        } else if (salesData instanceof IndustryWeeklySales) {
+            IndustryWeeklySales data = (IndustryWeeklySales) salesData;
+            salesAmounts[0] = data.getMondaySalesAmount();
+            salesAmounts[1] = data.getTuesdaySalesAmount();
+            salesAmounts[2] = data.getWednesdaySalesAmount();
+            salesAmounts[3] = data.getThursdaySalesAmount();
+            salesAmounts[4] = data.getFridaySalesAmount();
+            salesAmounts[5] = data.getSaturdaySalesAmount();
+            salesAmounts[6] = data.getSundaySalesAmount();
         }
         return salesAmounts;
     }
 
     private String findLowestSalesDay(long[] salesAmounts) {
-        long minSalesAmount = salesAmounts[0];
-        int recommendedDayIndex = 0;
+        int minIndex = 0;
         for (int i = 1; i < salesAmounts.length; i++) {
-            if (salesAmounts[i] < minSalesAmount) {
-                minSalesAmount = salesAmounts[i];
-                recommendedDayIndex = i;
+            if (salesAmounts[i] < salesAmounts[minIndex]) {
+                minIndex = i;
             }
         }
-        String[] dayNames = {"월요일", "화요일", "수요일", "목요일", "금요일", "토요일", "일요일"};
-        return dayNames[recommendedDayIndex];
+        switch (minIndex) {
+            case 0: return "월요일";
+            case 1: return "화요일";
+            case 2: return "수요일";
+            case 3: return "목요일";
+            case 4: return "금요일";
+            case 5: return "토요일";
+            case 6: return "일요일";
+            default: return "월요일";
+        }
     }
 }
