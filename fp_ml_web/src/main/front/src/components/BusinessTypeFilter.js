@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Typography, Button, Grid, Chip, Stack, Box } from '@mui/material';
 import axios from 'axios';
-import './CommonFilter.css';
 
-const BusinessTypeFilter = ({ onSelect, onDataFetched, singleSelect = false, initialData, maxSelect = 5 }) => {
-  const [allData, setAllData] = useState(initialData || []);
+const BusinessTypeFilter = ({ onSelect, onDataFetched, singleSelect = false, initialData, maxSelect = 5, mobileResponsive = false}) => {  const [allData, setAllData] = useState(initialData || []);
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [businessTypes, setBusinessTypes] = useState([]);
   const [selectedBusinessTypes, setSelectedBusinessTypes] = useState([]);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   useEffect(() => {
     if (!initialData) {
@@ -66,10 +65,14 @@ const BusinessTypeFilter = ({ onSelect, onDataFetched, singleSelect = false, ini
     }
   };
 
-  return (
-    <Box className="filter-container">
+  const toggleFilter = () => {
+    setIsFilterOpen(!isFilterOpen);
+  };
+
+return (
+  <Box className={`filter-container ${mobileResponsive ? 'mobile-responsive' : ''}`}>
       <Typography variant="h6" className="filter-title">업종선택</Typography>
-      <Grid container spacing={2}>
+      <Grid container spacing={1}>
         <Grid item xs={6} className="filter-column">
           <Typography variant="subtitle2" className="filter-subtitle">대카테고리 선택</Typography>
           <Box className="scroll-box">
@@ -103,10 +106,10 @@ const BusinessTypeFilter = ({ onSelect, onDataFetched, singleSelect = false, ini
       </Grid>
       {!singleSelect && (
         <>
-          <Typography variant="subtitle2" className="filter-subtitle" style={{ marginTop: '1rem' }}>선택한 업종</Typography>
+          <Typography variant="subtitle2" className="filter-subtitle">선택한 업종</Typography>
           <Box className="selected-items-container">
             {selectedBusinessTypes.length > 0 ? (
-              <Stack direction="row" spacing={1} flexWrap="wrap" sx={{ '& .filter-chip': { margin: '3px' } }}>
+              <Stack direction="row" spacing={1} flexWrap="wrap">
                 {selectedBusinessTypes.map(businessType => (
                   <Chip
                     key={businessType.code}

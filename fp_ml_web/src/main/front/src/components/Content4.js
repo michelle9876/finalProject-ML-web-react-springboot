@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Container, Paper, Typography, Grid, TextField, Button, Box } from '@mui/material';
-import Highcharts from 'highcharts';
-import HighchartsReact from 'highcharts-react-official';
 import axios from 'axios';
 import BusinessTypeFilter from './BusinessTypeFilter';
 import RegionFilter from './RegionFilter';
+import BarChart from './BarChart';
 
 const Content4 = () => {
   const [industry, setIndustry] = useState('');
@@ -184,21 +183,36 @@ const Content4 = () => {
               {region}의 {industry}은
             </Typography>
             <Box sx={{ mt: 3 }}>
-              <HighchartsReact
-                highcharts={Highcharts}
-                options={getChartOptions(`${industry} - ${region} 요일별 매출`, chartData.industry, 'industry')}
+              <BarChart
+                title={`${industry} - ${region} 요일별 매출`}
+                data={chartData.industry}
+                type="industry"
+                days={days}
+                recommendedDay={recommendedDay}
+                region={region}
+                industry={industry}
               />
             </Box>
             <Box sx={{ mt: 3 }}>
-              <HighchartsReact
-                highcharts={Highcharts}
-                options={getChartOptions(`${industry} - 전체 상권 요일별 매출`, chartData.allRegions, 'allRegions')}
+              <BarChart
+                title={`${industry} - 전체 상권 요일별 매출`}
+                data={chartData.allRegions}
+                type="allRegions"
+                days={days}
+                recommendedDay={recommendedDay}
+                region={region}
+                industry={industry}
               />
             </Box>
             <Box sx={{ mt: 3 }}>
-              <HighchartsReact
-                highcharts={Highcharts}
-                options={getChartOptions(`${region} - 전체 업종 요일별 매출`, chartData.allIndustries, 'allIndustries')}
+              <BarChart
+                title={`${region} - 전체 업종 요일별 매출`}
+                data={chartData.allIndustries}
+                type="allIndustries"
+                days={days}
+                recommendedDay={recommendedDay}
+                region={region}
+                industry={industry}
               />
             </Box>
           </>
