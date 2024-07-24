@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Paper, Typography, Grid, TextField, Button, Snackbar } from '@mui/material';
+import { Container, Paper, Typography, Grid, TextField, Button, Snackbar, Box } from '@mui/material';
 import MuiAlert from '@mui/material/Alert';
 import RegionFilter from './RegionFilter';
 import BusinessTypeFilter from './BusinessTypeFilter';
@@ -87,22 +87,28 @@ const Content1 = () => {
     setOpenSnackbar(false);
   };
 
-
-
   return (
-    <Container maxWidth="lg" sx={{ mt: 4 }}>
-      <Paper sx={{ p: 3 }}>
+    <Container 
+      maxWidth="md" // "lg"에서 "md"로 변경
+      sx={{ 
+        mt: 4,
+        width: '100%',
+        maxWidth: '900px', // 원하는 최대 너비로 설정
+      }}
+    >
+      <Paper sx={{ p: { xs: 2, sm: 3 } }}> {/* 반응형 패딩 */}
         <Typography variant="h4" gutterBottom>AI맞춤추천</Typography>
         <Typography variant="subtitle1" gutterBottom>
           {nickname ? `${nickname}님!` : '안녕하세요!'} 원하는 조건을 입력해주세요
         </Typography>
 
-        <Grid container spacing={3}>
+        <Grid container spacing={1}>
           <Grid item xs={12} md={6}>
             <RegionFilter 
               onSelect={handleRegionSelect} 
               onDataFetched={handleRegionDataFetched}
               initialData={regionData}
+              mobileResponsive={false}
             />
           </Grid>
           <Grid item xs={12} md={6}>
@@ -112,6 +118,7 @@ const Content1 = () => {
               initialData={businessTypeData}
               singleSelect={false} 
               maxSelect={500} 
+              mobileResponsive={false}
             />
           </Grid>
           <Grid item xs={12} md={6}>
