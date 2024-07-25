@@ -60,86 +60,91 @@ const BarChart = ({ title, data, type, days, recommendedDay, region, industry })
 
   const options = {
     chart: {
-      type: 'column',
-      style: {
-        fontFamily: 'Arial, sans-serif'
-      }
+        type: 'column',
+        style: {
+            fontFamily: 'Arial, sans-serif'
+        }
     },
     title: {
-      text: title,
-      style: {
-        fontSize: '18px',
-        fontWeight: 'bold'
-      }
+        text: title,
+        align: 'left',
+        style: {
+            fontSize: '18px',
+            fontWeight: 'bold'
+        }
     },
     subtitle: {
-      text: generateAnalysisText(),
-      style: {
-        fontSize: '14px',
-        color: '#666'
-      }
+        text: generateAnalysisText(),
+        align: 'left',
+        style: {
+            fontSize: '14px',
+            color: '#666'
+        }
     },
     xAxis: {
-      categories: days,
-      labels: {
-        style: {
-          fontSize: '12px'
+        categories: days,
+        crosshair: true,
+        labels: {
+            style: {
+                fontSize: '12px'
+            }
         }
-      }
     },
     yAxis: {
-      title: {
-        text: '매출 (원)',
-        style: {
-          fontSize: '14px'
-        }
-      },
-      labels: {
-        formatter: function() {
-          return this.value.toLocaleString();
+        min: 0,
+        title: {
+            text: '매출 (만 원)',
+            style: {
+                fontSize: '14px'
+            }
         },
-        style: {
-          fontSize: '12px'
+        labels: {
+            formatter: function() {
+                return (this.value / 10000).toLocaleString();
+            },
+            style: {
+                fontSize: '12px'
+            }
         }
-      }
-    },
-    series: [{
-      name: '매출',
-      data: data,
-      color: getChartColor()
-    }],
-    plotOptions: {
-      column: {
-        dataLabels: {
-          enabled: true,
-          formatter: function() {
-            return this.y.toLocaleString();
-          },
-          style: {
-            fontSize: '11px',
-            fontWeight: 'bold',
-            color: '#000000'
-          }
-        },
-        borderRadius: 5
-      }
-    },
-    legend: {
-      enabled: false
-    },
-    credits: {
-      enabled: false
     },
     tooltip: {
-      formatter: function() {
-        return `<b>${this.x}요일</b><br/>매출: ${this.y.toLocaleString()}원`;
-      }
+        formatter: function() {
+            return `<b>${this.x}요일</b><br/>${this.series.name}: ${this.y.toLocaleString()} 원`;
+        }
+    },
+    // plotOptions: {
+    //     column: {
+    //         pointPadding: 0.2,
+    //         borderWidth: 0,
+    //         dataLabels: {
+    //             enabled: true,
+    //             formatter: function() {
+    //                 return this.y.toLocaleString();
+    //             },
+    //             style: {
+    //                 fontSize: '11px',
+    //                 fontWeight: 'bold',
+    //                 color: '#000000'
+    //             }
+    //         }
+    //     }
+    // },
+    series: [{
+        name: '매출',
+        data: data,
+        color: getChartColor()
+    }],
+    legend: {
+        enabled: false
+    },
+    credits: {
+        enabled: false
     }
-  };
+};
 
-  return (
+return (
     <HighchartsReact highcharts={Highcharts} options={options} />
-  );
+);
 };
 
 export default BarChart;
