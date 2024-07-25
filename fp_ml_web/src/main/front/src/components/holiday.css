@@ -1,0 +1,50 @@
+@media (min-width: 640px) {
+    .container {
+      max-width: 640px;
+    }
+  }
+  
+  @media (min-width: 768px) {
+    .container {
+      max-width: 768px;
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .container {
+      max-width: 852px;
+    }
+  }
+  
+  .header {
+    width: 100%;
+    background-color: #f7f9fc;
+    border-radius: 8px 8px 0 0;
+    padding: 16px 24px;
+  }
+  
+  .chart-container {
+    background-color: #f7f9fc;
+    border-radius: 8px 0 0 8px;
+    overflow: hidden;
+    padding: 24px;
+  }
+  
+  .chart-placeholder {
+    padding: 88px 0;
+    text-align: center;
+  }
+  
+  .timeline-dot {
+    width: 33px;
+    height: 33px;
+    background-color: #fff;
+    border-radius: 204px;
+    overflow: hidden;
+  }
+  
+  .timeline-line {
+    width: 1px;
+    flex-grow: 1;
+    border-right: 2px solid #e2e6ee;
+  }
