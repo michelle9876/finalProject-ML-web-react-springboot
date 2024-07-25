@@ -5,7 +5,7 @@ import {
   AppBar, Toolbar, Typography, Button, Container, Grid, Paper,
   ThemeProvider, createTheme, CssBaseline, BottomNavigation, BottomNavigationAction, Box, useMediaQuery
 } from '@mui/material';
-import { Home as HomeIcon, Recommend, Map, CheckCircle, BeachAccess } from '@mui/icons-material';
+import { Home as HomeIcon, Recommend, Map, CheckCircle, BeachAccess, PersonSearch } from '@mui/icons-material';
 import Content1 from './components/Content1';
 import Content2 from './components/Content2';
 import Content3 from './components/Content3';
@@ -27,27 +27,6 @@ const theme = createTheme({
   },
 });
 
-// // 네비게이션 컴포넌트
-// const Navigation = () => {
-//   const navigate = useNavigate();
-
-//   return (
-//     <AppBar position="static" color="primary">
-//       <Toolbar>
-//         <Typography variant="h6" component="div" sx={{ flexGrow: 1 ,cursor: 'pointer',}} onClick={() => navigate('/')}>
-//           🕵️ 사장님 구해요
-//         </Typography>
-//         <Button color="inherit" onClick={() => navigate('/')}>홈</Button>
-//         <Button color="inherit" onClick={() => navigate('/content1')}>AI 맞춤추천</Button>
-//         <Button color="inherit" onClick={() => navigate('/content2')}>랭킹 in 지도</Button>
-//         <Button color="inherit" onClick={() => navigate('/content3')}>확인하기</Button>
-//         <Button color="inherit" onClick={() => navigate('/content4')}>휴일추천</Button>
-//       </Toolbar>
-//     </AppBar>
-//   );
-// };
-
-// 상단 네비게이션 바 컴포넌트 (모바일에서도 제목을 표시하기 위해 분리)
 const TopNav = ({ isMobile }) => {
   const navigate = useNavigate();
 
@@ -55,15 +34,15 @@ const TopNav = ({ isMobile }) => {
     <AppBar position="static" color="primary">
       <Toolbar>
         <Typography variant="h6" component="div" sx={{ flexGrow: 1, cursor: 'pointer' }} onClick={() => navigate('/')}>
-          🕵️ 사장님 구해요
+          <PersonSearch sx={{ mr: 1 }} />사장님 구해요
         </Typography>
         {!isMobile && (
           <>
-            <Button color="inherit" onClick={() => navigate('/')}>{<HomeIcon />} 홈</Button>
-            <Button color="inherit" onClick={() => navigate('/content1')}>{<Recommend />} AI 맞춤추천</Button>
-            <Button color="inherit" onClick={() => navigate('/content2')}>{<Map />} 랭킹 in 지도</Button>
-            <Button color="inherit" onClick={() => navigate('/content3')}>{<CheckCircle />}확인하기</Button>
-            <Button color="inherit" onClick={() => navigate('/content4')}>{<BeachAccess />} 휴일추천</Button>
+            <Button color="inherit" onClick={() => navigate('/')}>{<HomeIcon sx={{ mr: 1 }} />}홈</Button>
+            <Button color="inherit" onClick={() => navigate('/content1')}>{<Recommend sx={{ mr: 1 }} />}AI 맞춤 추천</Button>
+            <Button color="inherit" onClick={() => navigate('/content2')}>{<Map sx={{ mr: 1 }} />}랭킹 in 지도</Button>
+            <Button color="inherit" onClick={() => navigate('/content3')}>{<CheckCircle sx={{ mr: 1 }} />}확인하기</Button>
+            <Button color="inherit" onClick={() => navigate('/content4')}>{<BeachAccess sx={{ mr: 1 }} />}휴일추천</Button>
           </>
         )}
       </Toolbar>
@@ -87,7 +66,7 @@ const BottomNav = () => {
       showLabels
       sx={{ position: 'fixed', bottom: 0, width: '100%', zIndex: 1201 }}
     >
-      <BottomNavigationAction label="AI 맞춤추천" value="/content1" icon={<Recommend />} />
+      <BottomNavigationAction label="AI 맞춤 추천" value="/content1" icon={<Recommend />} />
       <BottomNavigationAction label="랭킹 in 지도" value="/content2" icon={<Map />} />
       <BottomNavigationAction label="홈" value="/" icon={<HomeIcon />} />
       <BottomNavigationAction label="확인하기" value="/content3" icon={<CheckCircle />} />
@@ -103,7 +82,7 @@ const Home = () => {
     navigate(path);
   };
   const contents = [
-    { id: 1, title: ['어디에 어떤 업종?', 'AI 맞춤추천'], path: '/content1' },
+    { id: 1, title: ['어디에 어떤 업종?', 'AI 맞춤 추천'], path: '/content1' },
     { id: 2, title: ['지도로 한눈에 확인', '랭킹 IN 지도'], path: '/content2' },
     { id: 3, title: ['내 생각이 맞을까?', '확인하기'], path: '/content3' },
     { id: 4, title: ['휴일 추천해요', '휴일 추천'], path: '/content4' },
