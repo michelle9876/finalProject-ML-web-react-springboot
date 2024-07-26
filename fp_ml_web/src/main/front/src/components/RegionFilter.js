@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Typography, Button, Grid, Chip, Stack, Box } from '@mui/material';
+import { Typography, Button, Grid, Chip, Stack, Box, CircularProgress } from '@mui/material';
 import axios from 'axios';
 import './CommonFilter.css';
 
@@ -11,6 +11,8 @@ const RegionFilter = ({ onSelect, onDataFetched, singleSelect = false, initialDa
   const [selectedNeighborhood, setSelectedNeighborhood] = useState(null);
   const [commercialAreas, setCommercialAreas] = useState([]);
   const [selectedCommercialAreas, setSelectedCommercialAreas] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     if (!initialData) {
@@ -21,6 +23,8 @@ const RegionFilter = ({ onSelect, onDataFetched, singleSelect = false, initialDa
   }, [initialData]);
 
   const fetchData = async () => {
+    setLoading(true);
+    setError(null);
     try {
       const response = await axios.get('/api/districts');
       setAllData(response.data);
@@ -28,6 +32,9 @@ const RegionFilter = ({ onSelect, onDataFetched, singleSelect = false, initialDa
       processData(response.data);
     } catch (error) {
       console.error('Error fetching region data:', error);
+      setError('상권 데이터를 불러오는 중 오류가 발생했습니다.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -79,59 +86,79 @@ const RegionFilter = ({ onSelect, onDataFetched, singleSelect = false, initialDa
     }
   };
 
+  if (error) {
+    return <Typography color="error">{error}</Typography>;
+  }
+
   return (
     <Box className={`filter-container ${mobileResponsive ? 'mobile-responsive' : ''}`}>
       <Typography variant="h6" className="filter-title">지역선택(상권)</Typography>
-      <Grid container spacing={1}>
-        <Grid item xs={4} className="filter-column">
-          <Typography variant="subtitle2" className="filter-subtitle">구 선택</Typography>
-          <Box className="scroll-box">
-            {districts.map(district => (
-              <Button 
-                key={district.name} 
-                onClick={() => handleDistrictSelect(district)}
-                variant={selectedDistrict?.name === district.name ? "contained" : "outlined"}
-                className="filter-button"
-              >
-                {district.name}
-              </Button>
-            ))}
+      <Grid container spacing={1} style={{ position: 'relative', minHeight: '200px' }}>
+        {loading ? (
+          <Box sx={{ 
+            display: 'flex', 
+            justifyContent: 'center', 
+            alignItems: 'center', 
+            position: 'absolute', 
+            width: '100%', 
+            height: '100%', 
+            zIndex: 1 
+          }}>
+            <CircularProgress />
           </Box>
-        </Grid>
-        <Grid item xs={4} className="filter-column">
-          <Typography variant="subtitle2" className="filter-subtitle">동 선택</Typography>
-          <Box className="scroll-box">
-            {neighborhoods.map(neighborhood => (
-              <Button 
-                key={neighborhood.name} 
-                onClick={() => handleNeighborhoodSelect(neighborhood)}
-                variant={selectedNeighborhood?.name === neighborhood.name ? "contained" : "outlined"}
-                className="filter-button"
-              >
-                {neighborhood.name}
-              </Button>
-            ))}
-          </Box>
-        </Grid>
-        <Grid item xs={4} className="filter-column">
-          <Typography variant="subtitle2" className="filter-subtitle">상권 선택</Typography>
-          <Box className="scroll-box">
-            {commercialAreas.length > 0 ? (
-              commercialAreas.map(area => (
-                <Button 
-                  key={area.name} 
-                  onClick={() => handleCommercialAreaToggle(area)}
-                  variant={selectedCommercialAreas.some(a => a.name === area.name) ? "contained" : "outlined"}
-                  className="filter-button"
-                >
-                  {area.name}
-                </Button>
-              ))
-            ) : (
-              <Typography variant="body2">동을 선택해주세요</Typography>
-            )}
-          </Box>
-        </Grid>
+        ) : (
+          <>
+            <Grid item xs={4} className="filter-column">
+              <Typography variant="subtitle2" className="filter-subtitle">구 선택</Typography>
+              <Box className="scroll-box">
+                {districts.map(district => (
+                  <Button 
+                    key={district.name} 
+                    onClick={() => handleDistrictSelect(district)}
+                    variant={selectedDistrict?.name === district.name ? "contained" : "outlined"}
+                    className="filter-button"
+                  >
+                    {district.name}
+                  </Button>
+                ))}
+              </Box>
+            </Grid>
+            <Grid item xs={4} className="filter-column">
+              <Typography variant="subtitle2" className="filter-subtitle">동 선택</Typography>
+              <Box className="scroll-box">
+                {neighborhoods.map(neighborhood => (
+                  <Button 
+                    key={neighborhood.name} 
+                    onClick={() => handleNeighborhoodSelect(neighborhood)}
+                    variant={selectedNeighborhood?.name === neighborhood.name ? "contained" : "outlined"}
+                    className="filter-button"
+                  >
+                    {neighborhood.name}
+                  </Button>
+                ))}
+              </Box>
+            </Grid>
+            <Grid item xs={4} className="filter-column">
+              <Typography variant="subtitle2" className="filter-subtitle">상권 선택</Typography>
+              <Box className="scroll-box">
+                {commercialAreas.length > 0 ? (
+                  commercialAreas.map(area => (
+                    <Button 
+                      key={area.name} 
+                      onClick={() => handleCommercialAreaToggle(area)}
+                      variant={selectedCommercialAreas.some(a => a.name === area.name) ? "contained" : "outlined"}
+                      className="filter-button"
+                    >
+                      {area.name}
+                    </Button>
+                  ))
+                ) : (
+                  <Typography variant="body2">동을 선택해주세요</Typography>
+                )}
+              </Box>
+            </Grid>
+            </>
+        )}
       </Grid>
       {!singleSelect && (
         <>
