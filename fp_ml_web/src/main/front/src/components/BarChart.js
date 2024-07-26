@@ -2,24 +2,24 @@ import React from 'react';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 
-const BarChart = ({ title, data, type, days, recommendedDay, region, industry }) => {
-    const generateAnalysisText = () => {
-    const recommendedDayIndex = days.indexOf(recommendedDay.slice(0, 1));
-    const recommendedDaySales = data[recommendedDayIndex];
-    const sortedData = [...data].sort((a, b) => a - b);
-    const rank = sortedData.indexOf(recommendedDaySales) + 1;
-
-    switch (type) {
-      case 'industry':
-        return `${recommendedDay}은 ${region}의 ${industry} 기준 ${rank}번째로 매출이 적으며`;
-      case 'allRegions':
-        return `${recommendedDay}은 전체 ${industry} 기준 ${rank}번째로 매출이 적은날이에요`;
-      case 'allIndustries':
-        return `${recommendedDay}은 ${region}의 전체 업종 기준 ${rank}번째로 매출이 적은날이에요`;
-      default:
-        return '';
-    }
-  };
+const BarChart = ({ data, type, days }) => {
+  const isDataEmpty = data.every(value => value === 0);
+  if (isDataEmpty) {
+    return (
+      <div style={{
+        height: '300px',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#f7f9fc',
+        borderRadius: '8px',
+        fontSize: '16px',
+        color: '#79819a'
+      }}>
+        데이터가 없습니다
+      </div>
+    );
+  }
 
   const getChartColor = () => {
     switch (type) {
@@ -63,24 +63,20 @@ const BarChart = ({ title, data, type, days, recommendedDay, region, industry })
         type: 'column',
         style: {
             fontFamily: 'Arial, sans-serif'
-        }
+        },
+        height: '300px'
     },
     title: {
-        text: title,
-        align: 'left',
-        style: {
-            fontSize: '18px',
-            fontWeight: 'bold'
-        }
+      text: null // 타이틀 제거
     },
-    subtitle: {
-        text: generateAnalysisText(),
-        align: 'left',
-        style: {
-            fontSize: '14px',
-            color: '#666'
-        }
-    },
+    // subtitle: {
+    //     text: '', // 분석 텍스트 제거
+    //     align: 'left',
+    //     style: {
+    //       fontSize: '14px',
+    //       color: '#666'
+    //     }
+    // },
     xAxis: {
         categories: days,
         crosshair: true,

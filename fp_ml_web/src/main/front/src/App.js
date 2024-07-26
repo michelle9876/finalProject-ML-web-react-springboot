@@ -10,7 +10,6 @@ import Content1 from './components/Content1';
 import Content2 from './components/Content2';
 import Content3 from './components/Content3';
 import Content4 from './components/Content4';
-import Container1 from './components/Container';
 import MapComponent from './components/MapComponent';
 import NicknameInputDialog from './components/NicknameInputDialog';
 import './index.css';
@@ -86,7 +85,6 @@ const Home = () => {
     { id: 2, title: ['지도로 한눈에 확인', '랭킹 IN 지도'], path: '/content2' },
     { id: 3, title: ['내 생각이 맞을까?', '확인하기'], path: '/content3' },
     { id: 4, title: ['휴일 추천해요', '휴일 추천'], path: '/content4' },
-    { id: 5, title: ['테스트', '테스트'], path: '/container' },
   ];
 
   return (
@@ -168,7 +166,6 @@ const App = () => {
             <Route path="/content2" element={<Content2 />} />
             <Route path="/content3" element={<Content3 />} />
             <Route path="/content4" element={<Content4 />} />
-            <Route path="/container" element={<Container1 />} />
           </Routes>
         </Box>
         {isMobile && <BottomNav />}
