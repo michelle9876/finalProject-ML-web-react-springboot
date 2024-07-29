@@ -1,0 +1,14 @@
+.map-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 300px; /* 필요에 따라 높이 조정 */
+    background-color: #f7f7ff; /* 선택 사항: 배경색 추가 */
+  }
+  
+  .map-image {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain; /* 이미지 비율 유지 */
+  }
+  
