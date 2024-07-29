@@ -7,26 +7,46 @@ import BarChart from './BarChart';
 import './holiday.css';
 import CombinedChart from './CombinedChart';
 
-const Header = ({ industry, region, recommendedDay }) => (
-  <div className="header w-full sm:w-[768px] lg:w-[768px]">
-    <div className="flex flex-col items-start gap-2">
-      <div className="flex items-center gap-1">
-        <div className="text-xs lg:text-xs text-[#47516b]">{industry}</div>
+const Header = ({ industry, region, recommendedDay }) => {
+  // 요일에 따른 이미지 파일 이름을 매핑하는 객체
+  const dayImageMap = {
+    '월': 'monday.png',
+    '화': 'tuesday.png',
+    '수': 'wednesday.png',
+    '목': 'thursday.png',
+    '금': 'friday.png',
+    '토': 'saturday.png',
+    '일': 'sunday.png'
+  };
+
+  // 추천 요일의 첫 글자를 사용하여 해당하는 이미지 파일 이름을 가져옵니다
+  const dayImageFile = dayImageMap[recommendedDay[0]] || 'monday.png';
+
+  return (
+    <div className="header w-full sm:w-[768px] lg:w-[768px]">
+      <div className="flex flex-col items-start gap-2">
         <div className="flex items-center gap-1">
-          <img className="w-3 h-3 lg:w-4 lg:h-4" src="basic/location304_12566.png" alt="location" />
-          <div className="text-xs lg:text-xs text-[#79819a]">{region}</div>
+          <div className="text-xs lg:text-xs text-[#47516b]">{industry}</div>
+          <div className="flex items-center gap-1">
+            <img className="w-3 h-3 lg:w-4 lg:h-4" src="basic/location304_12566.png" alt="location" />
+            <div className="text-xs lg:text-xs text-[#79819a]">{region}</div>
+          </div>
         </div>
-      </div>
-      <div className="flex gap-4">
-        <img className="w-12 h-12 lg:w-12 lg:h-12" src="image 1304_12576.png" alt="icon" />
-        <div className="flex flex-col gap-1">
-          <div className="text-sm lg:text-sm text-[#79819a]">{`${region} ${industry} 추천휴일`}</div>
-          <div className="text-lg lg:text-lg font-bold text-[#2e2e48]">{recommendedDay}</div>
+        <div className="flex gap-1">
+          <img 
+            className="w-16 h-16 lg:w-16 lg:h-16" 
+            src={`/img/week/${dayImageFile}`} 
+            alt={`${recommendedDay} icon`} 
+          />
+          <div className="flex flex-col gap-1">
+            <div className="text-sm lg:text-sm text-[#79819a] pt-2">{`${region} ${industry} 추천휴일`}</div>
+            <div className="text-lg lg:text-lg font-bold text-[#2e2e48]">{recommendedDay}</div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 const ChartSection = ({ title, chartComponent, analysisText }) => (
   <div className="flex flex-col sm:flex-row gap-4 sm:gap-8 pt-5">

@@ -4,24 +4,38 @@ import com.springboot.fp_ml_web.data.dto.FilterSelectionDto;
 import com.springboot.fp_ml_web.data.dto.PredictionResponseDto;
 import com.springboot.fp_ml_web.service.PredictionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/predictions")
+@CrossOrigin(origins = "http://localhost:3000") // React 앱의 URL
 public class PredictionController {
 
     @Autowired
     private PredictionService predictionService;
 
     @PostMapping
-    public ResponseEntity<List<PredictionResponseDto>> getPredictions(@RequestBody FilterSelectionDto filterDto) {
-        List<PredictionResponseDto> predictions = predictionService.getPredictionsDto(filterDto);
-        return ResponseEntity.ok(predictions);
+    public ResponseEntity<Map<String, Object>> getPredictions(
+            @RequestBody FilterSelectionDto filterDto,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        Page<PredictionResponseDto> predictions = predictionService.getPredictionsDto(filterDto, page, size);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("content", predictions.getContent());
+        response.put("currentPage", predictions.getNumber());
+        response.put("totalItems", predictions.getTotalElements());
+        response.put("totalPages", predictions.getTotalPages());
+        response.put("size", predictions.getSize());
+        response.put("first", predictions.isFirst());
+        response.put("last", predictions.isLast());
+        response.put("empty", predictions.isEmpty());
+
+        return ResponseEntity.ok(response);
     }
 }
