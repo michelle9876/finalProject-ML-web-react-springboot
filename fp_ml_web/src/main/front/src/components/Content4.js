@@ -1,9 +1,70 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Container, Paper, Typography, Grid, TextField, Button, Box } from '@mui/material';
+import { Container, Paper, Typography, Grid, TextField, Button, Box, Alert, AlertTitle, CircularProgress  } from '@mui/material';
 import axios from 'axios';
 import BusinessTypeFilter from './BusinessTypeFilter';
 import RegionFilter from './RegionFilter';
 import BarChart from './BarChart';
+import './holiday.css';
+import CombinedChart from './CombinedChart';
+
+const Header = ({ industry, region, recommendedDay }) => {
+  // 요일에 따른 이미지 파일 이름을 매핑하는 객체
+  const dayImageMap = {
+    '월': 'monday.png',
+    '화': 'tuesday.png',
+    '수': 'wednesday.png',
+    '목': 'thursday.png',
+    '금': 'friday.png',
+    '토': 'saturday.png',
+    '일': 'sunday.png'
+  };
+
+  // 추천 요일의 첫 글자를 사용하여 해당하는 이미지 파일 이름을 가져옵니다
+  const dayImageFile = dayImageMap[recommendedDay[0]] || 'monday.png';
+
+  return (
+    <div className="header w-full sm:w-[768px] lg:w-[768px]">
+      <div className="flex flex-col items-start gap-2">
+        <div className="flex items-center gap-1">
+          <div className="text-xs lg:text-xs text-[#47516b]">{industry}</div>
+          <div className="flex items-center gap-1">
+            <img className="w-3 h-3 lg:w-4 lg:h-4" src="basic/location304_12566.png" alt="location" />
+            <div className="text-xs lg:text-xs text-[#79819a]">{region}</div>
+          </div>
+        </div>
+        <div className="flex gap-1">
+          <img 
+            className="w-16 h-16 lg:w-16 lg:h-16" 
+            src={`/img/week/${dayImageFile}`} 
+            alt={`${recommendedDay} icon`} 
+          />
+          <div className="flex flex-col gap-1">
+            <div className="text-sm lg:text-sm text-[#79819a] pt-2">{`${region} ${industry} 추천휴일`}</div>
+            <div className="text-lg lg:text-lg font-bold text-[#2e2e48]">{recommendedDay}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const ChartSection = ({ title, chartComponent, analysisText }) => (
+  <div className="flex flex-col sm:flex-row gap-4 sm:gap-8 pt-5">
+    <div className="flex sm:flex-col items-center">
+      <div className="timeline-dot hidden sm:block">
+        <img className="m-1.5" width="20" height="20" src="misc/dot_04_l304_12204.png" alt="dot" />
+      </div>
+      <div className="timeline-line hidden sm:block"></div>
+    </div>
+    <div className="w-full sm:w-[705px] flex flex-col items-start justify-start gap-[6px] pt-0 px-0 pb-[49px]">
+      <div className="text-lg sm:text-xl font-medium text-[#2e2e48]">{title}</div>
+      <div className="text-sm text-[#79819a]">{analysisText}</div>
+      <div className="chart-container w-full" style={{ minHeight: '300px' }}>
+        {chartComponent}
+      </div>
+    </div>
+  </div>
+);
 
 const Content4 = () => {
   const [industry, setIndustry] = useState('');
@@ -19,6 +80,7 @@ const Content4 = () => {
   const [userId, setUserId] = useState(null);
   const [businessTypeData, setBusinessTypeData] = useState(null);
   const [regionData, setRegionData] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const days = ['월', '화', '수', '목', '금', '토', '일'];
 
@@ -34,6 +96,7 @@ const Content4 = () => {
   }, [industry, region, userId]);
 
   const fetchRecommendationData = async () => {
+    setIsLoading(true);
     try {
       const response = await axios.post('/api/holiday-recommendation', null, {
         params: {
@@ -47,6 +110,8 @@ const Content4 = () => {
       setChartData(data.chartData);
     } catch (error) {
       console.error('Error fetching recommendation data:', error);
+    }finally {
+      setIsLoading(false); // 데이터 요청 완료 시 로딩 종료
     }
   };
 
@@ -166,57 +231,79 @@ const Content4 = () => {
           휴일 추천받기
         </Button>
 
-        {recommendedDay && (
-          <Box sx={{ mt: 3, p: 2, bgcolor: 'background.paper', borderRadius: 1 }}>
-            <Typography variant="h6" gutterBottom>
-              추천 휴일: {recommendedDay}
-            </Typography>
-            <Typography variant="body1">
-              {region}의 {industry} 업종에서 가장 적절한 휴무일은 {recommendedDay}입니다.
-            </Typography>
+        {isLoading ? (
+          <Box 
+            sx={{ 
+              display: 'flex', 
+              flexDirection: 'column', 
+              alignItems: 'center', 
+              justifyContent: 'center', 
+              height: '200px', 
+              mt: 4 
+            }}
+          >
+            <CircularProgress />
+            <Typography sx={{ mt: 2 }}>분석 중입니다</Typography>
           </Box>
-        )}
 
-        {chartData.industry.length > 0 && (
-          <>
-            <Typography variant="h5" sx={{ mt: 4, mb: 2 }}>
-              {region}의 {industry}은
-            </Typography>
-            <Box sx={{ mt: 3 }}>
-              <BarChart
-                title={`${industry} - ${region} 요일별 매출`}
-                data={chartData.industry}
-                type="industry"
-                days={days}
-                recommendedDay={recommendedDay}
-                region={region}
-                industry={industry}
-              />
-            </Box>
-            <Box sx={{ mt: 3 }}>
-              <BarChart
-                title={`${industry} - 전체 상권 요일별 매출`}
-                data={chartData.allRegions}
-                type="allRegions"
-                days={days}
-                recommendedDay={recommendedDay}
-                region={region}
-                industry={industry}
-              />
-            </Box>
-            <Box sx={{ mt: 3 }}>
-              <BarChart
-                title={`${region} - 전체 업종 요일별 매출`}
-                data={chartData.allIndustries}
-                type="allIndustries"
-                days={days}
-                recommendedDay={recommendedDay}
-                region={region}
-                industry={industry}
-              />
-            </Box>
-          </>
-        )}
+        ) : recommendedDay ? (
+          <div className="container mx-auto px-4 lg:px-8 py-8 lg:py-16 bg-white max-w-[852px]">
+            <Header industry={industry} region={region} recommendedDay={recommendedDay} />
+            
+            {chartData.industry.length > 0 && (
+              <>
+                <ChartSection 
+                  title={`${region} ${industry} 요일별 매출`}
+                  analysisText={generateAnalysisText(chartData.industry, 'industry')}
+                  chartComponent={
+                    <BarChart
+                      // title={`${industry} - ${region} 요일별 매출`}
+                      data={chartData.industry}
+                      type="industry"
+                      days={days}
+                    />
+                  }
+                />
+                <ChartSection 
+                  title={`${industry} 전체상권 요일별 매출`}
+                  analysisText={generateAnalysisText(chartData.allRegions, 'allRegions')}
+                  chartComponent={
+                    <BarChart
+                      // title={`${industry} - 전체 상권 요일별 매출`}
+                      data={chartData.allRegions}
+                      type="allRegions"
+                      days={days}
+                    />
+                  }
+                />
+                <ChartSection 
+                  title={`${region} 전체상권 요일별 매출`}
+                  analysisText={generateAnalysisText(chartData.allIndustries, 'allIndustries')}
+                  chartComponent={
+                    <BarChart
+                      // title={`${region} - 전체 업종 요일별 매출`}
+                      data={chartData.allIndustries}
+                      type="allIndustries"
+                      days={days}
+                    />
+                  }
+                />
+                <ChartSection 
+                  title="요일별 매출 비교"
+                  analysisText="3개 그래프를 한눈에 비교하세요"
+                  chartComponent={
+                    <CombinedChart
+                      industryData={chartData.industry}
+                      allRegionsData={chartData.allRegions}
+                      allIndustriesData={chartData.allIndustries}
+                      days={days}
+                    />
+                  }
+                />
+              </>
+            )}
+          </div>
+        ) : null}
       </Paper>
     </Container>
   );

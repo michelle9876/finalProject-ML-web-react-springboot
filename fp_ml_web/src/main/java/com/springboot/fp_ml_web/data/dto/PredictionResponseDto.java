@@ -12,6 +12,8 @@ public class PredictionResponseDto {
     private String serviceType;
     private Double predictedSales;  // BigDecimal에서 Double로 변경
     private Double rent;  // BigDecimal에서 Double로 변경
+    private int page;
+    private int size;
 
     // ResultPrediction 엔티티로부터 DTO를 생성하는 정적 메서드
     public static PredictionResponseDto fromEntity(ResultPrediction entity, int ranking) {
