@@ -30,7 +30,22 @@ const Content1 = () => {
     if (savedNickname) {
       setNickname(savedNickname);
     }
+    loadSavedFilterData();
   }, []);
+
+  const loadSavedFilterData = () => {
+    const savedFilterData = localStorage.getItem('filterData');
+    if (savedFilterData) {
+      const parsedData = JSON.parse(savedFilterData);
+      setSelectedRegions(parsedData.business_district_name.map(name => ({ name })));
+      setSelectedBusinessTypes(parsedData.service_industry_name.map(name => ({ name })));
+      setRentMin(String(parsedData.rent_fee_select.min / 10000));
+      setRentMax(String(parsedData.rent_fee_select.max / 10000));
+      setAreaMin(String(parsedData.rent_area.min));
+      setAreaMax(String(parsedData.rent_area.max));
+      setFilterData(parsedData);
+    }
+  };
 
   const handleRegionSelect = (regions) => {
     setSelectedRegions(regions);
@@ -66,11 +81,17 @@ const Content1 = () => {
   
     console.log('Recommendation request data:', data);
     setFilterData(data);
+    localStorage.setItem('filterData', JSON.stringify(data));
     setShowResults(true);
   };
 
+  const handleEditConditions = () => {
+    loadSavedFilterData();
+    setShowResults(false);
+  };
+
   if (showResults) {
-    return <RecommendationResults filterData={filterData} />;
+    return <RecommendationResults filterData={filterData} onEditConditions={handleEditConditions} />;
   }
 
   const handleCloseSnackbar = (event, reason) => {
@@ -82,14 +103,14 @@ const Content1 = () => {
 
   return (
     <Container 
-      maxWidth="md" // "lg"에서 "md"로 변경
+      maxWidth="md"
       sx={{ 
         mt: 4,
         width: '100%',
-        maxWidth: '900px', // 원하는 최대 너비로 설정
+        maxWidth: '900px',
       }}
     >
-      <Paper sx={{ p: { xs: 2, sm: 3 } }}> {/* 반응형 패딩 */}
+      <Paper sx={{ p: { xs: 2, sm: 3 } }}>
         <Typography variant="h4" gutterBottom>AI맞춤추천</Typography>
         <Typography variant="subtitle1" gutterBottom>
           {nickname ? `${nickname}님!` : '안녕하세요!'} 원하는 조건을 입력해주세요
@@ -102,6 +123,7 @@ const Content1 = () => {
               onDataFetched={handleRegionDataFetched}
               initialData={regionData}
               mobileResponsive={false}
+              selectedRegions={selectedRegions}
             />
           </Grid>
           <Grid item xs={12} md={6}>
@@ -112,6 +134,7 @@ const Content1 = () => {
               singleSelect={false} 
               maxSelect={500} 
               mobileResponsive={false}
+              selectedBusinessTypes={selectedBusinessTypes}
             />
           </Grid>
           <Grid item xs={12} md={6}>
