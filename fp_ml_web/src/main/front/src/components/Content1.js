@@ -3,6 +3,7 @@ import { Container, Paper, Typography, Grid, TextField, Button, Snackbar, Box } 
 import MuiAlert from '@mui/material/Alert';
 import RegionFilter from './RegionFilter';
 import BusinessTypeFilter from './BusinessTypeFilter';
+import RecommendationResults from './RecommendationResults';
 import axios from 'axios';
 
 const Alert = React.forwardRef(function Alert(props, ref) {
@@ -21,6 +22,8 @@ const Content1 = () => {
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [businessTypeData, setBusinessTypeData] = useState(null);
   const [regionData, setRegionData] = useState(null);
+  const [showResults, setShowResults] = useState(false);
+  const [filterData, setFilterData] = useState(null);
 
   useEffect(() => {
     const savedNickname = localStorage.getItem('nickname');
@@ -49,10 +52,10 @@ const Content1 = () => {
     const userId = localStorage.getItem('userId');
     const data = {
       userId: parseInt(userId),
-      industry_name: selectedBusinessTypes.map(type => type.name),
-      district_name: selectedRegions.map(region => region.name),
+      service_industry_name: selectedBusinessTypes.map(type => type.name),
+      business_district_name: selectedRegions.map(region => region.name),
       rent_fee_select: { 
-        min: parseInt(rentMin) * 10000, // 만원 단위를 원 단위로 변환
+        min: parseInt(rentMin) * 10000,
         max: parseInt(rentMax) * 10000
       },
       rent_area: {
@@ -61,24 +64,14 @@ const Content1 = () => {
       }
     };
   
-    console.log('Selected Regions:', selectedRegions);
-    console.log('Selected Business Types:', selectedBusinessTypes);
-  
-    try {
-      // API가 완성되면 아래 주석을 해제하고 사용하세요
-      // const response = await axios.post('/api/selections', data);
-      // console.log(response.data);
-      
-      // 임시로 콘솔에 데이터를 출력합니다
-      console.log('Recommendation request data:', data);
-      setSnackbarMessage('추천 요청이 전송되었습니다. (개발 중)');
-      setOpenSnackbar(true);
-    } catch (error) {
-      console.error('Error sending recommendation request:', error);
-      setSnackbarMessage('추천 요청 중 오류가 발생했습니다.');
-      setOpenSnackbar(true);
-    }
+    console.log('Recommendation request data:', data);
+    setFilterData(data);
+    setShowResults(true);
   };
+
+  if (showResults) {
+    return <RecommendationResults filterData={filterData} />;
+  }
 
   const handleCloseSnackbar = (event, reason) => {
     if (reason === 'clickaway') {
