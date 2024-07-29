@@ -5,6 +5,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
+@Builder
 @Getter
 @Setter
 @NoArgsConstructor
