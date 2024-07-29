@@ -51,8 +51,16 @@ public class HolidayServiceImpl implements HolidayService {
         IndustryWeeklySales allIndustrySalesData = industryWeeklySalesRepository.findByServiceIndustryName(serviceIndustryName);
         long[] allIndustrySalesAmounts = extractSalesAmounts(allIndustrySalesData);
 
-        // 가장 매출이 적은 요일을 찾기 (업종과 상권 모두 고려)
-        String recommendedDay = findLowestSalesDay(industrySalesAmounts);
+        // 가장 매출이 적은 요일을 찾기
+        String recommendedDay = findLowestSalesDay(industrySalesAmounts, allIndustrySalesAmounts, regionSalesAmounts);
+
+        if ("데이터없음".equals(recommendedDay)) {
+            // 데이터가 없을 경우 처리
+            HolidayRecommendationResponse response = new HolidayRecommendationResponse();
+            response.setRecommendedDay("데이터없음");
+            response.setChartData(new HashMap<>());
+            return response;
+        }
 
         // SelectionForHoliday 엔티티 저장
         SelectionForHoliday selection = new SelectionForHoliday();
@@ -124,10 +132,24 @@ public class HolidayServiceImpl implements HolidayService {
         return salesAmounts;
     }
 
-    private String findLowestSalesDay(long[] salesAmounts) {
+    private String findLowestSalesDay(long[] industrySalesAmounts, long[] allIndustrySalesAmounts, long[] regionSalesAmounts) {
+        long[] salesAmountsToUse = industrySalesAmounts;
+
+        if (hasAnyZero(industrySalesAmounts)) {
+            salesAmountsToUse = allIndustrySalesAmounts;
+        }
+
+        if (hasAnyZero(salesAmountsToUse)) {
+            salesAmountsToUse = regionSalesAmounts;
+        }
+
+        if (hasAnyZero(salesAmountsToUse)) {
+            return "데이터없음";
+        }
+
         int minIndex = 0;
-        for (int i = 1; i < salesAmounts.length; i++) {
-            if (salesAmounts[i] < salesAmounts[minIndex]) {
+        for (int i = 1; i < salesAmountsToUse.length; i++) {
+            if (salesAmountsToUse[i] < salesAmountsToUse[minIndex]) {
                 minIndex = i;
             }
         }
@@ -142,4 +164,13 @@ public class HolidayServiceImpl implements HolidayService {
             default: return "월요일";
         }
     }
+    private boolean hasAnyZero(long[] salesAmounts) {
+        for (long amount : salesAmounts) {
+            if (amount == 0) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
+
