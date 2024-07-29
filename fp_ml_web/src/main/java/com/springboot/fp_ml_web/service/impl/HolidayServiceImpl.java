@@ -164,7 +164,6 @@ public class HolidayServiceImpl implements HolidayService {
             default: return "월요일";
         }
     }
-
     private boolean hasAnyZero(long[] salesAmounts) {
         for (long amount : salesAmounts) {
             if (amount == 0) {
@@ -174,3 +173,4 @@ public class HolidayServiceImpl implements HolidayService {
         return false;
     }
 }
+
