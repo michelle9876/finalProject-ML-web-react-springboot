@@ -266,24 +266,24 @@ const Content4 = () => {
                 />
                 <ChartSection 
                   title={`${industry} 전체상권 요일별 매출`}
-                  analysisText={generateAnalysisText(chartData.allRegions, 'allRegions')}
+                  analysisText={generateAnalysisText(chartData.allIndustries, 'allIndustries')}
                   chartComponent={
                     <BarChart
                       // title={`${industry} - 전체 상권 요일별 매출`}
-                      data={chartData.allRegions}
-                      type="allRegions"
+                      data={chartData.allIndustries}
+                      type="allIndustries"
                       days={days}
                     />
                   }
                 />
                 <ChartSection 
                   title={`${region} 전체상권 요일별 매출`}
-                  analysisText={generateAnalysisText(chartData.allIndustries, 'allIndustries')}
+                  analysisText={generateAnalysisText(chartData.allRegions, 'allRegions')}
                   chartComponent={
                     <BarChart
                       // title={`${region} - 전체 업종 요일별 매출`}
-                      data={chartData.allIndustries}
-                      type="allIndustries"
+                      data={chartData.allRegions}
+                      type="allRegions"
                       days={days}
                     />
                   }
