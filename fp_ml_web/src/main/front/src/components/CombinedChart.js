@@ -48,12 +48,12 @@ const CombinedChart = ({ industryData, allRegionsData, allIndustriesData, days }
       color: '#003399'
     }, {
       name: '선택한 업종 전체 지역',
-      data: allRegionsData,
-      color: '#00A86B'
-    }, {
-      name: '선택한 지역 전체 업종',
       data: allIndustriesData,
       color: '#FF4500'
+    }, {
+      name: '선택한 지역 전체 업종',
+      data: allRegionsData,
+      color: '#00A86B'
     }],
 
     // legend: {
