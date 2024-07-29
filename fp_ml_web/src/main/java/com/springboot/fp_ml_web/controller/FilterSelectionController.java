@@ -17,34 +17,22 @@ import java.util.List;
 public class FilterSelectionController {
     private static final Logger logger = LoggerFactory.getLogger(FilterSelectionController.class);
 
-    @Autowired
     private FilterSelectionService filterSelectionService;
 
+    public FilterSelectionController(FilterSelectionService filterSelectionService) {
+        this.filterSelectionService = filterSelectionService;
+    }
+
     @PostMapping
-    public ResponseEntity<?> createFilter(@RequestBody FilterSelectionDto filterSelectionDto) {
-        logger.info("Received FilterDTO: {}", filterSelectionDto);
-        try {
-            FilterSelection savedFilter = filterSelectionService.saveFilter(filterSelectionDto);
-            return ResponseEntity.status(HttpStatus.CREATED).body(savedFilter);
-        } catch (Exception e) {
-            logger.error("Error saving filter", e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error saving filter: " + e.getMessage());
-        }
+    @ResponseStatus(HttpStatus.CREATED)
+    public FilterSelection createFilter(@RequestBody FilterSelectionDto filterSelectionDto) throws Exception {
+        return filterSelectionService.saveFilter(filterSelectionDto);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getFilterById(@PathVariable Long id) {
-        try {
+    public FilterSelectionDto getFilterById(@PathVariable Long id) throws Exception {
             FilterSelection filter = filterSelectionService.getFilterById(id);
-            FilterSelectionDto dto = filterSelectionService.convertToDto(filter);
-            return ResponseEntity.ok(dto);
-        } catch (RuntimeException e) {
-            logger.error("Error getting filter by id", e);
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Filter not found: " + e.getMessage());
-        } catch (Exception e) {
-            logger.error("Error converting filter to DTO", e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error processing filter: " + e.getMessage());
-        }
+            return filterSelectionService.convertToDto(filter);
     }
 
     @GetMapping("/user/{userId}")
