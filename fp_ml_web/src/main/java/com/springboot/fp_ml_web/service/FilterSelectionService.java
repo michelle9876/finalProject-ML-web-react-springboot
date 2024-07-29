@@ -4,10 +4,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.springboot.fp_ml_web.data.dto.FilterSelectionDto;
 import com.springboot.fp_ml_web.data.entity.FilterSelection;
 import com.springboot.fp_ml_web.data.repository.FilterSelectionRepository;
-import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -25,7 +27,7 @@ public class FilterSelectionService {
 
     public FilterSelection getFilterById(Long id) {
         return filterSelectionRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Filter not found with id: " + id));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
     public List<FilterSelection> getFiltersByUserId(Integer userId) {
