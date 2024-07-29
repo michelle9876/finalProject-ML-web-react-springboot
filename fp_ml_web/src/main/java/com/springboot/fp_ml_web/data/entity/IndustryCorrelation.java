@@ -5,21 +5,17 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-
-import java.math.BigInteger;
 
 @Data
 @Entity
-public class Ranking {
+public class IndustryCorrelation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int rankingId;
-    private int userSelectionId;
+    private Integer industryCorrelationId;
+
     private String serviceIndustryName;
-    private String districtName;
-    private BigInteger predictedSalesAmountMonth;
-    private double rentFee;
-    private String rentFeeScale;
+    private String factorEng;
+    private String factorKor;
+    private Double correlationCoefficient;
+    private Integer rank;
 }
