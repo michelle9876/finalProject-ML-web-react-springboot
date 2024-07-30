@@ -1,4 +1,4 @@
-# 사장님 구해요
+# :loudspeaker:사장님 구해요
 [home 이미지]
 - 배포URL :
 
