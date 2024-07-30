@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useInView } from 'react-intersection-observer';
 import axios from 'axios';
-import { Container, Paper, Button, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Chip, CircularProgress, Box, useMediaQuery, useTheme } from '@mui/material';
+import { Container, Paper, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Chip, CircularProgress, Box, useMediaQuery, useTheme } from '@mui/material';
 
-const RecommendationHeader = ({ onEditConditions }) => {
+const RecommendationHeader = () => {
   const [nickname, setNickname] = useState('');
 
   useEffect(() => {
@@ -14,7 +14,7 @@ const RecommendationHeader = ({ onEditConditions }) => {
   }, []);
 
   return (
-    <div className="bg-[#f7f9fc] p-4 rounded-t-lg relative">
+    <div className="bg-[#f7f9fc] p-4 rounded-t-lg">
       <Typography variant="h5" className="font-bold text-[#2e2e48] mb-2">AI맞춤추천</Typography>
       <div className="flex items-center justify-center">
         <img src="img/double_quotes_icon.png" alt="quotes" className="w-3 h-3 mr-1" />
@@ -23,19 +23,6 @@ const RecommendationHeader = ({ onEditConditions }) => {
         </Typography>
         <img src="img/down_arrow_icon.png" alt="arrow" className="w-3 h-3 ml-1" />
       </div>
-      <Button
-        variant="outlined"
-        size="small"
-        onClick={onEditConditions}
-        sx={{
-          position: 'absolute',
-          bottom: '8px',
-          right: '8px',
-          fontSize: '0.75rem',
-        }}
-      >
-        조건 수정하기
-      </Button>
     </div>
   );
 }
@@ -78,7 +65,6 @@ const RentLevelChip = ({ rent, isMobile }) => {
     </Box>
   );
 };
-
 
 const TableHeader = ({ isMobile }) => {
   const theme = useTheme();
@@ -145,7 +131,6 @@ const LocationIcon = () => (
   />
 );
 
-
 const TableRowContent = ({ data, isMobile }) => {
   const theme = useTheme();
   const isVerySmall = useMediaQuery(theme.breakpoints.down('xs'));
@@ -195,7 +180,7 @@ const TableRowContent = ({ data, isMobile }) => {
   );
 };
 
-const RecommendationResults = ({ filterData, onEditConditions }) => {
+const RecommendationResults = ({ filterData }) => {
   const [predictions, setPredictions] = useState([]);
   const [page, setPage] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -209,6 +194,13 @@ const RecommendationResults = ({ filterData, onEditConditions }) => {
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
+  useEffect(() => {
+    // 컴포넌트가 언마운트될 때 필터 데이터 삭제
+    return () => {
+      sessionStorage.removeItem('filterData');
+    };
+  }, []);
 
   const fetchPredictions = useCallback(async () => {
     if (loadingRef.current || !hasMore) return;
@@ -265,11 +257,10 @@ const RecommendationResults = ({ filterData, onEditConditions }) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [loading, hasMore, predictions, fetchPredictions]);
 
-
   return (
     <Container maxWidth="md" sx={{ mt: 4, mb: 4 }}>
       <Paper>
-        <RecommendationHeader onEditConditions={onEditConditions} />
+        <RecommendationHeader />
         <TableContainer>
           <Table sx={{ tableLayout: 'fixed' }}>
             <TableHeader isMobile={isMobile} />
