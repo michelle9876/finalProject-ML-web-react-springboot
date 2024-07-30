@@ -23,4 +23,10 @@ public interface ResultPredictionRepository extends JpaRepository<ResultPredicti
             @Param("maxRent") Double maxRent,
             Pageable pageable
     );
+
+    @Query("SELECT rp FROM ResultPrediction rp WHERE rp.serviceType IN :serviceTypes ORDER BY rp.predictedSales DESC")
+    List<ResultPrediction> findTopPredictionsByServiceType(
+            @Param("serviceTypes") List<String> serviceTypes,
+            Pageable pageable
+    );
 }
