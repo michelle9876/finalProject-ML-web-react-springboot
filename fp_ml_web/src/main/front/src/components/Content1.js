@@ -30,22 +30,18 @@ const Content1 = () => {
     if (savedNickname) {
       setNickname(savedNickname);
     }
-    loadSavedFilterData();
-  }, []);
-
-  const loadSavedFilterData = () => {
-    const savedFilterData = localStorage.getItem('filterData');
-    if (savedFilterData) {
-      const parsedData = JSON.parse(savedFilterData);
-      setSelectedRegions(parsedData.business_district_name.map(name => ({ name })));
-      setSelectedBusinessTypes(parsedData.service_industry_name.map(name => ({ name })));
-      setRentMin(String(parsedData.rent_fee_select.min / 10000));
-      setRentMax(String(parsedData.rent_fee_select.max / 10000));
-      setAreaMin(String(parsedData.rent_area.min));
-      setAreaMax(String(parsedData.rent_area.max));
-      setFilterData(parsedData);
+    // 세션 스토리지에서 필터 데이터 불러오기
+    const savedFilter = sessionStorage.getItem('filterData');
+    if (savedFilter) {
+      const parsedFilter = JSON.parse(savedFilter);
+      setSelectedRegions(parsedFilter.selectedRegions || []);
+      setSelectedBusinessTypes(parsedFilter.selectedBusinessTypes || []);
+      setRentMin(parsedFilter.rentMin || '');
+      setRentMax(parsedFilter.rentMax || '');
+      setAreaMin(parsedFilter.areaMin || '');
+      setAreaMax(parsedFilter.areaMax || '');
     }
-  };
+  }, []);
 
   const handleRegionSelect = (regions) => {
     setSelectedRegions(regions);
@@ -81,17 +77,22 @@ const Content1 = () => {
   
     console.log('Recommendation request data:', data);
     setFilterData(data);
-    localStorage.setItem('filterData', JSON.stringify(data));
+
+    // 필터 데이터를 세션 스토리지에 저장
+    sessionStorage.setItem('filterData', JSON.stringify({
+      selectedRegions,
+      selectedBusinessTypes,
+      rentMin,
+      rentMax,
+      areaMin,
+      areaMax
+    }));
+
     setShowResults(true);
   };
 
-  const handleEditConditions = () => {
-    loadSavedFilterData();
-    setShowResults(false);
-  };
-
   if (showResults) {
-    return <RecommendationResults filterData={filterData} onEditConditions={handleEditConditions} />;
+    return <RecommendationResults filterData={filterData} />;
   }
 
   const handleCloseSnackbar = (event, reason) => {
@@ -103,14 +104,14 @@ const Content1 = () => {
 
   return (
     <Container 
-      maxWidth="md"
+      maxWidth="md" // "lg"에서 "md"로 변경
       sx={{ 
         mt: 4,
         width: '100%',
-        maxWidth: '900px',
+        maxWidth: '900px', // 원하는 최대 너비로 설정
       }}
     >
-      <Paper sx={{ p: { xs: 2, sm: 3 } }}>
+      <Paper sx={{ p: { xs: 2, sm: 3 } }}> {/* 반응형 패딩 */}
         <Typography variant="h4" gutterBottom>AI맞춤추천</Typography>
         <Typography variant="subtitle1" gutterBottom>
           {nickname ? `${nickname}님!` : '안녕하세요!'} 원하는 조건을 입력해주세요
@@ -123,7 +124,6 @@ const Content1 = () => {
               onDataFetched={handleRegionDataFetched}
               initialData={regionData}
               mobileResponsive={false}
-              selectedRegions={selectedRegions}
             />
           </Grid>
           <Grid item xs={12} md={6}>
@@ -134,7 +134,6 @@ const Content1 = () => {
               singleSelect={false} 
               maxSelect={500} 
               mobileResponsive={false}
-              selectedBusinessTypes={selectedBusinessTypes}
             />
           </Grid>
           <Grid item xs={12} md={6}>
