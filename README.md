@@ -2,9 +2,9 @@
 [home 이미지]
 - 배포URL :
 
-## :crown: 프로젝트 소개
+## :rocket: 프로젝트 소개
 
-## :woman-tipping-hand::skin-tone-2: 팀원구성
+## :crown: 팀원구성
 ## Team
 |<img src="https://avatars.githubusercontent.com/u/50590112?v=4" width="150" height="150"/>|<img src="https://avatars.githubusercontent.com/u/127280706?v=4" width="150" height="150"/>|<img src="https://avatars.githubusercontent.com/u/161932948?v=4" width="150" height="150"/>|<img src="https://avatars.githubusercontent.com/u/163943897?v=4" width="150" height="150"/>|
 |:-:|:-:|:-:|:-:|
