@@ -1,10 +1,10 @@
-# :loudspeaker: 사장님 구해요 :thought_balloon:
+# :loudspeaker: 사장님 구해요 :convenience_store:
 [home 이미지]
 - 배포URL :
 
 ## :crown: 프로젝트 소개
 
-## :man-woman-girl-girl: 팀원구성
+## :woman-tipping-hand::skin-tone-2: 팀원구성
 ## Team
 |<img src="https://avatars.githubusercontent.com/u/50590112?v=4" width="150" height="150"/>|<img src="https://avatars.githubusercontent.com/u/127280706?v=4" width="150" height="150"/>|<img src="https://avatars.githubusercontent.com/u/161932948?v=4" width="150" height="150"/>|<img src="https://avatars.githubusercontent.com/u/163943897?v=4" width="150" height="150"/>|
 |:-:|:-:|:-:|:-:|
@@ -64,7 +64,7 @@
 
 ## :magic_wand: 개선 목표
 
-## :thought_balloon: 프로젝트가 끝난 후
+## :speech_balloon: 프로젝트가 끝난 후
 (각자 후기 작성)
 
 ### 김보경
