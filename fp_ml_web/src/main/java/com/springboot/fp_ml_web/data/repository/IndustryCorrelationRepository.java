@@ -8,5 +8,8 @@ import java.util.List;
 
 @Repository
 public interface IndustryCorrelationRepository extends JpaRepository<IndustryCorrelation, Integer> {
-    List<IndustryCorrelation> findTop5ByServiceIndustryNameOrderByRank(String serviceIndustryName);
+//    List<IndustryCorrelation> findTop5ByServiceIndustryNameOrderByRankAsc(String serviceIndustryName);
+//    List<IndustryCorrelation> findTop5ByRankLessThanEqualOrderByRankAsc(int rank);
+    List<IndustryCorrelation> findTop5ByServiceIndustryNameOrderByRankAsc(String serviceIndustryName);
+
 }
