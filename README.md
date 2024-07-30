@@ -1,8 +1,8 @@
-# :loudspeaker:사장님 구해요
+# 사장님 구해요 :loudspeaker:
 [home 이미지]
 - 배포URL :
 
-## 프로젝트 소개
+## :crown: 프로젝트 소개
 
 ## 팀원구성
 ## Team
