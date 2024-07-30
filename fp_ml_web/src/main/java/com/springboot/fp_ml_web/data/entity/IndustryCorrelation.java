@@ -1,13 +1,11 @@
 package com.springboot.fp_ml_web.data.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 
-@Data
 @Entity
+@Table(name = "industry_correlation")
+@Data
 public class IndustryCorrelation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
