@@ -42,16 +42,18 @@ const RegionFilter = ({ onDataFetched, singleSelect = false, maxSelect = 500, mo
   };
 
   const processData = (data) => {
+    if (!data) return;
     const uniqueDistricts = [...new Set(data.map(item => item.district_name))];
     setDistricts(uniqueDistricts.map(name => ({ name })));
     if (uniqueDistricts.length > 0) {
-      handleDistrictSelect({ name: uniqueDistricts[0] });
+      handleDistrictSelect({ name: uniqueDistricts[0] }, data);
     }
   };
 
-  const handleDistrictSelect = (district) => {
+  const handleDistrictSelect = (district, data = regionData) => {
+    if (!data) return;
     setSelectedDistrict(district);
-    const filteredData = regionData.filter(item => item.district_name === district.name);
+    const filteredData = data.filter(item => item.district_name === district.name);
     const uniqueNeighborhoods = [...new Set(filteredData.map(item => item.administrative_dong_name))];
     setNeighborhoods(uniqueNeighborhoods.map(name => ({ name })));
     setSelectedNeighborhood(null);
@@ -59,6 +61,7 @@ const RegionFilter = ({ onDataFetched, singleSelect = false, maxSelect = 500, mo
   };
 
   const handleNeighborhoodSelect = (neighborhood) => {
+    if (!regionData) return;
     setSelectedNeighborhood(neighborhood);
     const filteredData = regionData.filter(
       item => item.district_name === selectedDistrict.name && 

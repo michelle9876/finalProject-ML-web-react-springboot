@@ -11,7 +11,6 @@ const BusinessTypeFilter = ({ onDataFetched, singleSelect = false, maxSelect = 5
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [businessTypes, setBusinessTypes] = useState([]);
-  const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -21,7 +20,7 @@ const BusinessTypeFilter = ({ onDataFetched, singleSelect = false, maxSelect = 5
     } else {
       processData(businessTypeData);
     }
-  }, [businessTypeData]);
+  }, [businessTypeData]);  
 
   const fetchData = async () => {
     setLoading(true);
@@ -38,19 +37,20 @@ const BusinessTypeFilter = ({ onDataFetched, singleSelect = false, maxSelect = 5
       setLoading(false);
     }
   };
-
-
+  
   const processData = (data) => {
+    if (!data) return;
     const uniqueCategories = [...new Set(data.map(item => item.service_industry_category))];
     setCategories(uniqueCategories.map(name => ({ name })));
     if (uniqueCategories.length > 0) {
-      handleCategorySelect({ name: uniqueCategories[0] });
+      handleCategorySelect({ name: uniqueCategories[0] }, data);
     }
   };
 
-  const handleCategorySelect = (category) => {
+  const handleCategorySelect = (category, data = businessTypeData) => {
+    if (!data) return;
     setSelectedCategory(category);
-    const filteredData = businessTypeData.filter(item => item.service_industry_category === category.name);
+    const filteredData = data.filter(item => item.service_industry_category === category.name);
     setBusinessTypes(filteredData.map(item => ({
       code: item.serviceIndustry_id.toString(),
       name: item.service_industry_name
@@ -68,10 +68,6 @@ const BusinessTypeFilter = ({ onDataFetched, singleSelect = false, maxSelect = 5
         dispatch(setFilter({ selectedBusinessTypes: newSelection }));
       }
     }
-  };
-
-  const toggleFilter = () => {
-    setIsFilterOpen(!isFilterOpen);
   };
 
   if (error) {
