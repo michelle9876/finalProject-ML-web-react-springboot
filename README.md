@@ -86,6 +86,120 @@
 
 ## :link: 프로젝트 구조
 
+\```
+│  FpMlWebApplication.java
+│  
+├─config
+│      SpringDocsConfig.java
+│      SwaggerConfiguration.java
+│      WebConfig.java
+│      
+├─controller
+│      CheckYourThoughtsController.java
+│      FilterSelectionController.java
+│      HelloController.java
+│      HolidayController.java
+│      HomeController.java
+│      IndustryCorrelationController.java
+│      PredictionController.java
+│      RankingController.java
+│      RankMapController.java
+│      RecentDataController.java
+│      UserController.java
+│      UserSelectionController.java
+│      UserSelectionDetailController.java
+│      
+├─data
+│  ├─converter
+│  │      JsonLongListConverter.java
+│  │      
+│  ├─dao
+│  │  │  UserDao.java
+│  │  │  
+│  │  └─impl
+│  │          UserDaoImpl.java
+│  │          
+│  ├─dto
+│  │      CheckYourThoughtsRequest.java
+│  │      FactorRequestDto.java
+│  │      FilterSelectionDto.java
+│  │      HolidayRecommendationResponse.java
+│  │      PredictionResponseDto.java
+│  │      RankMapRequest.java
+│  │      UserSelectionDto.java
+│  │      
+│  ├─entity
+│  │      CheckingThought.java
+│  │      DistrictWeeklySales.java
+│  │      District_category.java
+│  │      FilterSelection.java
+│  │      InduDistWeeklySales.java
+│  │      InduDistWeeklySalesId.java
+│  │      IndustryCorrelation.java
+│  │      IndustryCorrelationRanking.java
+│  │      IndustryDistrictWgs84.java
+│  │      IndustryWeeklySales.java
+│  │      Ranking.java
+│  │      RecentData.java
+│  │      ReportAI.java
+│  │      ResultHoliday.java
+│  │      ResultPrediction.java
+│  │      ResultThought.java
+│  │      SelectionForHoliday.java
+│  │      SelectionForMap.java
+│  │      Service_industry.java
+│  │      ShowingMap.java
+│  │      User.java
+│  │      UserSelection.java
+│  │      UserSelectionDetail.java
+│  │      UserTest.java
+│  │      WeeklySalesData.java
+│  │      
+│  └─repository
+│          CheckingThoughtRepository.java
+│          DistrictCategoryRepository.java
+│          DistrictWeeklySalesRepository.java
+│          FilterSelectionRepository.java
+│          InduDistWeeklySalesRepository.java
+│          IndustryCorrelationRankingRepository.java
+│          IndustryCorrelationRepository.java
+│          IndustryDistrictWgs84Repository.java
+│          IndustryWeeklySalesRepository.java
+│          RankingRepository.java
+│          RecentDataRepository.java
+│          ResultHolidayRepository.java
+│          ResultPredictionRepository.java
+│          SelectionForHolidayRepository.java
+│          SelectionForMapRepository.java
+│          ServiceIndustryRepository.java
+│          UserRepository.java
+│          UserSelectionDetailRepository.java
+│          UserSelectionRepository.java
+│          WeeklySalesDataRepository.java
+│          
+└─service
+    │  CheckingThoughtService.java
+    │  CommercialArea.java
+    │  FilterSelectionService.java
+    │  HolidayService.java
+    │  IndustryCorrelationRankingService.java
+    │  IndustryCorrelationService.java
+    │  PredictionService.java
+    │  RankingService.java
+    │  RankMapService.java
+    │  RecentDataService.java
+    │  UserSelectionDetailService.java
+    │  UserSelectionService.java
+    │  UserService.java
+    │  
+    └─impl
+            HolidayServiceImpl.java
+            UserService.java
+            UserServiceImpl.java
+\```
+
+
+
 ## :pushpin: 역할분담
 
 ### 김보경
