@@ -1,6 +1,22 @@
 # :loudspeaker: 사장님 구해요 :convenience_store:
 [home 이미지 삽입 예정]
 - 배포URL : (url 삽입 예정)
+
+## 목차
+
+- [프로젝트 소개](#rocket-프로젝트-소개)
+- [팀원구성](#crown-팀원구성)
+- [개발 환경](#wrench-개발-환경)
+- [채택한 개발 기술과 브랜치 전략](#bulb-채택한-개발-기술과-브랜치-전략)
+- [역할분담](#pushpin-역할분담)
+- [개발 기간 및 작업 관리](#calendar-개발-기간-및-작업-관리)
+- [페이지별 기능](#calling-페이지별-기능)
+- [트러블 슈팅](#collision-트러블-슈팅)
+- [개선 목표](#magic_wand-개선-목표)
+- [프로젝트가 끝난 후](#speech_balloon-프로젝트가-끝난-후)
+- [산출물](#open_file_folder-산출물)
+
+  
 ## :rocket: 프로젝트 소개
 
 ### 프로젝트 개요
@@ -44,18 +60,12 @@
 - **타 경쟁 업체와의 차별화**: 통계적으로 유의미한 데이터를 기반으로 개인화된 맞춤형 서비스 제공 가능
 - **대표적인 경쟁업체**: 상권 분석 서비스 (서울상권정보, 오픈업)
 
-
-
-
-
-
-
-
-
 ## :crown: 팀원구성
-|<img src="https://avatars.githubusercontent.com/u/50590112?v=4" width="150" height="150"/>|<img src="https://avatars.githubusercontent.com/u/127280706?v=4" width="150" height="150"/>|<img src="https://avatars.githubusercontent.com/u/161932948?v=4" width="150" height="150"/>|<img src="https://avatars.githubusercontent.com/u/163943897?v=4" width="150" height="150"/>|
+| 김보경 | 최은서 | 윤소영 | 정제윤 |
 |:-:|:-:|:-:|:-:|
-|BoGyeong Kim<br/>[@michelle9876](https://github.com/michelle9876)|Eun Seo Choi<br/>[@dmschoi](https://github.com/dmschoi)|[@Soyeong124](https://github.com/Soyeong124)|[@JeongJeaYoon](https://github.com/JeongJeaYoon)|
+|<img src="https://avatars.githubusercontent.com/u/50590112?v=4" width="150" height="150"/>|<img src="https://avatars.githubusercontent.com/u/127280706?v=4" width="150" height="150"/>|<img src="https://avatars.githubusercontent.com/u/161932948?v=4" width="150" height="150"/>|<img src="https://avatars.githubusercontent.com/u/163943897?v=4" width="150" height="150"/>|
+|[@michelle9876](https://github.com/michelle9876)|[@dmschoi](https://github.com/dmschoi)|[@Soyeong124](https://github.com/Soyeong124)|[@JeongJeaYoon](https://github.com/JeongJeaYoon)|
+
 
 
 ## :wrench: 개발 환경 
@@ -86,12 +96,128 @@
 
 ## :link: 프로젝트 구조
 
+```
+
+│  FpMlWebApplication.java
+│  
+├─config
+│      SpringDocsConfig.java
+│      SwaggerConfiguration.java
+│      WebConfig.java
+│      
+├─controller
+│      CheckYourThoughtsController.java
+│      FilterSelectionController.java
+│      HelloController.java
+│      HolidayController.java
+│      HomeController.java
+│      IndustryCorrelationController.java
+│      PredictionController.java
+│      RankingController.java
+│      RankMapController.java
+│      RecentDataController.java
+│      UserController.java
+│      UserSelectionController.java
+│      UserSelectionDetailController.java
+│      
+├─data
+│  ├─converter
+│  │      JsonLongListConverter.java
+│  │      
+│  ├─dao
+│  │  │  UserDao.java
+│  │  │  
+│  │  └─impl
+│  │          UserDaoImpl.java
+│  │          
+│  ├─dto
+│  │      CheckYourThoughtsRequest.java
+│  │      FactorRequestDto.java
+│  │      FilterSelectionDto.java
+│  │      HolidayRecommendationResponse.java
+│  │      PredictionResponseDto.java
+│  │      RankMapRequest.java
+│  │      UserSelectionDto.java
+│  │      
+│  ├─entity
+│  │      CheckingThought.java
+│  │      DistrictWeeklySales.java
+│  │      District_category.java
+│  │      FilterSelection.java
+│  │      InduDistWeeklySales.java
+│  │      InduDistWeeklySalesId.java
+│  │      IndustryCorrelation.java
+│  │      IndustryCorrelationRanking.java
+│  │      IndustryDistrictWgs84.java
+│  │      IndustryWeeklySales.java
+│  │      Ranking.java
+│  │      RecentData.java
+│  │      ReportAI.java
+│  │      ResultHoliday.java
+│  │      ResultPrediction.java
+│  │      ResultThought.java
+│  │      SelectionForHoliday.java
+│  │      SelectionForMap.java
+│  │      Service_industry.java
+│  │      ShowingMap.java
+│  │      User.java
+│  │      UserSelection.java
+│  │      UserSelectionDetail.java
+│  │      UserTest.java
+│  │      WeeklySalesData.java
+│  │      
+│  └─repository
+│          CheckingThoughtRepository.java
+│          DistrictCategoryRepository.java
+│          DistrictWeeklySalesRepository.java
+│          FilterSelectionRepository.java
+│          InduDistWeeklySalesRepository.java
+│          IndustryCorrelationRankingRepository.java
+│          IndustryCorrelationRepository.java
+│          IndustryDistrictWgs84Repository.java
+│          IndustryWeeklySalesRepository.java
+│          RankingRepository.java
+│          RecentDataRepository.java
+│          ResultHolidayRepository.java
+│          ResultPredictionRepository.java
+│          SelectionForHolidayRepository.java
+│          SelectionForMapRepository.java
+│          ServiceIndustryRepository.java
+│          UserRepository.java
+│          UserSelectionDetailRepository.java
+│          UserSelectionRepository.java
+│          WeeklySalesDataRepository.java
+│          
+└─service
+    │  CheckingThoughtService.java
+    │  CommercialArea.java
+    │  FilterSelectionService.java
+    │  HolidayService.java
+    │  IndustryCorrelationRankingService.java
+    │  IndustryCorrelationService.java
+    │  PredictionService.java
+    │  RankingService.java
+    │  RankMapService.java
+    │  RecentDataService.java
+    │  UserSelectionDetailService.java
+    │  UserSelectionService.java
+    │  UserService.java
+    │  
+    └─impl
+            HolidayServiceImpl.java
+            UserService.java
+            UserServiceImpl.java
+            
+```
+
+
+
 ## :pushpin: 역할분담
 
-### 김보경
-### 최은서
-### 윤소영
-### 정제윤
+- 김보경 : backend
+- 최은서 : backend
+- 윤소영 : frontend
+- 정제윤 : frontend
 
 ## :calendar: 개발 기간 및 작업 관리
 ### 개발기간
@@ -121,4 +247,6 @@
 ### 윤소영
 
 ### 정제윤
+
+## :open_file_folder: 산출물
 
