@@ -60,9 +60,11 @@
 - **대표적인 경쟁업체**: 상권 분석 서비스 (서울상권정보, 오픈업)
 
 ## :crown: 팀원구성
-|<img src="https://avatars.githubusercontent.com/u/50590112?v=4" width="150" height="150"/>|<img src="https://avatars.githubusercontent.com/u/127280706?v=4" width="150" height="150"/>|<img src="https://avatars.githubusercontent.com/u/161932948?v=4" width="150" height="150"/>|<img src="https://avatars.githubusercontent.com/u/163943897?v=4" width="150" height="150"/>|
+| 김보경 | 최은서 | 윤소영 | 정제윤 |
 |:-:|:-:|:-:|:-:|
-|BoGyeong Kim<br/>[@michelle9876](https://github.com/michelle9876)|Eun Seo Choi<br/>[@dmschoi](https://github.com/dmschoi)|[@Soyeong124](https://github.com/Soyeong124)|[@JeongJeaYoon](https://github.com/JeongJeaYoon)|
+|<img src="https://avatars.githubusercontent.com/u/50590112?v=4" width="150" height="150"/>|<img src="https://avatars.githubusercontent.com/u/127280706?v=4" width="150" height="150"/>|<img src="https://avatars.githubusercontent.com/u/161932948?v=4" width="150" height="150"/>|<img src="https://avatars.githubusercontent.com/u/163943897?v=4" width="150" height="150"/>|
+|[@michelle9876](https://github.com/michelle9876)|[@dmschoi](https://github.com/dmschoi)|[@Soyeong124](https://github.com/Soyeong124)|[@JeongJeaYoon](https://github.com/JeongJeaYoon)|
+
 
 
 ## :wrench: 개발 환경 
@@ -211,10 +213,10 @@
 
 ## :pushpin: 역할분담
 
-### 김보경
-### 최은서
-### 윤소영
-### 정제윤
+- 김보경 : backend
+- 최은서 : backend
+- 윤소영 : frontend
+- 정제윤 : frontend
 
 ## :calendar: 개발 기간 및 작업 관리
 ### 개발기간
