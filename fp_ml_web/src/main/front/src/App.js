@@ -19,7 +19,7 @@ import MapComponent from './components/MapComponent';
 import NicknameInputDialog from './components/NicknameInputDialog';
 import './index.css';
 import AiRecommend from './pages/aiRecommend/AiRecommend';
-import Detail from './pages/aiRecommend/Detail';
+// import Detail from './pages/aiRecommend/Detail';
 import Ranking from './pages/aiRecommend/Ranking';
 import RankMap from './pages/rankMap/RankMap';
 import CheckThought from './pages/checkThought/CheckThought';
@@ -197,7 +197,7 @@ const App = () => {
 
                 <Route path="/recommend" element={<AiRecommend />} />
                 <Route path="/recommend/ranking" element={<Ranking />} />
-                <Route path="/recommend/detail" element={<Detail />} />
+                {/* <Route path="/recommend/detail" element={<Detail />} /> */}
                 <Route path="/rank" element={<RankMap />} />
                 <Route path="/check" element={<CheckThought />} />
                 <Route path="/holiday" element={<Holiday />} />
