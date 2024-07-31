@@ -1,4 +1,9 @@
 import React, { useEffect, useState } from 'react';
+import { Provider } from 'react-redux';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import store from './redux/configureStore';
+import { ReactQueryDevtools } from 'react-query/devtools';
+
 import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import {
@@ -13,12 +18,29 @@ import Content4 from './components/Content4';
 import MapComponent from './components/MapComponent';
 import NicknameInputDialog from './components/NicknameInputDialog';
 import './index.css';
-import AiRecommend from './Pages/aiRecommend/AiRecommend';
-import Detail from './Pages/aiRecommend/Detail';
-import Ranking from './Pages/aiRecommend/Ranking';
-import RankMap from './Pages/rankMap/RankMap';
-import CheckThought from './Pages/checkThought/CheckThought';
-import Holiday from './Pages/holiday/Holiday';
+import AiRecommend from './pages/aiRecommend/AiRecommend';
+import Detail from './pages/aiRecommend/Detail';
+import Ranking from './pages/aiRecommend/Ranking';
+import RankMap from './pages/rankMap/RankMap';
+import CheckThought from './pages/checkThought/CheckThought';
+import Holiday from './pages/holiday/Holiday';
+
+// 필터 데이터를 가져오는 함수 생성
+const fetchFilterData = async () => {
+  const response = await axios.get('/api/filter-data');
+  return response.data;
+};
+
+// QueryClient 인스턴스 생성 및 설정
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      staleTime: 1000 * 60 * 5, // 5분
+    },
+  },
+});
+
 
 // 커스텀 테마 생성
 const theme = createTheme({
@@ -152,33 +174,43 @@ const Home = () => {
 // 메인 App 컴포넌트
 const App = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  
+  useEffect(() => {
+    // 앱 시작 시 필터 데이터 프리페칭
+    queryClient.prefetchQuery('filterData', fetchFilterData);
+  }, []);
 
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <Router>
-        <TopNav isMobile={isMobile} />
-        <Box sx={{ pb: isMobile ? 7 : 0 }}>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            {/* <Route path="/content1" element={<Content1 />} />
-            <Route path="/content2" element={<Content2 />} />
-            <Route path="/content3" element={<Content3 />} />
-            <Route path="/content4" element={<Content4 />} /> */}
+    <Provider store={store}>
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <Router>
+            <TopNav isMobile={isMobile} />
+            <Box sx={{ pb: isMobile ? 7 : 0 }}>
+              <Routes>
+                <Route path="/" element={<Home />} />
+                {/* <Route path="/content1" element={<Content1 />} />
+                <Route path="/content2" element={<Content2 />} />
+                <Route path="/content3" element={<Content3 />} />
+                <Route path="/content4" element={<Content4 />} /> */}
 
-            <Route path="/recommend" element={<AiRecommend />} />
-            <Route path="/recommend/ranking" element={<Ranking />} />
-            <Route path="/recommend/detail" element={<Detail />} />
-            <Route path="/rank" element={<RankMap />} />
-            <Route path="/check" element={<CheckThought />} />
-            <Route path="/holiday" element={<Holiday />} />
+                <Route path="/recommend" element={<AiRecommend />} />
+                <Route path="/recommend/ranking" element={<Ranking />} />
+                <Route path="/recommend/detail" element={<Detail />} />
+                <Route path="/rank" element={<RankMap />} />
+                <Route path="/check" element={<CheckThought />} />
+                <Route path="/holiday" element={<Holiday />} />
 
-          </Routes>
-        </Box>
-        {isMobile && <BottomNav />}
-        <NicknameInputDialog />
-      </Router>
-    </ThemeProvider>
+              </Routes>
+            </Box>
+            {isMobile && <BottomNav />}
+            <NicknameInputDialog />
+          </Router>
+        </ThemeProvider>
+        <ReactQueryDevtools initialIsOpen={false} />
+      </QueryClientProvider>
+    </Provider>
   );
 };
 
