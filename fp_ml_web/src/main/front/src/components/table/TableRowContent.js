@@ -4,7 +4,7 @@ import { Typography, TableCell, TableRow,  Box, useMediaQuery, useTheme, Chip } 
 
 const LocationIcon = () => (
   <img 
-    src="basic/location304_12566.png" 
+    src="/basic/location304_12566.png" 
     alt="위치 아이콘" 
     style={{ 
       width: '16px', 
