@@ -44,3 +44,11 @@ plaintext
 .gradle/
 fp_ml_web/.env
 *.env
+
+# Ignore all files in target directories
+target/
+
+# Include all files in specific target directory
+!**/src/main/**/target/
+!**/src/test/**/target/
+
