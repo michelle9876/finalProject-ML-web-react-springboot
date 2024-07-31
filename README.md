@@ -44,14 +44,6 @@
 - **타 경쟁 업체와의 차별화**: 통계적으로 유의미한 데이터를 기반으로 개인화된 맞춤형 서비스 제공 가능
 - **대표적인 경쟁업체**: 상권 분석 서비스 (서울상권정보, 오픈업)
 
-
-
-
-
-
-
-
-
 ## :crown: 팀원구성
 |<img src="https://avatars.githubusercontent.com/u/50590112?v=4" width="150" height="150"/>|<img src="https://avatars.githubusercontent.com/u/127280706?v=4" width="150" height="150"/>|<img src="https://avatars.githubusercontent.com/u/161932948?v=4" width="150" height="150"/>|<img src="https://avatars.githubusercontent.com/u/163943897?v=4" width="150" height="150"/>|
 |:-:|:-:|:-:|:-:|
@@ -87,6 +79,7 @@
 ## :link: 프로젝트 구조
 
 \```
+
 │  FpMlWebApplication.java
 │  
 ├─config
@@ -196,6 +189,7 @@
             HolidayServiceImpl.java
             UserService.java
             UserServiceImpl.java
+            
 \```
 
 
