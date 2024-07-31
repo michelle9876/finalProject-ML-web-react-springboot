@@ -85,7 +85,7 @@ const TableHeader = ({ isMobile }) => {
         { label: '임대료 수준', width: '20%' }
       ];
 
-   return (
+  return (
     <TableHead>
       <TableRow>
         {headers.map((header, index) => (
