@@ -11,5 +11,6 @@ import java.util.List;
 @AllArgsConstructor
 public class FactorRequestDto {
     private String businessDistrictName;
+    private String serviceIndustryName;
     private List<String> factors;
 }

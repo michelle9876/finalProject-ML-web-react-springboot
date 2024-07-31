@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface RecentDataRepository extends JpaRepository<RecentData, Long> {
-    List<RecentData> findByBusinessDistrictName(String businessDistrictName);
+    List<RecentData> findByBusinessDistrictNameAndServiceIndustryName(String businessDistrictName, String serviceIndustryName);
 }
