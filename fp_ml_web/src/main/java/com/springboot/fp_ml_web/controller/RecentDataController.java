@@ -18,8 +18,8 @@ public class RecentDataController {
     private RecentDataService recentDataService;
 
     @PostMapping("/factors")
-    public ResponseEntity<Map<String, Object>> getFactorByDistrictAndFactors(@RequestBody FactorRequestDto requestDto){
-        Map<String, Object> factors = recentDataService.getFactorsByDistrictAndFactors(requestDto.getBusinessDistrictName(), requestDto.getFactors());
+    public ResponseEntity<Map<String, Map<String, Object>>> getFactorsByDistrictAndService(@RequestBody FactorRequestDto requestDto){
+        Map<String, Map<String, Object>> factors= recentDataService.getFactorsByDistrictAndService(requestDto);
         return ResponseEntity.ok(factors);
     }
 
