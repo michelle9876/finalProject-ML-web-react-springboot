@@ -53,10 +53,11 @@ const Ranking = () => {
     }
   );
 
+  // ㄷㅎ
   const handleScroll = useCallback(() => {
     const scrollPosition = window.innerHeight + window.scrollY;
     const pageHeight = document.documentElement.offsetHeight;
-    const scrollThreshold = 0.7; // 80% 스크롤 시 다음 페이지 로드
+    const scrollThreshold = 0.7; // 70% 스크롤 시 다음 페이지 로드
 
     if (scrollPosition / pageHeight > scrollThreshold && hasNextPage && !isFetchingNextPage) {
       fetchNextPage();
