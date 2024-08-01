@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { Container, Paper, Typography, Grid, TextField, Button, Box, Alert, AlertTitle, CircularProgress  } from '@mui/material';
 import axios from 'axios';
 import BusinessTypeFilter from '../../components/BusinessTypeFilter';
@@ -6,6 +7,7 @@ import RegionFilter from '../../components/RegionFilter';
 import BarChart from '../../components/BarChart';
 import './holiday.css';
 import CombinedChart from '../../components/CombinedChart';
+import { setFilter, selectFilter } from '../../redux/modules/filter';
 
 const Header = ({ industry, region, recommendedDay }) => {
   // 요일에 따른 이미지 파일 이름을 매핑하는 객체
@@ -67,20 +69,22 @@ const ChartSection = ({ title, chartComponent, analysisText }) => (
 );
 
 const Holiday = () => {
-  const [industry, setIndustry] = useState('');
-  const [region, setRegion] = useState('');
-  const [recommendedDay, setRecommendedDay] = useState('');
-  const [chartData, setChartData] = useState({
-    industry: [],
-    allRegions: [],
-    allIndustries: []
-  });
+  const dispatch = useDispatch();
+  const filter = useSelector(selectFilter);
+  const industry = filter.selectedBusinessTypes[0]?.name || '';
+  const region = filter.selectedRegions[0]?.name || '';
   const [showBusinessTypeFilter, setShowBusinessTypeFilter] = useState(false);
   const [showRegionFilter, setShowRegionFilter] = useState(false);
   const [userId, setUserId] = useState(null);
   const [businessTypeData, setBusinessTypeData] = useState(null);
   const [regionData, setRegionData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [recommendedDay, setRecommendedDay] = useState('');
+  const [chartData, setChartData] = useState({
+    industry: [],
+    allRegions: [],
+    allIndustries: []
+  });
 
   const days = ['월', '화', '수', '목', '금', '토', '일'];
 
@@ -89,45 +93,25 @@ const Holiday = () => {
     setUserId(storedUserId);
   }, []);
 
-  useEffect(() => {
-    if (industry && region && userId) {
-      fetchRecommendationData();
-    }
-  }, [industry, region, userId]);
+  // useEffect(() => {
+  //   if (industry && region && userId) {
+  //     fetchRecommendationData();
+  //   }
+  // }, [industry, region, userId]);
 
-  const fetchRecommendationData = async () => {
-    setIsLoading(true);
-    try {
-      const response = await axios.post('/api/holiday-recommendation', null, {
-        params: {
-          serviceIndustryName: industry,
-          businessDistrictName: region,
-          userId: userId
-        }
-      });
-      const data = response.data;
-      setRecommendedDay(data.recommendedDay);
-      setChartData(data.chartData);
-    } catch (error) {
-      console.error('Error fetching recommendation data:', error);
-    }finally {
-      setIsLoading(false); // 데이터 요청 완료 시 로딩 종료
-    }
-  };
-
-  const handleIndustrySelect = (selected) => {
+  const handleIndustrySelect = useCallback((selected) => {
     if (selected && selected.length > 0) {
-      setIndustry(selected[0].name);
-      setShowBusinessTypeFilter(false);
+      dispatch(setFilter({ selectedBusinessTypes: selected }));
+      setShowBusinessTypeFilter(false);  // 드롭다운 닫기
     }
-  };
+  }, [dispatch]);
 
-  const handleRegionSelect = (selected) => {
+  const handleRegionSelect = useCallback((selected) => {
     if (selected && selected.length > 0) {
-      setRegion(selected[0].name);
+      dispatch(setFilter({ selectedRegions: selected }));
       setShowRegionFilter(false);
     }
-  };
+  }, [dispatch]);
 
   const handleBusinessTypeDataFetched = useCallback((data) => {
     setBusinessTypeData(data);
@@ -136,6 +120,28 @@ const Holiday = () => {
   const handleRegionDataFetched = useCallback((data) => {
     setRegionData(data);
   }, []);
+
+  const fetchRecommendationData = async () => {
+    setIsLoading(true);
+    try {
+      const response = await axios.post('/api/holiday-recommendation', null, {
+        params: {
+          serviceIndustryName: filter.selectedBusinessTypes[0]?.name,
+          businessDistrictName: filter.selectedRegions[0]?.name,
+          userId: userId
+        }
+      });
+      const data = response.data;
+      setRecommendedDay(data.recommendedDay);
+      setChartData(data.chartData);
+    } catch (error) {
+      console.error('Error fetching recommendation data:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const isButtonDisabled = !filter.selectedBusinessTypes[0]?.name || !filter.selectedRegions[0]?.name || !userId;
 
   const generateAnalysisText = (data, type) => {
     const recommendedDayIndex = days.indexOf(recommendedDay.slice(0, 1));
@@ -185,8 +191,8 @@ const Holiday = () => {
             <TextField
               fullWidth
               label="업종 선택"
-              value={industry}
-              onClick={() => setShowBusinessTypeFilter(!showBusinessTypeFilter)}
+              value={filter.selectedBusinessTypes[0]?.name || ''}
+              onClick={() => setShowBusinessTypeFilter(prev => !prev)}
               InputProps={{ readOnly: true }}
             />
             {showBusinessTypeFilter && (
@@ -204,8 +210,8 @@ const Holiday = () => {
             <TextField
               fullWidth
               label="지역 선택"
-              value={region}
-              onClick={() => setShowRegionFilter(!showRegionFilter)}
+              value={filter.selectedRegions[0]?.name || ''}
+              onClick={() => setShowRegionFilter(prev => !prev)}
               InputProps={{ readOnly: true }}
             />
             {showRegionFilter && (
@@ -226,7 +232,7 @@ const Holiday = () => {
           color="primary" 
           onClick={fetchRecommendationData} 
           fullWidth
-          disabled={!industry || !region || !userId}
+          disabled={isButtonDisabled}
         >
           휴일 추천받기
         </Button>

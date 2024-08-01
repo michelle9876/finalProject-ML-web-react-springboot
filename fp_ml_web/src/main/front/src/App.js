@@ -61,7 +61,7 @@ const TopNav = ({ isMobile }) => {
     <AppBar position="static" color="primary">
       <Toolbar>
         <Typography variant="h6" component="div" sx={{ flexGrow: 1, cursor: 'pointer' }} onClick={() => navigate('/')}>
-          <PersonSearch sx={{ mr: 1 }} />사장님 구해요
+          <PersonSearch sx={{ mr: 1 }} />차칸 소영소영 사장님 구해요
         </Typography>
         {!isMobile && (
           <>
