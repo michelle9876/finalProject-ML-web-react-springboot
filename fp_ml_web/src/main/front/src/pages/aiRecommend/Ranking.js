@@ -4,6 +4,7 @@ import { useInfiniteQuery } from 'react-query';
 import { Container, Paper, Typography, Table, TableBody, TableContainer, Box, CircularProgress, useMediaQuery, useTheme } from '@mui/material';
 import TableHeader from '../../components/table/TableHeader';
 import TableRowContent from '../../components/table/TableRowContent';
+import DetailModal from '../../components/DetailModal';
 import { selectFilter } from '../../redux/modules/filter';
 import { fetchPredictions } from '../../services/api';
 import { transformFilterData } from '../../utils/filterUtils';
@@ -37,6 +38,9 @@ const Ranking = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const filter = useSelector(selectFilter);
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null);
+
   const {
     data,
     fetchNextPage,
@@ -52,6 +56,11 @@ const Ranking = () => {
       },
     }
   );
+
+  const handleItemClick = (item) => {
+    setSelectedItem(item);
+    setIsModalOpen(true);
+  };
 
   // ㄷㅎ
   const handleScroll = useCallback(() => {
@@ -81,7 +90,12 @@ const Ranking = () => {
                 data.pages.map((page, i) => (
                   <React.Fragment key={i}>
                     {page.content.map((prediction, index) => (
-                      <TableRowContent key={index} data={prediction} isMobile={isMobile} />
+                      <TableRowContent 
+                        key={index} 
+                        data={prediction} 
+                        isMobile={isMobile} 
+                        onClick={() => handleItemClick(prediction)}  // 클릭 핸들러 추가
+                      />
                     ))}
                   </React.Fragment>
                 ))}
@@ -97,6 +111,13 @@ const Ranking = () => {
           <Typography sx={{ textAlign: 'center', mt: 2, mb: 2 }}>모든 결과를 불러왔습니다.</Typography>
         )}
       </Paper>
+
+      {/* DetailModal 컴포넌트 추가 */}
+      <DetailModal 
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        data={selectedItem}
+      />
     </Container>
   );
 };
