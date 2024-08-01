@@ -55,13 +55,13 @@ const RentLevelChip = ({ rent, isMobile }) => {
   );
 };
 
-const TableRowContent = ({ data, isMobile }) => {
+const TableRowContent = ({ data, isMobile, onClick }) => {
   const theme = useTheme();
   const isVerySmall = useMediaQuery(theme.breakpoints.down('xs'));
   const salesInTenThousand = Math.round(data.predictedSales / 10000).toLocaleString();
 
   return (
-    <TableRow>
+    <TableRow onClick={() => onClick(data)} style={{ cursor: 'pointer' }}>
       <TableCell align="center" sx={{ width: isMobile ? '15%' : '10%', padding: isMobile ? '8px 4px' : '16px' }}>
         <Typography variant={isMobile ? (isVerySmall ? 'caption' : 'body2') : 'body1'}>
           {data.ranking}위
