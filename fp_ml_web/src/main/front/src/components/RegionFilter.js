@@ -1,33 +1,36 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { setFilter, selectFilter, setRegionData } from '../redux/modules/filter';
 import { Typography, Button, Grid, Chip, Stack, Box, CircularProgress } from '@mui/material';
 import axios from 'axios';
 import './CommonFilter.css';
 
-const RegionFilter = ({ onSelect, onDataFetched, singleSelect = false, initialData, maxSelect = 5, mobileResponsive = false }) => {
-  const [allData, setAllData] = useState(initialData || []);
+const RegionFilter = ({ onDataFetched, singleSelect = false, maxSelect = 500, mobileResponsive = false }) => {
+  const dispatch = useDispatch();
+  const filter = useSelector(selectFilter);
+  const { selectedRegions, regionData } = filter;
   const [districts, setDistricts] = useState([]);
   const [selectedDistrict, setSelectedDistrict] = useState(null);
   const [neighborhoods, setNeighborhoods] = useState([]);
   const [selectedNeighborhood, setSelectedNeighborhood] = useState(null);
   const [commercialAreas, setCommercialAreas] = useState([]);
-  const [selectedCommercialAreas, setSelectedCommercialAreas] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (!initialData) {
+    if (!regionData) {
       fetchData();
     } else {
-      processData(initialData);
+      processData(regionData);
     }
-  }, [initialData]);
+  }, [regionData]);
 
   const fetchData = async () => {
     setLoading(true);
     setError(null);
     try {
       const response = await axios.get('/api/districts');
-      setAllData(response.data);
+      dispatch(setRegionData(response.data));
       onDataFetched(response.data);
       processData(response.data);
     } catch (error) {
@@ -39,16 +42,18 @@ const RegionFilter = ({ onSelect, onDataFetched, singleSelect = false, initialDa
   };
 
   const processData = (data) => {
+    if (!data) return;
     const uniqueDistricts = [...new Set(data.map(item => item.district_name))];
     setDistricts(uniqueDistricts.map(name => ({ name })));
     if (uniqueDistricts.length > 0) {
-      handleDistrictSelect({ name: uniqueDistricts[0] });
+      handleDistrictSelect({ name: uniqueDistricts[0] }, data);
     }
   };
 
-  const handleDistrictSelect = (district) => {
+  const handleDistrictSelect = (district, data = regionData) => {
+    if (!data) return;
     setSelectedDistrict(district);
-    const filteredData = allData.filter(item => item.district_name === district.name);
+    const filteredData = data.filter(item => item.district_name === district.name);
     const uniqueNeighborhoods = [...new Set(filteredData.map(item => item.administrative_dong_name))];
     setNeighborhoods(uniqueNeighborhoods.map(name => ({ name })));
     setSelectedNeighborhood(null);
@@ -56,8 +61,9 @@ const RegionFilter = ({ onSelect, onDataFetched, singleSelect = false, initialDa
   };
 
   const handleNeighborhoodSelect = (neighborhood) => {
+    if (!regionData) return;
     setSelectedNeighborhood(neighborhood);
-    const filteredData = allData.filter(
+    const filteredData = regionData.filter(
       item => item.district_name === selectedDistrict.name && 
               item.administrative_dong_name === neighborhood.name
     );
@@ -67,22 +73,14 @@ const RegionFilter = ({ onSelect, onDataFetched, singleSelect = false, initialDa
 
   const handleCommercialAreaToggle = (area) => {
     if (singleSelect) {
-      const newSelection = [area];
-      setSelectedCommercialAreas(newSelection);
-      onSelect(newSelection);
+      dispatch(setFilter({ selectedRegions: [area] }));
     } else {
-      setSelectedCommercialAreas(prev => {
-        const newSelection = prev.some(a => a.name === area.name) 
-          ? prev.filter(a => a.name !== area.name) 
-          : [...prev, area];
-        if (newSelection.length <= maxSelect) {
-          onSelect(newSelection);
-          return newSelection;
-        } else {
-          // 최대 선택 개수를 초과했을 때 사용자에게 알림을 줄 수 있습니다.
-          return prev;
-        }
-      });
+      const newSelection = selectedRegions.some(a => a.name === area.name)
+        ? selectedRegions.filter(a => a.name !== area.name)
+        : [...selectedRegions, area];
+      if (newSelection.length <= maxSelect) {
+        dispatch(setFilter({ selectedRegions: newSelection }));
+      }
     }
   };
 
@@ -146,7 +144,7 @@ const RegionFilter = ({ onSelect, onDataFetched, singleSelect = false, initialDa
                     <Button 
                       key={area.name} 
                       onClick={() => handleCommercialAreaToggle(area)}
-                      variant={selectedCommercialAreas.some(a => a.name === area.name) ? "contained" : "outlined"}
+                      variant={selectedRegions.some(a => a.name === area.name) ? "contained" : "outlined"}
                       className="filter-button"
                     >
                       {area.name}
@@ -157,16 +155,16 @@ const RegionFilter = ({ onSelect, onDataFetched, singleSelect = false, initialDa
                 )}
               </Box>
             </Grid>
-            </>
+          </>
         )}
       </Grid>
       {!singleSelect && (
         <>
           <Typography variant="subtitle2" className="filter-subtitle">선택한 상권</Typography>
           <Box className="selected-items-container">
-            {selectedCommercialAreas.length > 0 ? (
+            {selectedRegions.length > 0 ? (
               <Stack direction="row" spacing={1} flexWrap="wrap">
-                {selectedCommercialAreas.map(area => (
+                {selectedRegions.map(area => (
                   <Chip
                     key={area.name}
                     label={area.name}
