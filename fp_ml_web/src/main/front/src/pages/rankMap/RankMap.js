@@ -3,8 +3,8 @@ import { Box, Typography, Paper, Button, Fade, Snackbar, IconButton } from '@mui
 import MuiAlert from '@mui/material/Alert';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import CloseIcon from '@mui/icons-material/Close';
-import BusinessTypeFilter from './BusinessTypeFilter';
-import CustomMapMarker from './CustomMapMarker';
+import BusinessTypeFilter from '../../components/BusinessTypeFilter';
+import CustomMapMarker from '../../components/CustomMapMarker';
 import axios from 'axios';
 
 const predefinedColors = ["#FFB399", "#99FFB3", "#99C2FF", "#FF99EE", "#99FFED"];
@@ -32,7 +32,7 @@ const predefinedColors = ["#FFB399", "#99FFB3", "#99C2FF", "#FF99EE", "#99FFED"]
 //   ],
 // };
 
-const Content2 = () => {
+const RankMap = () => {
   const mapRef = useRef(null);
   const [map, setMap] = useState(null);
   const [selectedBusinessTypes, setSelectedBusinessTypes] = useState([]);
@@ -271,4 +271,4 @@ const Content2 = () => {
   );
 };
 
-export default Content2;
+export default RankMap;

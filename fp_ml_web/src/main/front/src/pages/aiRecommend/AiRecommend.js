@@ -1,55 +1,48 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { Container, Paper, Typography, Grid, TextField, Button, Snackbar, Box } from '@mui/material';
 import MuiAlert from '@mui/material/Alert';
-import RegionFilter from './RegionFilter';
-import BusinessTypeFilter from './BusinessTypeFilter';
-import RecommendationResults from './RecommendationResults';
-import axios from 'axios';
+import RegionFilter from '../../components/RegionFilter';
+import BusinessTypeFilter from '../../components/BusinessTypeFilter';
+import { setFilter, selectFilter } from '../../redux/modules/filter';
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-const Content1 = () => {
-  const [selectedRegions, setSelectedRegions] = useState([]);
-  const [selectedBusinessTypes, setSelectedBusinessTypes] = useState([]);
+
+const AiRecommend = () => {
+  const dispatch = useDispatch();
+  const filter = useSelector(selectFilter);
+  const navigate = useNavigate();
+
   const [nickname, setNickname] = useState('');
-  const [rentMin, setRentMin] = useState('');
-  const [rentMax, setRentMax] = useState('');
-  const [areaMin, setAreaMin] = useState('');
-  const [areaMax, setAreaMax] = useState('');
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [businessTypeData, setBusinessTypeData] = useState(null);
   const [regionData, setRegionData] = useState(null);
   const [showResults, setShowResults] = useState(false);
-  const [filterData, setFilterData] = useState(null);
 
   useEffect(() => {
     const savedNickname = localStorage.getItem('nickname');
     if (savedNickname) {
       setNickname(savedNickname);
     }
-    // 세션 스토리지에서 필터 데이터 불러오기
+    // Load filter data from session storage
     const savedFilter = sessionStorage.getItem('filterData');
     if (savedFilter) {
-      const parsedFilter = JSON.parse(savedFilter);
-      setSelectedRegions(parsedFilter.selectedRegions || []);
-      setSelectedBusinessTypes(parsedFilter.selectedBusinessTypes || []);
-      setRentMin(parsedFilter.rentMin || '');
-      setRentMax(parsedFilter.rentMax || '');
-      setAreaMin(parsedFilter.areaMin || '');
-      setAreaMax(parsedFilter.areaMax || '');
+      dispatch(setFilter(JSON.parse(savedFilter)));
     }
-  }, []);
+  }, [dispatch]);
 
-  const handleRegionSelect = (regions) => {
-    setSelectedRegions(regions);
-  };
+  // const handleRegionSelect = (regions) => {
+  //   dispatch(setFilter({ selectedRegions: regions }));
+  // };
 
-  const handleBusinessTypeSelect = (businessTypes) => {
-    setSelectedBusinessTypes(businessTypes);
-  };
+  // const handleBusinessTypeSelect = (businessTypes) => {
+  //   dispatch(setFilter({ selectedBusinessTypes: businessTypes }));
+  // };
 
   const handleBusinessTypeDataFetched = (data) => {
     setBusinessTypeData(data);
@@ -59,41 +52,30 @@ const Content1 = () => {
     setRegionData(data);
   };
 
-  const handleRecommendation = async () => {
+  const handleRecommendation = () => {
     const userId = localStorage.getItem('userId');
-    const data = {
+    const filterData = {
       userId: parseInt(userId),
-      service_industry_name: selectedBusinessTypes.map(type => type.name),
-      business_district_name: selectedRegions.map(region => region.name),
+      service_industry_name: filter.selectedBusinessTypes.map(type => type.name),
+      business_district_name: filter.selectedRegions.map(region => region.name),
       rent_fee_select: { 
-        min: parseInt(rentMin) * 10000,
-        max: parseInt(rentMax) * 10000
+        min: parseInt(filter.rentMin) * 10000,
+        max: parseInt(filter.rentMax) * 10000
       },
       rent_area: {
-        min: parseInt(areaMin),
-        max: parseInt(areaMax)
+        min: parseInt(filter.areaMin),
+        max: parseInt(filter.areaMax)
       }
     };
   
-    console.log('Recommendation request data:', data);
-    setFilterData(data);
-
-    // 필터 데이터를 세션 스토리지에 저장
-    sessionStorage.setItem('filterData', JSON.stringify({
-      selectedRegions,
-      selectedBusinessTypes,
-      rentMin,
-      rentMax,
-      areaMin,
-      areaMax
-    }));
-
-    setShowResults(true);
+    console.log('Recommendation request data:', filterData);
+    sessionStorage.setItem('filterData', JSON.stringify(filter));
+    navigate('/recommend/ranking');
   };
 
-  if (showResults) {
-    return <RecommendationResults filterData={filterData} />;
-  }
+  // if (showResults) {
+  //   return <RecommendationResults filterData={filter} />;
+  // }
 
   const handleCloseSnackbar = (event, reason) => {
     if (reason === 'clickaway') {
@@ -103,15 +85,8 @@ const Content1 = () => {
   };
 
   return (
-    <Container 
-      maxWidth="md" // "lg"에서 "md"로 변경
-      sx={{ 
-        mt: 4,
-        width: '100%',
-        maxWidth: '900px', // 원하는 최대 너비로 설정
-      }}
-    >
-      <Paper sx={{ p: { xs: 2, sm: 3 } }}> {/* 반응형 패딩 */}
+    <Container maxWidth="md" sx={{ mt: 4, width: '100%', maxWidth: '900px' }}>
+      <Paper sx={{ p: { xs: 2, sm: 3 } }}>
         <Typography variant="h4" gutterBottom>AI맞춤추천</Typography>
         <Typography variant="subtitle1" gutterBottom>
           {nickname ? `${nickname}님!` : '안녕하세요!'} 원하는 조건을 입력해주세요
@@ -120,7 +95,6 @@ const Content1 = () => {
         <Grid container spacing={1}>
           <Grid item xs={12} md={6}>
             <RegionFilter 
-              onSelect={handleRegionSelect} 
               onDataFetched={handleRegionDataFetched}
               initialData={regionData}
               mobileResponsive={false}
@@ -128,7 +102,6 @@ const Content1 = () => {
           </Grid>
           <Grid item xs={12} md={6}>
             <BusinessTypeFilter 
-              onSelect={handleBusinessTypeSelect} 
               onDataFetched={handleBusinessTypeDataFetched}
               initialData={businessTypeData}
               singleSelect={false} 
@@ -144,8 +117,8 @@ const Content1 = () => {
                   fullWidth
                   label="최소"
                   type="number"
-                  value={rentMin}
-                  onChange={(e) => setRentMin(e.target.value)}
+                  value={filter.rentMin}
+                  onChange={(e) => dispatch(setFilter({ rentMin: e.target.value }))}
                 />
               </Grid>
               <Grid item xs={6}>
@@ -153,8 +126,8 @@ const Content1 = () => {
                   fullWidth
                   label="최대"
                   type="number"
-                  value={rentMax}
-                  onChange={(e) => setRentMax(e.target.value)}
+                  value={filter.rentMax}
+                  onChange={(e) => dispatch(setFilter({ rentMax: e.target.value }))}
                 />
               </Grid>
             </Grid>
@@ -167,8 +140,8 @@ const Content1 = () => {
                   fullWidth
                   label="최소"
                   type="number"
-                  value={areaMin}
-                  onChange={(e) => setAreaMin(e.target.value)}
+                  value={filter.areaMin}
+                  onChange={(e) => dispatch(setFilter({ areaMin: e.target.value }))}
                 />
               </Grid>
               <Grid item xs={6}>
@@ -176,8 +149,8 @@ const Content1 = () => {
                   fullWidth
                   label="최대"
                   type="number"
-                  value={areaMax}
-                  onChange={(e) => setAreaMax(e.target.value)}
+                  value={filter.areaMax}
+                  onChange={(e) => dispatch(setFilter({ areaMax: e.target.value }))}
                 />
               </Grid>
             </Grid>
@@ -203,4 +176,4 @@ const Content1 = () => {
   );
 };
 
-export default Content1;
+export default AiRecommend;

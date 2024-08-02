@@ -1,4 +1,9 @@
 import React, { useEffect, useState } from 'react';
+import { Provider } from 'react-redux';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import store from './redux/configureStore';
+import { ReactQueryDevtools } from 'react-query/devtools';
+
 import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import {
@@ -13,6 +18,29 @@ import Content4 from './components/Content4';
 import MapComponent from './components/MapComponent';
 import NicknameInputDialog from './components/NicknameInputDialog';
 import './index.css';
+import AiRecommend from './pages/aiRecommend/AiRecommend';
+// import Detail from './pages/aiRecommend/Detail';
+import Ranking from './pages/aiRecommend/Ranking';
+import RankMap from './pages/rankMap/RankMap';
+import CheckThought from './pages/checkThought/CheckThought';
+import Holiday from './pages/holiday/Holiday';
+
+// 필터 데이터를 가져오는 함수 생성
+const fetchFilterData = async () => {
+  const response = await axios.get('/api/filter-data');
+  return response.data;
+};
+
+// QueryClient 인스턴스 생성 및 설정
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      staleTime: 1000 * 60 * 5, // 5분
+    },
+  },
+});
+
 
 // 커스텀 테마 생성
 const theme = createTheme({
@@ -38,10 +66,10 @@ const TopNav = ({ isMobile }) => {
         {!isMobile && (
           <>
             <Button color="inherit" onClick={() => navigate('/')}>{<HomeIcon sx={{ mr: 1 }} />}홈</Button>
-            <Button color="inherit" onClick={() => navigate('/content1')}>{<Recommend sx={{ mr: 1 }} />}AI 맞춤 추천</Button>
-            <Button color="inherit" onClick={() => navigate('/content2')}>{<Map sx={{ mr: 1 }} />}랭킹 in 지도</Button>
-            <Button color="inherit" onClick={() => navigate('/content3')}>{<CheckCircle sx={{ mr: 1 }} />}확인하기</Button>
-            <Button color="inherit" onClick={() => navigate('/content4')}>{<BeachAccess sx={{ mr: 1 }} />}휴일추천</Button>
+            <Button color="inherit" onClick={() => navigate('/recommend')}>{<Recommend sx={{ mr: 1 }} />}AI 맞춤 추천</Button>
+            <Button color="inherit" onClick={() => navigate('/rank')}>{<Map sx={{ mr: 1 }} />}랭킹 in 지도</Button>
+            <Button color="inherit" onClick={() => navigate('/check')}>{<CheckCircle sx={{ mr: 1 }} />}확인하기</Button>
+            <Button color="inherit" onClick={() => navigate('/holiday')}>{<BeachAccess sx={{ mr: 1 }} />}휴일추천</Button>
           </>
         )}
       </Toolbar>
@@ -65,11 +93,11 @@ const BottomNav = () => {
       showLabels
       sx={{ position: 'fixed', bottom: 0, width: '100%', zIndex: 1201 }}
     >
-      <BottomNavigationAction label="AI 맞춤 추천" value="/content1" icon={<Recommend />} />
-      <BottomNavigationAction label="랭킹 in 지도" value="/content2" icon={<Map />} />
+      <BottomNavigationAction label="AI 맞춤 추천" value="/recommend" icon={<Recommend />} />
+      <BottomNavigationAction label="랭킹 in 지도" value="/rank" icon={<Map />} />
       <BottomNavigationAction label="홈" value="/" icon={<HomeIcon />} />
-      <BottomNavigationAction label="확인하기" value="/content3" icon={<CheckCircle />} />
-      <BottomNavigationAction label="휴일추천" value="/content4" icon={<BeachAccess />} />
+      <BottomNavigationAction label="확인하기" value="/check" icon={<CheckCircle />} />
+      <BottomNavigationAction label="휴일추천" value="/holiday" icon={<BeachAccess />} />
     </BottomNavigation>
   );
 };
@@ -81,10 +109,10 @@ const Home = () => {
     navigate(path);
   };
   const contents = [
-    { id: 1, title: ['어디에 어떤 업종?', 'AI 맞춤 추천'], path: '/content1' },
-    { id: 2, title: ['지도로 한눈에 확인', '랭킹 IN 지도'], path: '/content2' },
-    { id: 3, title: ['내 생각이 맞을까?', '확인하기'], path: '/content3' },
-    { id: 4, title: ['휴일 추천해요', '휴일 추천'], path: '/content4' },
+    { id: 1, title: ['어디에 어떤 업종?', 'AI 맞춤 추천'], path: '/recommend' },
+    { id: 2, title: ['지도로 한눈에 확인', '랭킹 IN 지도'], path: '/rank' },
+    { id: 3, title: ['내 생각이 맞을까?', '확인하기'], path: '/check' },
+    { id: 4, title: ['휴일 추천해요', '휴일 추천'], path: '/holiday' },
   ];
 
   return (
@@ -145,33 +173,44 @@ const Home = () => {
 
 // 메인 App 컴포넌트
 const App = () => {
-  const [data, setData] = useState('');
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-
+  
   useEffect(() => {
-    axios.get('/api/data')
-      .then(res => setData(res.data))
-      .catch(err => console.log(err));
+    // 앱 시작 시 필터 데이터 프리페칭
+    queryClient.prefetchQuery('filterData', fetchFilterData);
   }, []);
 
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <Router>
-        <TopNav isMobile={isMobile} />
-        <Box sx={{ pb: isMobile ? 7 : 0 }}>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/content1" element={<Content1 />} />
-            <Route path="/content2" element={<Content2 />} />
-            <Route path="/content3" element={<Content3 />} />
-            <Route path="/content4" element={<Content4 />} />
-          </Routes>
-        </Box>
-        {isMobile && <BottomNav />}
-        <NicknameInputDialog />
-      </Router>
-    </ThemeProvider>
+    <Provider store={store}>
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <Router>
+            <TopNav isMobile={isMobile} />
+            <Box sx={{ pb: isMobile ? 7 : 0 }}>
+              <Routes>
+                <Route path="/" element={<Home />} />
+                {/* <Route path="/content1" element={<Content1 />} />
+                <Route path="/content2" element={<Content2 />} />
+                <Route path="/content3" element={<Content3 />} />
+                <Route path="/content4" element={<Content4 />} /> */}
+
+                <Route path="/recommend" element={<AiRecommend />} />
+                <Route path="/recommend/ranking" element={<Ranking />} />
+                {/* <Route path="/recommend/detail" element={<Detail />} /> */}
+                <Route path="/rank" element={<RankMap />} />
+                <Route path="/check" element={<CheckThought />} />
+                <Route path="/holiday" element={<Holiday />} />
+
+              </Routes>
+            </Box>
+            {isMobile && <BottomNav />}
+            <NicknameInputDialog />
+          </Router>
+        </ThemeProvider>
+        <ReactQueryDevtools initialIsOpen={false} />
+      </QueryClientProvider>
+    </Provider>
   );
 };
 

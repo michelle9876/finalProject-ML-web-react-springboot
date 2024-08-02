@@ -1,30 +1,33 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { setFilter, selectFilter, setBusinessTypeData } from '../redux/modules/filter';
 import { Typography, Button, Grid, Chip, Stack, Box, CircularProgress } from '@mui/material';
 import axios from 'axios';
 
-const BusinessTypeFilter = ({ onSelect, onDataFetched, singleSelect = false, initialData, maxSelect = 5, mobileResponsive = false}) => {  const [allData, setAllData] = useState(initialData || []);
+const BusinessTypeFilter = ({ onDataFetched, singleSelect = false, maxSelect = 5, mobileResponsive = false }) => {
+  const dispatch = useDispatch();
+  const filter = useSelector(selectFilter);
+  const { selectedBusinessTypes, businessTypeData } = filter;
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [businessTypes, setBusinessTypes] = useState([]);
-  const [selectedBusinessTypes, setSelectedBusinessTypes] = useState([]);
-  const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (!initialData) {
+    if (!businessTypeData) {
       fetchData();
     } else {
-      processData(initialData);
+      processData(businessTypeData);
     }
-  }, [initialData]);
+  }, [businessTypeData]);  
 
   const fetchData = async () => {
     setLoading(true);
     setError(null);
     try {
       const response = await axios.get('/api/service-industries');
-      setAllData(response.data);
+      dispatch(setBusinessTypeData(response.data));
       onDataFetched(response.data);
       processData(response.data);
     } catch (error) {
@@ -34,19 +37,20 @@ const BusinessTypeFilter = ({ onSelect, onDataFetched, singleSelect = false, ini
       setLoading(false);
     }
   };
-
-
+  
   const processData = (data) => {
+    if (!data) return;
     const uniqueCategories = [...new Set(data.map(item => item.service_industry_category))];
     setCategories(uniqueCategories.map(name => ({ name })));
     if (uniqueCategories.length > 0) {
-      handleCategorySelect({ name: uniqueCategories[0] });
+      handleCategorySelect({ name: uniqueCategories[0] }, data);
     }
   };
 
-  const handleCategorySelect = (category) => {
+  const handleCategorySelect = (category, data = businessTypeData) => {
+    if (!data) return;
     setSelectedCategory(category);
-    const filteredData = allData.filter(item => item.service_industry_category === category.name);
+    const filteredData = data.filter(item => item.service_industry_category === category.name);
     setBusinessTypes(filteredData.map(item => ({
       code: item.serviceIndustry_id.toString(),
       name: item.service_industry_name
@@ -55,26 +59,15 @@ const BusinessTypeFilter = ({ onSelect, onDataFetched, singleSelect = false, ini
 
   const handleBusinessTypeToggle = (businessType) => {
     if (singleSelect) {
-      const newSelection = [businessType];
-      setSelectedBusinessTypes(newSelection);
-      onSelect(newSelection);
+      dispatch(setFilter({ selectedBusinessTypes: [businessType] }));
     } else {
-      setSelectedBusinessTypes(prev => {
-        const newSelection = prev.some(b => b.code === businessType.code) 
-          ? prev.filter(b => b.code !== businessType.code) 
-          : [...prev, businessType];
-        if (newSelection.length <= maxSelect) {
-          onSelect(newSelection);
-          return newSelection;
-        } else {
-          return prev;
-        }
-      });
+      const newSelection = selectedBusinessTypes.some(b => b.code === businessType.code)
+        ? selectedBusinessTypes.filter(b => b.code !== businessType.code)
+        : [...selectedBusinessTypes, businessType];
+      if (newSelection.length <= maxSelect) {
+        dispatch(setFilter({ selectedBusinessTypes: newSelection }));
+      }
     }
-  };
-
-  const toggleFilter = () => {
-    setIsFilterOpen(!isFilterOpen);
   };
 
   if (error) {
