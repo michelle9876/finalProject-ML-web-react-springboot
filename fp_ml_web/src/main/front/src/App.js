@@ -15,9 +15,11 @@ import Content1 from './components/Content1';
 import Content2 from './components/Content2';
 import Content3 from './components/Content3';
 import Content4 from './components/Content4';
+import TopNav from './components/navigation/TopNav';
 import MapComponent from './components/MapComponent';
 import NicknameInputDialog from './components/NicknameInputDialog';
 import './index.css';
+import './App.css';
 import AiRecommend from './pages/aiRecommend/AiRecommend';
 // import Detail from './pages/aiRecommend/Detail';
 import Ranking from './pages/aiRecommend/Ranking';
@@ -54,28 +56,28 @@ const theme = createTheme({
   },
 });
 
-const TopNav = ({ isMobile }) => {
-  const navigate = useNavigate();
+// const TopNav = ({ isMobile }) => {
+//   const navigate = useNavigate();
 
-  return (
-    <AppBar position="static" color="primary">
-      <Toolbar>
-        <Typography variant="h6" component="div" sx={{ flexGrow: 1, cursor: 'pointer' }} onClick={() => navigate('/')}>
-          <PersonSearch sx={{ mr: 1 }} />사장님 구해요
-        </Typography>
-        {!isMobile && (
-          <>
-            <Button color="inherit" onClick={() => navigate('/')}>{<HomeIcon sx={{ mr: 1 }} />}홈</Button>
-            <Button color="inherit" onClick={() => navigate('/recommend')}>{<Recommend sx={{ mr: 1 }} />}AI 맞춤 추천</Button>
-            <Button color="inherit" onClick={() => navigate('/rank')}>{<Map sx={{ mr: 1 }} />}랭킹 in 지도</Button>
-            <Button color="inherit" onClick={() => navigate('/check')}>{<CheckCircle sx={{ mr: 1 }} />}확인하기</Button>
-            <Button color="inherit" onClick={() => navigate('/holiday')}>{<BeachAccess sx={{ mr: 1 }} />}휴일추천</Button>
-          </>
-        )}
-      </Toolbar>
-    </AppBar>
-  );
-};
+//   return (
+//     <AppBar position="static" color="primary">
+//       <Toolbar>
+//         <Typography variant="h6" component="div" sx={{ flexGrow: 1, cursor: 'pointer' }} onClick={() => navigate('/')}>
+//           <PersonSearch sx={{ mr: 1 }} />사장님 구해요
+//         </Typography>
+//         {!isMobile && (
+//           <>
+//             <Button color="inherit" onClick={() => navigate('/')}>{<HomeIcon sx={{ mr: 1 }} />}홈</Button>
+//             <Button color="inherit" onClick={() => navigate('/recommend')}>{<Recommend sx={{ mr: 1 }} />}AI 맞춤 추천</Button>
+//             <Button color="inherit" onClick={() => navigate('/rank')}>{<Map sx={{ mr: 1 }} />}랭킹 in 지도</Button>
+//             <Button color="inherit" onClick={() => navigate('/check')}>{<CheckCircle sx={{ mr: 1 }} />}확인하기</Button>
+//             <Button color="inherit" onClick={() => navigate('/holiday')}>{<BeachAccess sx={{ mr: 1 }} />}휴일추천</Button>
+//           </>
+//         )}
+//       </Toolbar>
+//     </AppBar>
+//   );
+// };
 
 // 하단 네비게이션 컴포넌트
 const BottomNav = () => {
