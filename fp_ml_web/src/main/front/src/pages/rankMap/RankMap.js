@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { Box, Typography, Paper, Button, Fade, Snackbar, IconButton } from '@mui/material';
 import MuiAlert from '@mui/material/Alert';
 import FilterListIcon from '@mui/icons-material/FilterList';
@@ -6,6 +7,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import BusinessTypeFilter from '../../components/BusinessTypeFilter';
 import CustomMapMarker from '../../components/CustomMapMarker';
 import axios from 'axios';
+import { setFilter, selectFilter } from '../../redux/modules/filter';
 
 const predefinedColors = ["#FFB399", "#99FFB3", "#99C2FF", "#FF99EE", "#99FFED"];
 
@@ -33,6 +35,9 @@ const predefinedColors = ["#FFB399", "#99FFB3", "#99C2FF", "#FF99EE", "#99FFED"]
 // };
 
 const RankMap = () => {
+  const dispatch = useDispatch(); // 추가
+  const filter = useSelector(selectFilter); // 추가
+  
   const mapRef = useRef(null);
   const [map, setMap] = useState(null);
   const [selectedBusinessTypes, setSelectedBusinessTypes] = useState([]);
@@ -76,11 +81,11 @@ const RankMap = () => {
   useEffect(() => {
     if (map) {
       clearAllMarkers();
-      if (selectedBusinessTypes.length > 0) {
+      if (filter.selectedBusinessTypes.length > 0) {
         fetchTopCommercialAreas();
       }
     }
-  }, [map, selectedBusinessTypes]);
+  }, [map, filter.selectedBusinessTypes]);
 
   const clearAllMarkers = useCallback(() => {
     markers.forEach(marker => marker.setMap(null));
@@ -101,7 +106,7 @@ const RankMap = () => {
     try {
       const userId = localStorage.getItem('userId');
       const response = await axios.post('/api/rankmap', {
-        selectedBusinessTypes: selectedBusinessTypes.map(type => type.name),
+        selectedBusinessTypes: filter.selectedBusinessTypes.map(type => type.name),
         userId: userId ? parseInt(userId) : null
       }, { signal: abortControllerRef.current.signal });
       setTopCommercialAreas(response.data);
@@ -124,10 +129,13 @@ const RankMap = () => {
     }
   };
 
-
-  const handleBusinessTypeDataFetched = useCallback((data) => {
+  // const handleBusinessTypeDataFetched = useCallback((data) => {
+  //   setBusinessTypeData(data);
+  // }, []);
+  
+  const handleBusinessTypeDataFetched = (data) => {
     setBusinessTypeData(data);
-  }, []);
+  };
 
   const handleBusinessTypeSelect = useCallback((selected) => {
     if (selected.length <= 5) {
@@ -162,15 +170,32 @@ const RankMap = () => {
   
         newMarkers.push(marker);
   
+        const infoWindow = new window.naver.maps.InfoWindow({
+          content: `
+            <div style="padding:10px; border-radius: 10px; background-color: white; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: relative; cursor: pointer;">
+              <strong>${area.commercial_area_name}</strong><br>
+              ${businessTypeName} ${area.rank}위
+            </div>`,
+          borderColor: 'transparent',
+          borderWidth: 1,
+          backgroundColor: 'transparent',
+          anchorSize: new window.naver.maps.Size(12, 12),
+          anchorSkew: true,
+          anchorColor: 'white',
+          pixelOffset: new window.naver.maps.Point(0, -5)
+        });
+  
         window.naver.maps.Event.addListener(marker, 'click', () => {
-          const infoWindow = new window.naver.maps.InfoWindow({
-            content: `
-              <div style="padding:10px; border-radius: 12px; background-color: white; border: 1px solid #ddd;">
-                <strong>${area.commercial_area_name}</strong><br>
-                ${businessTypeName} ${area.rank}위
-              </div>`
-          });
-          infoWindow.open(map, marker);
+          if (infoWindow.getMap()) {
+            infoWindow.close();
+          } else {
+            infoWindow.open(map, marker);
+          }
+        });
+  
+        // InfoWindow 클릭 시 닫기
+        window.naver.maps.Event.addListener(infoWindow, 'click', () => {
+          infoWindow.close();
         });
       });
     });
@@ -219,12 +244,13 @@ const RankMap = () => {
         >
           <Paper elevation={3} sx={{ p: 2 }}>
             <BusinessTypeFilter
-              onSelect={handleBusinessTypeSelect}
               onDataFetched={handleBusinessTypeDataFetched}
               initialData={businessTypeData}
               singleSelect={false}
               maxSelect={5}
               mobileResponsive={true}
+              selectedTypes={filter.selectedBusinessTypes}
+              onSelect={(selected) => dispatch(setFilter({ selectedBusinessTypes: selected }))}
             />
           </Paper>
         </Box>

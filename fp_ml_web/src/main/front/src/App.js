@@ -16,6 +16,7 @@ import Content2 from './components/Content2';
 import Content3 from './components/Content3';
 import Content4 from './components/Content4';
 import TopNav from './components/navigation/TopNav';
+import BottomNav from './components/navigation/BottomNav';
 import MapComponent from './components/MapComponent';
 import NicknameInputDialog from './components/NicknameInputDialog';
 import './index.css';
@@ -80,29 +81,29 @@ const theme = createTheme({
 // };
 
 // 하단 네비게이션 컴포넌트
-const BottomNav = () => {
-  const navigate = useNavigate();
-  const [value, setValue] = useState('/');
+// const BottomNav = () => {
+//   const navigate = useNavigate();
+//   const [value, setValue] = useState('/');
 
-  useEffect(() => {
-    navigate(value);
-  }, [value]);
+//   useEffect(() => {
+//     navigate(value);
+//   }, [value]);
 
-  return (
-    <BottomNavigation
-      value={value}
-      onChange={(event, newValue) => setValue(newValue)}
-      showLabels
-      sx={{ position: 'fixed', bottom: 0, width: '100%', zIndex: 1201 }}
-    >
-      <BottomNavigationAction label="AI 맞춤 추천" value="/recommend" icon={<Recommend />} />
-      <BottomNavigationAction label="랭킹 in 지도" value="/rank" icon={<Map />} />
-      <BottomNavigationAction label="홈" value="/" icon={<HomeIcon />} />
-      <BottomNavigationAction label="확인하기" value="/check" icon={<CheckCircle />} />
-      <BottomNavigationAction label="휴일추천" value="/holiday" icon={<BeachAccess />} />
-    </BottomNavigation>
-  );
-};
+//   return (
+//     <BottomNavigation
+//       value={value}
+//       onChange={(event, newValue) => setValue(newValue)}
+//       showLabels
+//       sx={{ position: 'fixed', bottom: 0, width: '100%', zIndex: 1201 }}
+//     >
+//       <BottomNavigationAction label="AI 맞춤 추천" value="/recommend" icon={<Recommend />} />
+//       <BottomNavigationAction label="랭킹 in 지도" value="/rank" icon={<Map />} />
+//       <BottomNavigationAction label="홈" value="/" icon={<HomeIcon />} />
+//       <BottomNavigationAction label="확인하기" value="/check" icon={<CheckCircle />} />
+//       <BottomNavigationAction label="휴일추천" value="/holiday" icon={<BeachAccess />} />
+//     </BottomNavigation>
+//   );
+// };
 
 // 홈 컴포넌트
 const Home = () => {
