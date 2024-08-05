@@ -9,7 +9,7 @@
 - [개발 환경](#wrench-개발-환경)
 - [채택한 개발 기술과 브랜치 전략](#bulb-채택한-개발-기술과-브랜치-전략)
 - [프로젝트 구조](#link-프로젝트-구조)
-- [데이터셋](#chart-with-downwards-trend-데이터셋)
+- [데이터셋](#chart-with-upwards-trend-데이터셋)
 - [역할분담](#pushpin-역할분담)
 - [개발 기간 및 작업 관리](#calendar-개발-기간-및-작업-관리)
 - [페이지별 기능](#calling-페이지별-기능)
@@ -211,7 +211,7 @@
             UserServiceImpl.java
             
 ```
-## :chart_with_downwards_trend: 데이터셋
+## :chart_with_upwards_trend: 데이터셋
 
 
 ## :pushpin: 역할분담
