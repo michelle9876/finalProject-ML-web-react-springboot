@@ -6,9 +6,11 @@ const FeatureCard = ({ imageSrc, title, description, path }) => (
     <img className="w-full h-auto" src={imageSrc} alt={title}></img>
     <h3 className="text-base leading-[26px] font-bold text-black">{title}</h3>
     <p className="h-[66px] text-sm leading-[22px] font-light text-[#676767]">{description}</p>
-    <Link to={path} className="mt-auto py-2.5 px-5 bg-[#0c78c7] text-sm font-medium text-white">
-      시작하기
-    </Link>
+    <div className="w-full flex justify-end">
+      <Link to={path} className="py-2.5 px-5 bg-[#0c78c7] text-sm font-medium text-white">
+        시작하기
+      </Link>
+    </div>
   </div>
 );
 
@@ -49,7 +51,7 @@ const Home = () => {
             <div className="inline-block mb-2 py-1 px-3 bg-[#edf5ff] rounded-full">
               <span className="text-xs tracking-wider font-medium uppercase text-[#0c78c7]">Our Customers</span>
             </div>
-            <h2 className="text-2xl md:text-3xl lg:text-4xl text-[#000]">
+            <h2 className="text-2xl md:text-3xl lg:text-4xl text-[#000] pt-3">
               <span className="font-light">지금까지 </span>
               <span className="font-bold">10,000+ 고객사</span>
               <span className="font-light">가 함께했어요</span>
@@ -70,16 +72,16 @@ const Home = () => {
         
         <div className="container mx-auto flex flex-col items-center justify-start gap-6 md:gap-12 relative z-10">
           <div className="text-center">
-            <div className="inline-block mb-2 py-1 px-3 bg-[#edf5ff] rounded-full">
+            <div className="inline-block mb-2 py-1 px-3 bg-[#edf5ff] rounded-full ">
               <span className="text-xs tracking-wider font-medium uppercase text-[#0c78c7]">Service</span>
             </div>
-            <h2 className="text-2xl md:text-3xl lg:text-4xl text-[#000]">
+            <h2 className="text-2xl md:text-3xl lg:text-4xl text-[#000] pt-3">
               <span className="font-bold">사장님 구해요</span>
               <span className="font-light">만의 특별한 서비스</span>
             </h2>
           </div>
           <div className="w-full px-4 pt-6 pb-12">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 justify-items-center">
               <FeatureCard
                 imageSrc="/home/Rectangle 45I112_532;111_163.png"
                 title="AI 맞춤 추천"
