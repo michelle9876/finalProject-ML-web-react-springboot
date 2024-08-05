@@ -214,10 +214,10 @@
 
 ## :pushpin: 역할분담
 
-- 김보경 : backend
-- 최은서 : backend
-- 윤소영 : frontend
-- 정제윤 : frontend
+- 김보경 : backend, ML, EDA
+- 최은서 : backend, ML
+- 윤소영 : frontend, backend, ML
+- 정제윤 : frontend, EDA
 
 ## :calendar: 개발 기간 및 작업 관리
 ### 개발기간
