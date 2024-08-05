@@ -1,20 +1,27 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { BottomNavigation, BottomNavigationAction } from '@mui/material';
 import { Home as HomeIcon, Recommend, Map, CheckCircle, BeachAccess } from '@mui/icons-material';
 
 const BottomNav = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [value, setValue] = useState('/');
 
   useEffect(() => {
-    navigate(value);
-  }, [value, navigate]);
+    const path = '/' + location.pathname.split('/')[1]; // 메인 경로만 추출
+    setValue(path);
+  }, [location]);
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+    navigate(newValue);
+  };
 
   return (
     <BottomNavigation
       value={value}
-      onChange={(event, newValue) => setValue(newValue)}
+      onChange={handleChange}
       showLabels
       sx={{ 
         position: 'fixed', 
@@ -24,9 +31,18 @@ const BottomNav = () => {
         backgroundColor: 'white',
         '& .MuiBottomNavigationAction-root': {
           color: 'rgba(0, 0, 0, 0.54)',
+          minWidth: 'auto',
+          padding: '6px 12px 8px',
         },
         '& .Mui-selected': {
-          color: 'black',
+          color: '#3f51b5', // 또는 원하는 색상으로 변경
+          fontSize: '0.75rem',
+        },
+        '& .MuiBottomNavigationAction-label': {
+          fontSize: '0.75rem',
+        },
+        '& .MuiBottomNavigationAction-label.Mui-selected': {
+          fontSize: '0.75rem',
         },
       }}
     >
