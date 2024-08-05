@@ -1,38 +1,33 @@
-import {
-  AppBar, Toolbar, Typography, Button 
-} from '@mui/material';
-import { Home as HomeIcon, Recommend, Map, CheckCircle, BeachAccess, PersonSearch } from '@mui/icons-material';
-import { useNavigate } from 'react-router-dom';
+import React from 'react';
+import { Link } from 'react-router-dom';
 
-const TopNav = ({ isMobile }) => {
-  const navigate = useNavigate();
+const TopNav = () => {
+  const navItems = [
+    { name: 'AI맞춤추천', path: '/recommend' },
+    { name: '랭킹 in 지도', path: '/rank' },
+    { name: '확인하기', path: '/check' },
+    { name: '휴일추천', path: '/holiday' }
+  ];
 
   return (
-    <AppBar position="static" sx={{ backgroundColor: 'white' }}>
-      <Toolbar>
-        <Typography 
-          variant="h6" 
-          component="div" 
-          sx={{ 
-            flexGrow: 1, 
-            cursor: 'pointer', 
-            color: 'black' 
-          }} 
-          onClick={() => navigate('/')}
-        >
-          <PersonSearch sx={{ mr: 1, color: 'black' }} />사장님 구해요
-        </Typography>
-        {!isMobile && (
-          <>
-            <Button sx={{ color: 'black' }} onClick={() => navigate('/')}>{<HomeIcon sx={{ mr: 1 }} />}홈</Button>
-            <Button sx={{ color: 'black' }} onClick={() => navigate('/recommend')}>{<Recommend sx={{ mr: 1 }} />}AI 맞춤 추천</Button>
-            <Button sx={{ color: 'black' }} onClick={() => navigate('/rank')}>{<Map sx={{ mr: 1 }} />}랭킹 in 지도</Button>
-            <Button sx={{ color: 'black' }} onClick={() => navigate('/check')}>{<CheckCircle sx={{ mr: 1 }} />}확인하기</Button>
-            <Button sx={{ color: 'black' }} onClick={() => navigate('/holiday')}>{<BeachAccess sx={{ mr: 1 }} />}휴일추천</Button>
-          </>
-        )}
-      </Toolbar>
-    </AppBar>
+    <div className="w-full h-[60px] bg-white overflow-hidden">
+      <div className="container mx-auto flex items-center justify-between h-full px-4">
+        <Link to="/" className="flex items-center">
+          <img className="h-10" src="/home/logo112_563.png" alt="Logo" />
+        </Link>
+        <nav className="hidden md:flex space-x-8">
+          {navItems.map((item) => (
+            <Link
+              key={item.name}
+              to={item.path}
+              className="font-medium text-sm text-gray-800 hover:text-gray-600"
+            >
+              {item.name}
+            </Link>
+          ))}
+        </nav>
+      </div>
+    </div>
   );
 };
 

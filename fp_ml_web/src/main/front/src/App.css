@@ -36,8 +36,34 @@ button {
 }*/
 
 /* 새로운 스타일 */
+
+
+/* GmarketSans 폰트 적용 */
+@font-face {
+  font-family: 'GmarketSans';
+  src: url('fonts/GmarketSansLight.woff') format('woff');
+  font-weight: 300;
+  font-style: normal;
+}
+
+
+@font-face {
+  font-family: 'GmarketSans';
+  src: url('fonts/GmarketSansMedium.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'GmarketSans';
+  src: url('fonts/GmarketSansBold.woff') format('woff');
+  font-weight: bold;
+  font-style: normal;
+}
+
+/* 새로운 스타일 */
 :root {
-  --primary-font: sans-serif;
+  --primary-font: 'GmarketSans', sans-serif;
   --primary-color: #2e2e48;
   --secondary-color: #79819a;
   --accent-color: #47516b;
@@ -61,11 +87,18 @@ body {
 }
 
 .font-bold {
+  font-family: 'GmarketSans', sans-serif;
   font-weight: bold;
 }
 
 .font-medium {
-  font-weight: 500;
+  font-family: 'GmarketSans', sans-serif;
+  font-weight: normal;
+}
+
+.font-light {
+  font-family: 'GmarketSans', sans-serif;
+  font-weight: 300;
 }
 
 .text-sm {
