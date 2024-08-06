@@ -16,9 +16,6 @@ hooks:
       timeout: 300
       runas: ubuntu
   BeforeInstall:
-    - location: scripts/clean.sh
-      timeout: 300
-      runas: root
     - location: scripts/before_install.sh
       timeout: 300
       runas: ubuntu

@@ -102,7 +102,21 @@ const Ranking = () => {
           <Table sx={{ tableLayout: 'fixed' }}>
             <TableHeader isMobile={isMobile} />
             <TableBody>
-              {status === 'success' &&
+              {status === 'loading' ? (
+                <tr>
+                  <td colSpan={isMobile ? 3 : 5}>
+                    <Box sx={{ display: 'flex', justifyContent: 'center', my: 4 }}>
+                      <CircularProgress />
+                    </Box>
+                  </td>
+                </tr>
+              ) : status === 'error' ? (
+                <tr>
+                  <td colSpan={isMobile ? 3 : 5}>
+                    <Typography sx={{ textAlign: 'center', my: 4 }}>데이터를 불러오는 중 오류가 발생했습니다.</Typography>
+                  </td>
+                </tr>
+              ) : (
                 data.pages.map((page, i) => (
                   <React.Fragment key={i}>
                     {page.content.map((prediction, index) => (
@@ -110,17 +124,18 @@ const Ranking = () => {
                         key={index} 
                         data={prediction} 
                         isMobile={isMobile} 
-                        onClick={() => handleItemClick(prediction)}  // 클릭 핸들러 추가
+                        onClick={() => handleItemClick(prediction)}
                       />
                     ))}
                   </React.Fragment>
-                ))}
+                ))
+              )}
             </TableBody>
           </Table>
         </TableContainer>
         {isFetchingNextPage && (
           <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2, mb: 2 }}>
-            <CircularProgress />
+            <CircularProgress size={24} />
           </Box>
         )}
         {!hasNextPage && status === 'success' && (
@@ -128,7 +143,6 @@ const Ranking = () => {
         )}
       </Paper>
 
-      {/* DetailModal 컴포넌트 추가 */}
       <DetailModal 
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}

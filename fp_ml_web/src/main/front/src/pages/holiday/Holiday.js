@@ -9,6 +9,13 @@ import './holiday.css';
 import CombinedChart from '../../components/CombinedChart';
 import { setFilter, selectFilter } from '../../redux/modules/filter';
 
+const scrollToBottom = () => {
+  window.scrollTo({
+    top: document.documentElement.scrollHeight,
+    behavior: 'smooth'
+  });
+};
+
 const Header = ({ industry, region, recommendedDay }) => {
   // 요일에 따른 이미지 파일 이름을 매핑하는 객체
   const dayImageMap = {
@@ -123,6 +130,9 @@ const Holiday = () => {
 
   const fetchRecommendationData = async () => {
     setIsLoading(true);
+    // 로딩이 시작되는 시점에 스크롤
+    scrollToBottom();
+    
     try {
       const response = await axios.post('/api/holiday-recommendation', null, {
         params: {
