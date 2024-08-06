@@ -2,10 +2,10 @@ version: 0.0
 os: linux
 files:
   - source: /
-    destination: /home/ubuntu/app
+    destination: /home/ubuntu/app_new
     overwrite: yes
 permissions:
-  - object: /home/ubuntu/app
+  - object: /home/ubuntu/app_new
     pattern: "**"
     owner: ubuntu
     group: www-data
@@ -25,5 +25,9 @@ hooks:
       runas: ubuntu
   ApplicationStart:
     - location: scripts/start.sh
+      timeout: 300
+      runas: ubuntu
+  ValidateService:
+    - location: scripts/validate_service.sh
       timeout: 300
       runas: ubuntu
