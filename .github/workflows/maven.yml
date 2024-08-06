@@ -30,9 +30,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: List root directory
-        run: ls -R
-
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
@@ -43,22 +40,19 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '20' # Updated to the latest Node.js version
-
-      - name: List fp_ml_web/src/main/front directory
-        run: ls -R DE30-final-4/fp_ml_web/src/main/front
+          node-version: '20' # 최신 Node.js 버전으로 업데이트
 
       - name: Install npm dependencies
         run: npm install
-        working-directory: DE30-final-4/fp_ml_web/src/main/front
+        working-directory: DE30-final-4
 
       - name: Check installed npm packages
-        run: ls -R DE30-final-4/fp_ml_web/src/main/front/node_modules
-        working-directory: DE30-final-4/fp_ml_web/src/main/front
+        run: ls -R DE30-final-4/node_modules
+        working-directory: DE30-final-4
 
       - name: Run npm build
         run: npm run build
-        working-directory: DE30-final-4/fp_ml_web/src/main/front
+        working-directory: DE30-final-4
 
       - name: Build with Maven
         run: mvn -B package --file DE30-final-4/fp_ml_web/pom.xml
