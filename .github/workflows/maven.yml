@@ -70,6 +70,8 @@ jobs:
           cp fp_ml_web/target/*.jar deploy/
           cp -r fp_ml_web/src/main/resources deploy/
           cp -r fp_ml_web/src/main/front/build deploy/frontend
+          cp appspec.yml deploy/
+          cp -r scripts deploy/
           zip -r ./$GITHUB_SHA.zip deploy
         shell: bash
 
