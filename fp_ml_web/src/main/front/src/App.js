@@ -22,11 +22,11 @@ import RankMap from './pages/rankMap/RankMap';
 import CheckThought from './pages/checkThought/CheckThought';
 import Holiday from './pages/holiday/Holiday';
 
-// 필터 데이터를 가져오는 함수 생성
-const fetchFilterData = async () => {
-  const response = await axios.get('/api/filter-data');
-  return response.data;
-};
+// // 필터 데이터를 가져오는 함수 생성
+// const fetchFilterData = async () => {
+//   const response = await axios.get('/api/filter-data');
+//   return response.data;
+// };
 
 // QueryClient 인스턴스 생성 및 설정
 const queryClient = new QueryClient({
@@ -74,10 +74,10 @@ const theme = createTheme({
 const App = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   
-  useEffect(() => {
-    // 앱 시작 시 필터 데이터 프리페칭
-    queryClient.prefetchQuery('filterData', fetchFilterData);
-  }, []);
+  // useEffect(() => {
+  //   // 앱 시작 시 필터 데이터 프리페칭
+  //   queryClient.prefetchQuery('filterData', fetchFilterData);
+  // }, []);
 
   return (
     <Provider store={store}>
