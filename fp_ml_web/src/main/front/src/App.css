@@ -1,14 +1,15 @@
-.subject {
+/* 기존 스타일 */
+/* .subject {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100px; /* 필요에 따라 조정 */
+  height: 100px;
   background-color: #f0f0f0;
   padding: 20px;
   margin-bottom: 20px;
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  text-align: center; /* 텍스트를 가운데 정렬 */
+  text-align: center;
 }
 
 .map-container {
@@ -24,13 +25,135 @@
 }
 
 .button-container {
-  flex: 0 0 calc(50% - 10px); /* 한 줄에 두 개의 버튼이 있도록 설정 */
+  flex: 0 0 calc(50% - 10px);
   box-sizing: border-box;
 }
 
 button {
   width: 100%;
   padding: 10px;
-  box-sizing: border-box;
+  box-sizing: border-box; 
+}*/
+
+/* 새로운 스타일 */
+
+
+/* GmarketSans 폰트 적용 */
+@font-face {
+  font-family: 'GmarketSans';
+  src: url('fonts/GmarketSansLight.woff') format('woff');
+  font-weight: 300;
+  font-style: normal;
 }
 
+
+@font-face {
+  font-family: 'GmarketSans';
+  src: url('fonts/GmarketSansMedium.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'GmarketSans';
+  src: url('fonts/GmarketSansBold.woff') format('woff');
+  font-weight: bold;
+  font-style: normal;
+}
+
+/* 새로운 스타일 */
+:root {
+  --primary-font: 'GmarketSans', sans-serif;
+  --primary-color: #2e2e48;
+  --secondary-color: #79819a;
+  --accent-color: #47516b;
+}
+
+body {
+  font-family: var(--primary-font);
+  color: var(--primary-color);
+}
+
+.text-primary {
+  color: var(--primary-color);
+}
+
+.text-secondary {
+  color: var(--secondary-color);
+}
+
+.text-accent {
+  color: var(--accent-color);
+}
+
+.font-bold {
+  font-family: 'GmarketSans', sans-serif;
+  font-weight: bold;
+}
+
+.font-medium {
+  font-family: 'GmarketSans', sans-serif;
+  font-weight: normal;
+}
+
+.font-light {
+  font-family: 'GmarketSans', sans-serif;
+  font-weight: 300;
+}
+
+.text-sm {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+.text-base {
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
+
+.text-lg {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+}
+
+.text-xl {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+}
+
+.text-2xl {
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+
+.text-3xl {
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+}
+
+.tracking-wider {
+  letter-spacing: 0.01em;
+}
+
+.scroll-container {
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.scroll-container::-webkit-scrollbar {
+  width: 1vw;
+}
+
+.scroll-container::-webkit-scrollbar-track {
+  background-color: #ffffff;
+}
+
+.scroll-container::-webkit-scrollbar-thumb {
+  background-color: #1976d2;
+  border: 0.3vw solid #ffffff;
+  border-radius: 5vw;
+}
+
+.scroll-container::-webkit-scrollbar-thumb:hover {
+  background-color: #1565c0;
+}

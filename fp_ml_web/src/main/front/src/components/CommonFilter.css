@@ -41,13 +41,13 @@
 }
 
 .scroll-box::-webkit-scrollbar-thumb {
-  background-color: #1976d2;
+  background-color: #0c78c7;
   border: 0.3vw solid #ffffff;
   border-radius: 5vw;
 }
 
 .scroll-box::-webkit-scrollbar-thumb:hover {
-  background-color: #1565c0;
+  background-color: #458abc;
 }
 
 .filter-button {
@@ -75,12 +75,12 @@
 }
 
 .selected-items-container::-webkit-scrollbar-thumb {
-  background-color: #1976d2;
+  background-color: #10335b;
   border-radius: 3px;
 }
 
 .selected-items-container::-webkit-scrollbar-thumb:hover {
-  background-color: #1565c0;
+  background-color: #10335b;
 }
 
 .selected-items-message {

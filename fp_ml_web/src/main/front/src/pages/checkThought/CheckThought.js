@@ -1,11 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Container, Paper, Typography, Grid, Button, TextField, MenuItem, Box, Collapse, Card, CardContent } from '@mui/material';
+import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 import BusinessTypeFilter from '../../components/BusinessTypeFilter';
 import SentimentSatisfiedAltIcon from '@mui/icons-material/SentimentSatisfiedAlt';
 import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
+import { setFilter, selectFilter } from '../../redux/modules/filter';
 
 const CheckThought = () => {
+  const dispatch = useDispatch();
+  const filter = useSelector(selectFilter);
   const [factors, setFactors] = useState([]);
   const [hypotheses, setHypotheses] = useState([
     { industry: '', factor: '', condition: '높으면', showFilter: false, errors: {} }
@@ -43,40 +47,44 @@ const CheckThought = () => {
 
   const fetchResults = async () => {
     try {
-      const validHypotheses = hypotheses.filter(hypothesis =>
+      const validHypotheses = hypotheses.map(hypothesis => ({
+        ...hypothesis,
+        industry: hypothesis.industry || filter.selectedBusinessTypes[0]?.name
+      })).filter(hypothesis =>
         hypothesis.industry && hypothesis.factor && hypothesis.condition
       );
-
+  
       if (validHypotheses.length === 0) {
         setResults([]);
         return;
       }
-
+  
       const promises = validHypotheses.map(hypothesis =>
         axios.post('/api/check-your-thoughts', hypothesis)
       );
       const apiResults = await Promise.all(promises);
-
+  
       const formattedResults = apiResults.map(response => {
         if (response.data && response.data.length > 0) {
           return response.data;
         }
         return [];
       });
-
+  
       setResults(formattedResults);
     } catch (error) {
       console.error('Error submitting hypotheses:', error);
     }
   };
 
-  const handleBusinessTypeDataFetched = (data) => {
+  const handleBusinessTypeDataFetched = useCallback((data) => {
     setBusinessTypeData(data);
-  };
+  }, []);
 
-  const handleIndustrySelect = (selected, index) => {
+  const handleIndustrySelect = useCallback((selected, index) => {
     if (selected && selected.length > 0) {
       const selectedIndustry = selected[0].name;
+      dispatch(setFilter({ selectedBusinessTypes: selected }));
       updateHypothesis(index, 'industry', selectedIndustry);
       updateErrors(index, 'industry', '');
       toggleBusinessTypeFilter(index);
@@ -85,7 +93,7 @@ const CheckThought = () => {
       updatedHypotheses[index].industry = selectedIndustry;
       setHypotheses(updatedHypotheses);
     }
-  };
+  }, [dispatch]);
 
   const handleFactorChange = (index, value) => {
     const updatedHypotheses = [...hypotheses];
@@ -130,19 +138,22 @@ const CheckThought = () => {
     let hasError = false;
     const updatedHypotheses = hypotheses.map(hypothesis => {
       const errors = {};
-      if (!hypothesis.industry) errors.industry = '업종을 선택하세요';
+      if (!hypothesis.industry && !filter.selectedBusinessTypes[0]?.name) {
+        errors.industry = '업종을 선택하세요';
+      }
       if (!hypothesis.factor) errors.factor = '요인을 선택하세요';
       if (!hypothesis.condition) errors.condition = '조건을 선택하세요';
-
+  
       if (Object.keys(errors).length > 0) hasError = true;
-
+  
       return { ...hypothesis, errors };
     });
-
+  
     setHypotheses(updatedHypotheses);
-
+  
     if (!hasError) {
       setHasSubmitted(true);
+      await fetchResults(); // 직접 fetchResults 호출
     }
   };
 
@@ -165,15 +176,15 @@ const CheckThought = () => {
             <Typography variant="h6">가정 {index + 1}</Typography>
             <Grid container spacing={2} alignItems="center">
               <Grid item xs={12} sm={4}>
-                <TextField
-                  fullWidth
-                  label="업종 선택"
-                  value={hypothesis.industry}
-                  onClick={() => toggleBusinessTypeFilter(index)}
-                  InputProps={{ readOnly: true }}
-                  error={!!hypothesis.errors.industry}
-                  helperText={hypothesis.errors.industry}
-                />
+              <TextField
+                fullWidth
+                label="업종 선택"
+                value={filter.selectedBusinessTypes[0]?.name || hypothesis.industry}
+                onClick={() => toggleBusinessTypeFilter(index)}
+                InputProps={{ readOnly: true }}
+                error={!!hypothesis.errors.industry}
+                helperText={hypothesis.errors.industry}
+              />
               </Grid>
               <Grid item xs={12} sm={4}>
                 <TextField

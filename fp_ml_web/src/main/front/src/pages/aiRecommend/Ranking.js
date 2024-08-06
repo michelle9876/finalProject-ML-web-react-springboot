@@ -6,7 +6,7 @@ import TableHeader from '../../components/table/TableHeader';
 import TableRowContent from '../../components/table/TableRowContent';
 import DetailModal from '../../components/DetailModal';
 import { selectFilter } from '../../redux/modules/filter';
-import { fetchPredictions } from '../../services/api';
+import { fetchPredictions, fetchIndustryCorrelations, fetchRecentFactors } from '../../services/api';
 import { transformFilterData } from '../../utils/filterUtils';
 
 const RecommendationHeader = () => {
@@ -40,6 +40,8 @@ const Ranking = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
+  const [correlations, setCorrelations] = useState([]);
+  const [recentFactors, setRecentFactors] = useState({});
 
   const {
     data,
@@ -57,8 +59,22 @@ const Ranking = () => {
     }
   );
 
-  const handleItemClick = (item) => {
+  const handleItemClick = async (item) => {
     setSelectedItem(item);
+    try {
+      // 1. 먼저 fetchIndustryCorrelations 호출
+      const correlationsData = await fetchIndustryCorrelations(item.serviceType);
+      setCorrelations(correlationsData.correlations);
+
+      // 2. correlationsData를 사용하여 fetchRecentFactors 호출
+      const topFiveFactors = correlationsData.correlations.slice(0, 5).map(c => c.factorKor);
+      const recentFactorsData = await fetchRecentFactors(item.businessDistrict, item.serviceType, topFiveFactors);
+      setRecentFactors(recentFactorsData);
+
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      // 에러 처리 로직 추가
+    }
     setIsModalOpen(true);
   };
 
@@ -117,6 +133,8 @@ const Ranking = () => {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         data={selectedItem}
+        correlations={correlations}
+        recentFactors={recentFactors}
       />
     </Container>
   );

@@ -52,7 +52,8 @@ const AiRecommend = () => {
     setRegionData(data);
   };
 
-  const handleRecommendation = () => {
+  const handleRecommendation = (e) => {
+    e.preventDefault(); // 추가
     const userId = localStorage.getItem('userId');
     const filterData = {
       userId: parseInt(userId),
