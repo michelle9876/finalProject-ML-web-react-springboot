@@ -37,9 +37,12 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      - name: Build with Maven
-        run: mvn -B package --file pom.xml
+      - name: List directory contents for debug
+        run: ls -R
 
+      - name: Build with Maven
+        run: mvn -B package --file DE30-final-4/fp_ml_web/pom.xml
+        
       - name: Set yaml file 
         uses: microsoft/variable-substitution@v1
         with:
