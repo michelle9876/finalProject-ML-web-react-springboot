@@ -1,6 +1,23 @@
 #!/bin/bash
-# Nginx 설정 업데이트 및 리로드
-NEW_PORT=$1
-sudo sed -i "s/proxy_pass http:\/\/localhost:[0-9]\+/proxy_pass http:\/\/localhost:$NEW_PORT/" /etc/nginx/sites-available/default
-sudo systemctl reload nginx
-echo "Traffic switched to port $NEW_PORT"
+
+CURRENT_PORT=$(cat /home/ubuntu/service_url.inc | grep -Po '[0-9]+' | tail -1)
+TARGET_PORT=0
+
+echo "> Nginx currently proxies to ${CURRENT_PORT}."
+
+if [ ${CURRENT_PORT} -eq 8081 ]; then
+    TARGET_PORT=8082
+elif [ ${CURRENT_PORT} -eq 8082 ]; then
+    TARGET_PORT=8081
+else
+    echo "> No WAS is connected to nginx"
+    exit 1
+fi
+
+echo "set \$service_url http://127.0.0.1:${TARGET_PORT};" | sudo tee /home/ubuntu/service_url.inc
+
+echo "> Now Nginx proxies to ${TARGET_PORT}."
+
+sudo nginx -t && sudo systemctl reload nginx
+
+echo "> Nginx reloaded."

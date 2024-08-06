@@ -1,19 +1,12 @@
 #!/bin/bash
+# 디렉토리 및 파일 권한 정리
+sudo chown -R ubuntu:ubuntu /home/ubuntu/app_new
+sudo chmod -R 775 /home/ubuntu/app_new
 
-# 새 애플리케이션 디렉토리 생성
-NEW_APP_DIR="/home/ubuntu/app_new"
-if [ ! -d "$NEW_APP_DIR" ]; then
-    mkdir -p "$NEW_APP_DIR"
+# 이전 배포에서 남은 파일들 정리
+if [ -d /home/ubuntu/app_new ]; then
+    rm -rf /home/ubuntu/app_new
 fi
 
-# 새 디렉토리 권한 설정
-sudo chown -R ubuntu:ubuntu "$NEW_APP_DIR"
-sudo chmod -R 775 "$NEW_APP_DIR"
-
-# 기존 파일 정리 (이전 배포의 잔여물이 있을 경우)
-rm -rf "$NEW_APP_DIR"/*
-
-# 현재 포트 파일이 없으면 초기 포트 설정
-if [ ! -f /home/ubuntu/current_port.txt ]; then
-    echo "8080" > /home/ubuntu/current_port.txt
-fi
+# 새로운 배포를 위한 디렉토리 생성
+mkdir -p /home/ubuntu/app_new
