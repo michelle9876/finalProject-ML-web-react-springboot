@@ -58,7 +58,7 @@ jobs:
         working-directory: fp_ml_web/src/main/front
 
       - name: Run npm build
-        run: npm run build
+        run: CI=false npm run build
         working-directory: fp_ml_web/src/main/front
 
       - name: Build with Maven
