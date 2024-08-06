@@ -67,9 +67,9 @@ jobs:
       - name: Create zip file
         run: |
           mkdir -p deploy
-          cp DE30-final-4/fp_ml_web/target/*.jar deploy/
-          cp -r DE30-final-4/fp_ml_web/src/main/resources deploy/
-          cp -r DE30-final-4/fp_ml_web/src/main/front/build deploy/frontend
+          cp fp_ml_web/target/*.jar deploy/
+          cp -r fp_ml_web/src/main/resources deploy/
+          cp -r fp_ml_web/src/main/front/build deploy/frontend
           zip -r ./$GITHUB_SHA.zip deploy
         shell: bash
 
@@ -90,3 +90,6 @@ jobs:
           --application-name ${{ env.CODE_DEPLOY_APPLICATION_NAME }} \
           --deployment-group-name ${{ env.CODE_DEPLOY_DEPLOYMENT_GROUP_NAME }} \
           --s3-location bucket=$S3_BUCKET_NAME,bundleType=zip,key=$GITHUB_SHA.zip
+      
+      - name: List target directory
+        run: ls -R fp_ml_web/target
