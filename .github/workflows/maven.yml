@@ -44,21 +44,21 @@ jobs:
 
       - name: Install npm dependencies
         run: npm install
-        working-directory: /fp_ml_web/src/main/front
+        working-directory: fp_ml_web/src/main/front
 
       - name: Check installed npm packages
         run: ls -R node_modules
-        working-directory: /fp_ml_web/src/main/front
+        working-directory: fp_ml_web/src/main/front
 
       - name: Run npm build
         run: npm run build
-        working-directory: /fp_ml_web/src/main/front
+        working-directory: fp_ml_web/src/main/front
 
       - name: Build with Maven
-        run: mvn -B package --file /fp_ml_web/pom.xml
+        run: mvn -B package --file fp_ml_web/pom.xml
 
       - name: List target directory contents for debug
-        run: ls -R /fp_ml_web/target
+        run: ls -R fp_ml_web/target
 
       - name: Set yaml file 
         uses: microsoft/variable-substitution@v1
