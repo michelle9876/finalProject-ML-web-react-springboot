@@ -37,14 +37,17 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
+      - name: Print workspace directory
+        run: pwd
+
       - name: List directory contents for debug
         run: ls -R
 
       - name: Build with Maven
-        run: mvn -B package --file DE30-final-4/fp_ml_web/pom.xml
+        run: mvn -B package --file fp_ml_web/pom.xml
 
       - name: List target directory contents for debug
-        run: ls -R DE30-final-4/fp_ml_web/target
+        run: ls -R fp_ml_web/target
 
       - name: Set yaml file 
         uses: microsoft/variable-substitution@v1
@@ -54,7 +57,7 @@ jobs:
           override.value: ${{ secrets.DI_FROM_SECRET }}
 
       - name: Create zip file
-        run: zip -r ./$GITHUB_SHA.zip DE30-final-4/fp_ml_web/target/
+        run: zip -r ./$GITHUB_SHA.zip fp_ml_web/target/
         shell: bash
 
       - name: Configure AWS credentials
