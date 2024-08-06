@@ -52,3 +52,7 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+# 빌드 결과물
+/target/
+/build/
+/fp_ml_web/src/main/resources/static/
