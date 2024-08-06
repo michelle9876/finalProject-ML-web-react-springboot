@@ -11,10 +11,10 @@ name: Java CI with Maven and Deploy
 on:
   push:
     branches: 
-      - main
+      - develop
   pull_request:
     branches: 
-      - main
+      - develop
 
 env:
   S3_BUCKET_NAME: fp-ml
