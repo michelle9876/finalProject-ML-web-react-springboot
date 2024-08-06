@@ -1,11 +1,5 @@
 #!/bin/bash
-
-CURRENT_PID=$(pgrep -f app_new/*.jar)
-
-if [ -z $CURRENT_PID ]; then
-    echo "> 현재 구동중인 애플리케이션이 없으므로 종료하지 않습니다."
-else
-    echo "> kill -15 $CURRENT_PID"
-    kill -15 $CURRENT_PID
-    sleep 5
+# 실행 중인 애플리케이션 중지
+if pgrep java; then
+    pkill java
 fi
