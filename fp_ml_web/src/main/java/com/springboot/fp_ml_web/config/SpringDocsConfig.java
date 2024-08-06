@@ -8,8 +8,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @OpenAPIDefinition(
-        info = @Info(title = "스웨거 테스트",
-                description = "테스트",
+        info = @Info(title = "fp_ml_web 스웨거",
+                description = "데이터엔지니어링 30기 최종프로젝트 4조 스웨거",
                 version = "v1"))
 @RequiredArgsConstructor
 @Configuration
@@ -20,7 +20,7 @@ public class SpringDocsConfig {
         String[] paths = {"/**"};
 
         return GroupedOpenApi.builder()
-                .group("테스트 v1")
+                .group("최종 v1")
                 .pathsToMatch(paths)
                 .build();
     }
