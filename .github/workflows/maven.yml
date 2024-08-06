@@ -30,6 +30,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: List root directory
+        run: ls -R
+
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
@@ -40,25 +43,28 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '14' # Adjust the Node.js version if necessary
+          node-version: '20' # Updated to the latest Node.js version
+
+      - name: List fp_ml_web/src/main/front directory
+        run: ls -R DE30-final-4/fp_ml_web/src/main/front
 
       - name: Install npm dependencies
         run: npm install
-        working-directory: fp_ml_web/src/main/front
+        working-directory: DE30-final-4/fp_ml_web/src/main/front
 
       - name: Check installed npm packages
-        run: ls -R node_modules
-        working-directory: fp_ml_web/src/main/front
+        run: ls -R DE30-final-4/fp_ml_web/src/main/front/node_modules
+        working-directory: DE30-final-4/fp_ml_web/src/main/front
 
       - name: Run npm build
         run: npm run build
-        working-directory: fp_ml_web/src/main/front
+        working-directory: DE30-final-4/fp_ml_web/src/main/front
 
       - name: Build with Maven
-        run: mvn -B package --file fp_ml_web/pom.xml
+        run: mvn -B package --file DE30-final-4/fp_ml_web/pom.xml
 
       - name: List target directory contents for debug
-        run: ls -R fp_ml_web/target
+        run: ls -R DE30-final-4/fp_ml_web/target
 
       - name: Set yaml file 
         uses: microsoft/variable-substitution@v1
