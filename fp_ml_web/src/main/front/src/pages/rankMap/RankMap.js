@@ -51,32 +51,33 @@ const RankMap = () => {
   const abortControllerRef = useRef(null);
   const [loadingRequests, setLoadingRequests] = useState(new Set());
   const requestIdRef = useRef(0);
+  
+//빠용 
 
-  useEffect(() => {
-    const script = document.createElement('script');
-    script.src = `https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=88cu8ieiwt`;
-    script.async = true;
-    script.onload = () => initializeMap();
-    document.head.appendChild(script);
 
-    const savedNickname = localStorage.getItem('nickname');
-    if (savedNickname) {
-      setNickname(savedNickname);
-    }
-
-    return () => {
-      document.head.removeChild(script);
-    };
-  }, []);
-
-  const initializeMap = useCallback(() => {
-    if (!window.naver) return;
+const initializeMap = useCallback(() => {
+  if (window.naver && window.naver.maps) {
     const newMap = new window.naver.maps.Map(mapRef.current, {
       center: new window.naver.maps.LatLng(37.5665, 126.9780),
       zoom: 11
     });
     setMap(newMap);
-  }, []);
+  } else {
+    console.error('Naver Maps API is not loaded');
+  }
+}, []);
+
+
+useEffect(() => {
+  initializeMap();
+
+  const savedNickname = localStorage.getItem('nickname');
+  if (savedNickname) {
+    setNickname(savedNickname);
+  }
+}, []);
+
+  
 
   useEffect(() => {
     if (map) {

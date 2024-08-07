@@ -77,8 +77,6 @@ const Ranking = () => {
     }
     setIsModalOpen(true);
   };
-
-  // ㄷㅎ
   const handleScroll = useCallback(() => {
     const scrollPosition = window.innerHeight + window.scrollY;
     const pageHeight = document.documentElement.offsetHeight;

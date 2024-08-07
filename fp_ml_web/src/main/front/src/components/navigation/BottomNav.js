@@ -30,6 +30,7 @@ const BottomNav = () => {
         zIndex: 1201,
         backgroundColor: 'white',
         height: '70px',
+        display: { xs: 'flex', md: 'none' },
         '& .MuiBottomNavigationAction-root': {
           color: 'rgba(0, 0, 0, 0.54)',
           minWidth: 'auto',

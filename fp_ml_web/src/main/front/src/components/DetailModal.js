@@ -88,10 +88,11 @@ const Detail = ({ onClose, businessType, commercialArea, correlations, recentFac
     <div className="flex flex-col items-center justify-start bg-white border border-solid border-[#b9b9b9] rounded-[14px] overflow-hidden">
       <div className="scroll-container overflow-y-scroll max-h-[80vh] w-full">
         <div className="sticky top-0 z-10 bg-white w-full flex justify-between items-center p-4">
-          <div className="flex-1 text-3xl leading-[30px] font-black text-[#1d1c1d] truncate pr-4">
-            {businessType} - {commercialArea} Report
+          <div className="flex-1 text-2xl md:text-2xl sm:text-xl xs:text-lg leading-tight font-black text-[#1d1c1d] pr-4 break-words">
+            {businessType} - {commercialArea}
+            <span className="hidden sm:inline"> Report</span>
           </div>
-          <CloseButton className="shrink-0" onClick={onClose} />
+            <CloseButton className="shrink-0" onClick={onClose} />
         </div>
         <div className="w-full max-w-[802px] px-4 md:px-0 mx-auto">
           <Sales sales={sales} rent={rent} />
