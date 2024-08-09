@@ -84,7 +84,7 @@ const Detail = ({ onClose, businessType, commercialArea, correlations, recentFac
   // chartData 수정
   const chartData = Object.entries(recentFactors).map(([period, values]) => ({
     name: period,
-    '점포당_당월_매출_금액': values['점포당_당월_매출_금액'] ? values['점포당_당월_매출_금액'] / 30000 : undefined,
+    '점포당_당월_매출_금액': values['점포당_당월_매출_금액'] ? Math.floor(values['점포당_당월_매출_금액'] / 3) : undefined,
     ...Object.fromEntries(
       Object.entries(values).filter(([key]) => key !== '점포당_당월_매출_금액')
     )
