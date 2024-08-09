@@ -11,10 +11,10 @@ name: Java CI with Maven and Deploy
 on:
   push:
     branches: 
-      - feat/gitaction
+      - main
   pull_request:
     branches: 
-      - feat/gitaction
+      - main
 
 env:
   S3_BUCKET_NAME: fp-ml
