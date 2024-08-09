@@ -94,7 +94,7 @@ const Detail = ({ onClose, businessType, commercialArea, correlations, recentFac
           </div>
             <CloseButton className="shrink-0" onClick={onClose} />
         </div>
-        <div className="w-full max-w-[802px] px-4 md:px-0 mx-auto">
+        <div className="w-full max-w-[802px] px-4 md:px-0 mx-auto ">
           <Sales sales={sales} rent={rent} />
           <div className="flex flex-col sm:flex-row gap-4 sm:gap-8 pt-5">
             <div className="hidden sm:flex sm:flex-col items-center">
