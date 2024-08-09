@@ -53,6 +53,7 @@ const Detail = ({ onClose, businessType, commercialArea, correlations, recentFac
     text: correlation.factorKor.replace('_', '\n')
   }));
 
+  // isRecentFactorsEmpty 계산 부분을 다음과 같이 변경
   const isRecentFactorsEmpty = Object.keys(recentFactors).length === 0;
 
   // 기간 포매팅 함수
@@ -92,7 +93,7 @@ const Detail = ({ onClose, businessType, commercialArea, correlations, recentFac
 
   // factorKeys 수정 (점포당_당월_매출_금액을 맨 앞에 추가)
   const factorKeys = ['점포당_당월_매출_금액', ...correlations.filter(correlation => correlation.factorKor !== '점포당_당월_매출_금액')
-    .slice(0, 4)
+    .slice(0, 5)
     .map(correlation => correlation.factorKor)];
 
   return (
