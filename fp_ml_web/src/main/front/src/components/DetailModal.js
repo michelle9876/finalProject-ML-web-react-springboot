@@ -50,7 +50,7 @@ const Detail = ({ onClose, businessType, commercialArea, correlations, recentFac
   .slice(0, 5)
   .map((correlation, index) => ({
     bg: factorColors[index],
-    text: correlation.factorKor.replace('_', '\n')
+    text: correlation.factorKor.replace(/_/g, ' ')
   }));
 
   // isRecentFactorsEmpty 계산 부분을 다음과 같이 변경

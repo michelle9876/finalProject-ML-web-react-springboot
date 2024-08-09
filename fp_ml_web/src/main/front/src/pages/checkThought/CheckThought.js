@@ -56,7 +56,7 @@ const CheckThought = () => {
   const fetchFactors = async () => {
     try {
       const response = await axios.get('/api/factors');
-      setFactors(response.data);
+      setFactors(response.data.map(factor => factor.replace(/_/g, ' ')));
     } catch (error) {
       console.error('Error fetching factors:', error);
     }
@@ -69,7 +69,8 @@ const CheckThought = () => {
     try {
       const validHypotheses = hypotheses.map(hypothesis => ({
         ...hypothesis,
-        industry: hypothesis.industry || filter.selectedBusinessTypes[0]?.name
+        industry: hypothesis.industry || filter.selectedBusinessTypes[0]?.name,
+        factor: hypothesis.factor ? hypothesis.factor.replace(/\s/g, '_') : ''
       })).filter(hypothesis =>
         hypothesis.industry && hypothesis.factor && hypothesis.condition
       );
@@ -305,7 +306,7 @@ const CheckThought = () => {
                 {result.length > 0 && (
                   <>
                     <Typography variant="body1" sx={{ mb: 1 }}>
-                      <strong>{result[0].serviceIndustryName}</strong>은/는 <strong>{hypotheses[index].factor}</strong>이/가 <strong>{hypotheses[index].condition}</strong> 매출이 높을 것이다
+                    <strong>{result[0].serviceIndustryName}</strong>은/는 <strong>{hypotheses[index].factor.replace(/_/g, ' ')}</strong>이/가 <strong>{hypotheses[index].condition}</strong> 매출이 높을 것이다
                     </Typography>
                     <Typography variant="body2" sx={{ mb: 1 }}>
                       {result[0].serviceIndustryName}와 {hypotheses[index].factor}의 점포당 매출액의 상관계수는 {parseFloat(result[0].correlationCoefficient).toFixed(2)}로
