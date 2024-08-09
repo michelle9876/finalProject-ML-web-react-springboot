@@ -23,7 +23,7 @@ const Home = () => {
       {/* Main Section */}
       <div className="relative w-full">
         <div className="absolute inset-0 z-0">
-          <div className="w-full h-[550px] bg-[#edf5ff]">
+          <div className="w-full h-[450px] bg-[#edf5ff]">
             <img className="w-full h-full object-cover" src="/home/image 39112_419.png" alt="배경 이미지"></img>
           </div>
         </div>

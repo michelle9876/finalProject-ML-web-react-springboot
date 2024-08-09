@@ -9,10 +9,11 @@ import {
   DialogContent,
   DialogActions,
   Typography,
-  Box
+  Box,
+  CircularProgress
 } from '@mui/material';
 import MuiAlert from '@mui/material/Alert';
-import RobotIcon from '@mui/icons-material/SmartToy'; // 로봇 아이콘
+import RobotIcon from '@mui/icons-material/SmartToy';
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -24,6 +25,7 @@ const NicknameInput = () => {
   const [openSuccessToast, setOpenSuccessToast] = useState(false);
   const [openErrorToast, setOpenErrorToast] = useState(false);
   const [openDialog, setOpenDialog] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const savedNickname = localStorage.getItem('nickname');
@@ -36,6 +38,7 @@ const NicknameInput = () => {
   }, []);
 
   const handleSubmit = async () => {
+    setLoading(true);
     try {
       const response = await axios.post('/api/user/nickname', { nickName: nickname });
       if (response.status === 200) {
@@ -48,6 +51,8 @@ const NicknameInput = () => {
     } catch (error) {
       console.error('Error submitting nickname:', error);
       setOpenErrorToast(true);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -66,7 +71,7 @@ const NicknameInput = () => {
   };
 
   const handleCloseDialog = () => {
-    setOpenDialog(false); // 닉네임 입력 다이얼로그 닫기
+    setOpenDialog(false);
   };
 
   return (
@@ -90,15 +95,33 @@ const NicknameInput = () => {
             variant="outlined"
             value={nickname}
             onChange={(e) => setNickname(e.target.value)}
+            disabled={loading}
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleSubmit} color="primary" variant="contained" fullWidth>
-            확인
-          </Button>
-          <Button onClick={handleCloseDialog} color="inherit" variant="contained" fullWidth>
-            취소
-          </Button>
+          <Box width="100%" display="flex" justifyContent="center" alignItems="center" flexDirection="column">
+            <Button 
+              onClick={handleSubmit} 
+              color="primary" 
+              variant="contained" 
+              fullWidth 
+              disabled={loading}
+              // style={{ marginBottom: loading ? '16px' : '0' }}
+            >
+              {loading ? '곧 시작돼요...' : '확인'}
+            </Button>
+            
+            {/* <Button 
+              onClick={handleCloseDialog} 
+              color="inherit" 
+              variant="contained" 
+              fullWidth 
+              disabled={loading}
+              style={{ marginTop: '8px' }}
+            >
+              취소
+            </Button> */}
+          </Box>
         </DialogActions>
       </Dialog>
 

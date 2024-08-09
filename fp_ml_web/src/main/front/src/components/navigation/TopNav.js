@@ -15,7 +15,7 @@ const TopNav = () => {
         <Link to="/" className="flex items-center">
           <img className="h-10" src="/home/logo112_563.png" alt="Logo" />
         </Link>
-        <nav className="hidden md:flex space-x-8">
+        <nav className="hidden min-[600px]:block space-x-8">
           {navItems.map((item) => (
             <Link
               key={item.name}

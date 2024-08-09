@@ -90,7 +90,7 @@ const AiRecommend = () => {
       <Paper sx={{ p: { xs: 2, sm: 3 } }}>
         <Typography variant="h4" gutterBottom>AI맞춤추천</Typography>
         <Typography variant="subtitle1" gutterBottom>
-          {nickname ? `${nickname}님!` : '안녕하세요!'} 원하는 조건을 입력해주세요
+          {nickname ? `${nickname}님!` : '안녕하세요!'} 원하는 조건을 입력해주세요. 조건을 입력하지 않으면 전체 데이터 기준으로 추천됩니다.
         </Typography>
 
         <Grid container spacing={1}>

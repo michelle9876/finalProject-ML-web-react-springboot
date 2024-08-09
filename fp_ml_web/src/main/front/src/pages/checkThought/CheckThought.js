@@ -1,11 +1,27 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Container, Paper, Typography, Grid, Button, TextField, MenuItem, Box, Collapse, Card, CardContent } from '@mui/material';
+import { Container, Paper, Typography, Grid, Button, TextField, MenuItem, Box, Collapse, Card, CardContent, CircularProgress  } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 import BusinessTypeFilter from '../../components/BusinessTypeFilter';
 import SentimentSatisfiedAltIcon from '@mui/icons-material/SentimentSatisfiedAlt';
 import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
 import { setFilter, selectFilter } from '../../redux/modules/filter';
+
+const scrollToBottom = () => {
+  window.scrollTo({
+    top: document.documentElement.scrollHeight,
+    behavior: 'smooth'
+  });
+};
+
+const menuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: 48 * 4.5 + 8,
+      width: 250,
+    },
+  },
+};
 
 const CheckThought = () => {
   const dispatch = useDispatch();
@@ -18,6 +34,7 @@ const CheckThought = () => {
   const [results, setResults] = useState([]);
   const [hasSubmitted, setHasSubmitted] = useState(false);
   const [businessTypeData, setBusinessTypeData] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     fetchFactors();
@@ -46,6 +63,9 @@ const CheckThought = () => {
   };
 
   const fetchResults = async () => {
+    setIsLoading(true);
+    // 로딩이 시작되는 시점에 스크롤
+    scrollToBottom();
     try {
       const validHypotheses = hypotheses.map(hypothesis => ({
         ...hypothesis,
@@ -76,6 +96,15 @@ const CheckThought = () => {
       console.error('Error submitting hypotheses:', error);
     }
   };
+
+  const menuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: 48 * 4.5 + 8,
+      width: 250,
+    },
+  },
+};
 
   const handleBusinessTypeDataFetched = useCallback((data) => {
     setBusinessTypeData(data);
@@ -153,7 +182,9 @@ const CheckThought = () => {
   
     if (!hasError) {
       setHasSubmitted(true);
-      await fetchResults(); // 직접 fetchResults 호출
+      setIsLoading(true);
+      await fetchResults();
+      setIsLoading(false);
     }
   };
 
@@ -195,6 +226,9 @@ const CheckThought = () => {
                   onChange={(e) => handleFactorChange(index, e.target.value)}
                   error={!!hypothesis.errors.factor}
                   helperText={hypothesis.errors.factor}
+                  SelectProps={{
+                    MenuProps: menuProps,
+                  }}
                 >
                   {factors.map((factor) => (
                     <MenuItem key={factor} value={factor}>
@@ -212,6 +246,9 @@ const CheckThought = () => {
                   onChange={(e) => handleConditionChange(index, e.target.value)}
                   error={!!hypothesis.errors.condition}
                   helperText={hypothesis.errors.condition}
+                  SelectProps={{
+                    MenuProps: menuProps,
+                  }}
                 >
                   <MenuItem value="높으면">높으면</MenuItem>
                   <MenuItem value="낮으면">낮으면</MenuItem>
@@ -239,12 +276,27 @@ const CheckThought = () => {
           가정 추가
         </Button>
 
-        <Button variant="contained" color="primary" onClick={handleSubmit} fullWidth>
+        <Button variant="contained" color="primary" onClick={handleSubmit} fullWidth >
           확인하기
         </Button>
+        {isLoading && (
+          <Box 
+          sx={{ 
+            display: 'flex', 
+            flexDirection: 'column', 
+            alignItems: 'center', 
+            justifyContent: 'center', 
+            height: '200px', 
+            mt: 4 
+          }}
+        >
+          <CircularProgress />
+          <Typography sx={{ mt: 2 }}>분석 중입니다</Typography>
+        </Box>
+        )}
       </Paper>
 
-      {results.length > 0 && (
+      {!isLoading && results.length > 0 && (
         <Box sx={{ mt: 4 }}>
           {results.map((result, index) => (
             <Card key={index} sx={{ mb: 2, backgroundColor: '#f5f5f5', boxShadow: 'none', border: '1px solid #e0e0e0' }}>

@@ -9,6 +9,13 @@ import './holiday.css';
 import CombinedChart from '../../components/CombinedChart';
 import { setFilter, selectFilter } from '../../redux/modules/filter';
 
+const scrollToBottom = () => {
+  window.scrollTo({
+    top: document.documentElement.scrollHeight,
+    behavior: 'smooth'
+  });
+};
+
 const Header = ({ industry, region, recommendedDay }) => {
   // 요일에 따른 이미지 파일 이름을 매핑하는 객체
   const dayImageMap = {
@@ -86,6 +93,8 @@ const Holiday = () => {
     allIndustries: []
   });
 
+  const [errors, setErrors] = useState({});
+
   const days = ['월', '화', '수', '목', '금', '토', '일'];
 
   useEffect(() => {
@@ -121,23 +130,44 @@ const Holiday = () => {
     setRegionData(data);
   }, []);
 
+  
+
   const fetchRecommendationData = async () => {
-    setIsLoading(true);
-    try {
-      const response = await axios.post('/api/holiday-recommendation', null, {
-        params: {
-          serviceIndustryName: filter.selectedBusinessTypes[0]?.name,
-          businessDistrictName: filter.selectedRegions[0]?.name,
-          userId: userId
-        }
-      });
-      const data = response.data;
-      setRecommendedDay(data.recommendedDay);
-      setChartData(data.chartData);
-    } catch (error) {
-      console.error('Error fetching recommendation data:', error);
-    } finally {
-      setIsLoading(false);
+    let hasError = false;
+    const newErrors = {};
+
+    if (!filter.selectedBusinessTypes[0]?.name) {
+      newErrors.industry = '업종을 선택하세요';
+      hasError = true;
+    }
+
+    if (!filter.selectedRegions[0]?.name) {
+      newErrors.region = '상권을 선택하세요';
+      hasError = true;
+    }
+
+    setErrors(newErrors);
+
+    if (!hasError) {
+      setIsLoading(true);
+      scrollToBottom();
+    
+      try {
+        const response = await axios.post('/api/holiday-recommendation', null, {
+          params: {
+            serviceIndustryName: filter.selectedBusinessTypes[0]?.name,
+            businessDistrictName: filter.selectedRegions[0]?.name,
+            userId: userId
+          }
+        });
+        const data = response.data;
+        setRecommendedDay(data.recommendedDay);
+        setChartData(data.chartData);
+      } catch (error) {
+        console.error('Error fetching recommendation data:', error);
+      } finally {
+        setIsLoading(false);
+      }
     }
   };
 
@@ -194,6 +224,8 @@ const Holiday = () => {
               value={filter.selectedBusinessTypes[0]?.name || ''}
               onClick={() => setShowBusinessTypeFilter(prev => !prev)}
               InputProps={{ readOnly: true }}
+              error={!!errors.industry}
+              helperText={errors.industry}
             />
             {showBusinessTypeFilter && (
               <Box sx={{ mt: 2, mb: 2 }}>
@@ -213,6 +245,8 @@ const Holiday = () => {
               value={filter.selectedRegions[0]?.name || ''}
               onClick={() => setShowRegionFilter(prev => !prev)}
               InputProps={{ readOnly: true }}
+              error={!!errors.region}
+              helperText={errors.region}
             />
             {showRegionFilter && (
               <Box sx={{ mt: 2, mb: 2 }}>
@@ -232,7 +266,7 @@ const Holiday = () => {
           color="primary" 
           onClick={fetchRecommendationData} 
           fullWidth
-          disabled={isButtonDisabled}
+          // disabled={isButtonDisabled}
         >
           휴일 추천받기
         </Button>

@@ -11,16 +11,17 @@ name: Java CI with Maven and Deploy
 on:
   push:
     branches: 
-      - develop
+      - main
   pull_request:
     branches: 
-      - develop
+      - main
 
 env:
   S3_BUCKET_NAME: fp-ml
-  RESOURCE_PATH: ./src/main/resources/application.yaml
+  RESOURCE_PATH: ./fp_ml_web/src/main/resources/application.properties
   CODE_DEPLOY_APPLICATION_NAME: fp-ml-code-deploy
   CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: fp-ml-server
+  FRONT_ENV_PATH: ./fp_ml_web/src/main/front/.env
 
 jobs:
   build-and-deploy:
@@ -40,35 +41,38 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '20' # 최신 Node.js 버전으로 업데이트
+          node-version: '20.15.1'
+
+      - name: Update frontend .env
+        run: |
+          echo "REACT_APP_API_URL=${{ secrets.REACT_APP_API_URL }}" > ${{ env.FRONT_ENV_PATH }}
+        
+      - name: Update application.properties
+        run: |
+          sed -i 's|${DB_URL}|${{ secrets.DB_URL }}|g' ${{ env.RESOURCE_PATH }}
+          sed -i 's|${DB_USERNAME}|${{ secrets.DB_USERNAME }}|g' ${{ env.RESOURCE_PATH }}
+          sed -i 's|${DB_PASSWORD}|${{ secrets.DB_PASSWORD }}|g' ${{ env.RESOURCE_PATH }}
 
       - name: Install npm dependencies
         run: npm install
-        working-directory: DE30-final-4
-
-      - name: Check installed npm packages
-        run: ls -R DE30-final-4/node_modules
-        working-directory: DE30-final-4
+        working-directory: fp_ml_web/src/main/front
 
       - name: Run npm build
-        run: npm run build
-        working-directory: DE30-final-4
+        run: CI=false npm run build
+        working-directory: fp_ml_web/src/main/front
 
       - name: Build with Maven
-        run: mvn -B package --file DE30-final-4/fp_ml_web/pom.xml
-
-      - name: List target directory contents for debug
-        run: ls -R DE30-final-4/fp_ml_web/target
-
-      - name: Set yaml file 
-        uses: microsoft/variable-substitution@v1
-        with:
-          files: ${{ env.RESOURCE_PATH }}
-        env:
-          override.value: ${{ secrets.DI_FROM_SECRET }}
+        run: mvn -B package --file fp_ml_web/pom.xml
 
       - name: Create zip file
-        run: zip -r ./$GITHUB_SHA.zip DE30-final-4/fp_ml_web/target/
+        run: |
+          mkdir -p deploy
+          cp fp_ml_web/target/*.jar deploy/
+          cp -r fp_ml_web/src/main/resources deploy/
+          cp -r fp_ml_web/src/main/front/build deploy/frontend
+          cp appspec.yml deploy/
+          cp -r scripts deploy/
+          zip -r ./$GITHUB_SHA.zip deploy
         shell: bash
 
       - name: Configure AWS credentials
@@ -88,7 +92,6 @@ jobs:
           --application-name ${{ env.CODE_DEPLOY_APPLICATION_NAME }} \
           --deployment-group-name ${{ env.CODE_DEPLOY_DEPLOYMENT_GROUP_NAME }} \
           --s3-location bucket=$S3_BUCKET_NAME,bundleType=zip,key=$GITHUB_SHA.zip
-
-      # Optional: Update dependency graph
-      - name: Update dependency graph
-        uses: advanced-security/maven-dependency-submission-action@571e99aab1055c2e71a1e2309b9691de18d6b7d6
+      
+      - name: List target directory
+        run: ls -R fp_ml_web/target
