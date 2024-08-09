@@ -162,7 +162,15 @@ const Holiday = () => {
         });
         const data = response.data;
         setRecommendedDay(data.recommendedDay);
-        setChartData(data.chartData);
+        
+        // 차트 데이터를 3으로 나누기
+        const processedChartData = {
+          industry: data.chartData.industry.map(value => Math.floor(value / 3)),
+          allRegions: data.chartData.allRegions.map(value => Math.floor(value / 3)),
+          allIndustries: data.chartData.allIndustries.map(value => Math.floor(value / 3))
+        };
+        
+        setChartData(processedChartData);
       } catch (error) {
         console.error('Error fetching recommendation data:', error);
       } finally {
@@ -293,7 +301,7 @@ const Holiday = () => {
             {chartData.industry.length > 0 && (
               <>
                 <ChartSection 
-                  title={`${region} ${industry} 요일별 매출`}
+                  title={`${region} ${industry} 요일별 월 매출`}
                   analysisText={generateAnalysisText(chartData.industry, 'industry')}
                   chartComponent={
                     <BarChart
@@ -305,7 +313,7 @@ const Holiday = () => {
                   }
                 />
                 <ChartSection 
-                  title={`${industry} 전체상권 요일별 매출`}
+                  title={`${industry} 전체상권 요일별 월 매출`}
                   analysisText={generateAnalysisText(chartData.allIndustries, 'allIndustries')}
                   chartComponent={
                     <BarChart
@@ -317,7 +325,7 @@ const Holiday = () => {
                   }
                 />
                 <ChartSection 
-                  title={`${region} 전체상권 요일별 매출`}
+                  title={`${region} 전체상권 요일별 월 매출`}
                   analysisText={generateAnalysisText(chartData.allRegions, 'allRegions')}
                   chartComponent={
                     <BarChart
@@ -329,7 +337,7 @@ const Holiday = () => {
                   }
                 />
                 <ChartSection 
-                  title="요일별 매출 비교"
+                  title="요일별 월 매출 비교"
                   analysisText="3개 그래프를 한눈에 비교하세요"
                   chartComponent={
                     <CombinedChart
