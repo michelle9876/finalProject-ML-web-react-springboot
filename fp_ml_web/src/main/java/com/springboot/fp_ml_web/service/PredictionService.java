@@ -34,10 +34,10 @@ public class PredictionService {
         Double maxRent = null;
 
         if (filterDto.getRentFeeSelect().getMin() != null && filterDto.getRentArea().getMax() != null && !filterDto.getRentArea().getMax().isNaN()) {
-            minRent = (filterDto.getRentFeeSelect().getMin() * 10.0) / filterDto.getRentArea().getMax();
+            minRent = (filterDto.getRentFeeSelect().getMin() / 1000.0) / filterDto.getRentArea().getMax();
         }
         if (filterDto.getRentFeeSelect().getMax() != null && filterDto.getRentArea().getMin() != null && !filterDto.getRentArea().getMin().isNaN()) {
-            maxRent = (filterDto.getRentFeeSelect().getMax() * 10.0) / filterDto.getRentArea().getMin();
+            maxRent = (filterDto.getRentFeeSelect().getMax() / 1000.0) / filterDto.getRentArea().getMin();
         }
 
         List<String> serviceTypes = filterDto.getServiceIndustryName().isEmpty() ? null : filterDto.getServiceIndustryName();
