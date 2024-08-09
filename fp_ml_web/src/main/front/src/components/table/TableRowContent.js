@@ -58,7 +58,7 @@ const RentLevelChip = ({ rent, isMobile }) => {
 const TableRowContent = ({ data, isMobile, onClick }) => {
   const theme = useTheme();
   const isVerySmall = useMediaQuery(theme.breakpoints.down('xs'));
-  const salesInTenThousand = Math.round(data.predictedSales / 10000).toLocaleString();
+  const salesInTenThousand = Math.round(data.predictedSales / 30000).toLocaleString();
 
   return (
     <TableRow onClick={() => onClick(data)} style={{ cursor: 'pointer' }}>

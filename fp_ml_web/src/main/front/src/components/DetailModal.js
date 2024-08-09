@@ -46,7 +46,9 @@ const StatusItem = ({ description, title, value }) => (
 const Detail = ({ onClose, businessType, commercialArea, correlations, recentFactors, sales, rent }) => {
   const factorColors = ["bg-[#618dff]", "bg-[#97b4ff]", "bg-[#c3d4ff]", "bg-[#e5ecff]", "bg-[#f5f7ff]"];
 
-  const factors = correlations.slice(0, 5).map((correlation, index) => ({
+  const factors = correlations.filter(correlation => correlation.factorKor !== '점포당_당월_매출_금액')
+  .slice(0, 5)
+  .map((correlation, index) => ({
     bg: factorColors[index],
     text: correlation.factorKor.replace('_', '\n')
   }));
@@ -63,7 +65,9 @@ const Detail = ({ onClose, businessType, commercialArea, correlations, recentFac
   // 가장 최신 기간 찾기
   const latestPeriod = Object.keys(recentFactors).reduce((a, b) => (a > b ? a : b), '');
 
-  const statusItems = correlations.slice(0, 5).map(correlation => {
+  const statusItems = correlations.filter(correlation => correlation.factorKor !== '점포당_당월_매출_금액')
+  .slice(0, 5)
+  .map(correlation => {
     const factorKor = correlation.factorKor;
     let value = "데이터 없음";
     if (recentFactors[latestPeriod] && recentFactors[latestPeriod][factorKor] !== undefined) {
@@ -71,18 +75,25 @@ const Detail = ({ onClose, businessType, commercialArea, correlations, recentFac
     }
     return {
       description: correlation.correlationCoefficient >= 0 ? "많을수록 좋아요" : "적을수록 좋아요",
-      title: factorKor.replace('_', ' '),
+      title: factorKor.replace(/_/g, ' '),
       value: value
     };
   });
 
-  // 차트 데이터
+  // chartData 수정
   const chartData = Object.entries(recentFactors).map(([period, values]) => ({
     name: period,
-    ...values
-  }))
+    '점포당_당월_매출_금액': values['점포당_당월_매출_금액'] ? values['점포당_당월_매출_금액'] / 30000 : undefined,
+    ...Object.fromEntries(
+      Object.entries(values).filter(([key]) => key !== '점포당_당월_매출_금액')
+    )
+  }));
 
-  const factorKeys = correlations.slice(0, 5).map(correlation => correlation.factorKor)
+
+  // factorKeys 수정 (점포당_당월_매출_금액을 맨 앞에 추가)
+  const factorKeys = ['점포당_당월_매출_금액', ...correlations.filter(correlation => correlation.factorKor !== '점포당_당월_매출_금액')
+    .slice(0, 4)
+    .map(correlation => correlation.factorKor)];
 
   return (
     <div className="flex flex-col items-center justify-start bg-white border border-solid border-[#b9b9b9] rounded-[14px] overflow-hidden">
@@ -147,7 +158,7 @@ const DetailModal = ({ isOpen, onClose, data, correlations, recentFactors }) => 
   // console.log("DetailModal data:", data);
 
   // 여기서 sales와 rent 데이터를 TableRowContent와 동일한 방식으로 처리
-  const salesInTenThousand = Math.round(data.predictedSales / 10000);
+  const salesInTenThousand = Math.round(data.predictedSales / 30000);
   const rentInTenThousand = (data.rent / 10).toFixed(1);
 
   return (

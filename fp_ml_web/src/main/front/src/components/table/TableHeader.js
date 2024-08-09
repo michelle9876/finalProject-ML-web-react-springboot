@@ -9,14 +9,14 @@ const TableHeader = ({ isMobile }) => {
     ? [
         { label: '순위', width: '15%' },
         { label: '상권/업종', width: '40%' },
-        { label: '예상 매출액', width: '25%' },
+        { label: '예상 월 매출액', width: '25%' },
         { label: '임대료 수준', width: '20%' }
       ]
     : [
         { label: '순위', width: '10%' },
         { label: '상권', width: '25%' },
         { label: '업종', width: '25%' },
-        { label: '예상 매출액', width: '20%' },
+        { label: '예상 월 매출액', width: '20%' },
         { label: '임대료 수준', width: '20%' }
       ];
 
