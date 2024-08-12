@@ -1,5 +1,6 @@
 # :loudspeaker: 사장님 구해요 :convenience_store:
-[home 이미지 삽입 예정]
+![image](https://github.com/user-attachments/assets/76f7b3de-09fa-4f20-a7b8-5ce3971d5789)
+
 - 배포URL : (url 삽입 예정)
 
 ## 목차
@@ -297,7 +298,6 @@
 ### 정제윤
 
 ## :open_file_folder: 산출물
-- 주제 및 기술셋 설명 : https://docs.google.com/spreadsheets/d/1S9z_XwI3XlkVivCKe9AHFBpDFyWQP122RZosDhCfmT0/edit?gid=477537601#gid=477537601
 - 갠트차트 : https://docs.google.com/spreadsheets/d/1D-ZymRVpYW4Ke9zWyekrmF3GOLdZIHlE07zJBrou3NY/edit?gid=1216572366#gid=1216572366
 - 요구사항 정의서 : https://docs.google.com/spreadsheets/d/1UZflufgHaNtIHRyIJyky6rDAbLGrwatrjvRqxVuMKr4/edit?gid=0#gid=0
 - API 명세서 : https://docs.google.com/spreadsheets/d/1UEhghTYeV4GfCqCy38M5FT2DGRtcNG0WFXV3UNSw3HI/edit?gid=0#gid=0
