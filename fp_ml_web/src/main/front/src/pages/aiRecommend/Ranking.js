@@ -67,8 +67,9 @@ const Ranking = () => {
       setCorrelations(correlationsData.correlations);
 
       // 2. correlationsData를 사용하여 fetchRecentFactors 호출
-      const topFiveFactors = correlationsData.correlations.slice(0, 5).map(c => c.factorKor);
-      const recentFactorsData = await fetchRecentFactors(item.businessDistrict, item.serviceType, topFiveFactors);
+      const topFactors = correlationsData.correlations.slice(0, 5).map(c => c.factorKor);
+      const factorsToFetch = ["점포당_당월_매출_금액", ...topFactors];
+      const recentFactorsData = await fetchRecentFactors(item.businessDistrict, item.serviceType, factorsToFetch);
       setRecentFactors(recentFactorsData);
 
     } catch (error) {

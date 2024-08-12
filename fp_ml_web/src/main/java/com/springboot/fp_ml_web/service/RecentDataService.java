@@ -76,6 +76,9 @@ public class RecentDataService {
                     case "아파트_평균_면적":
                         factors.put(factor, data.getApartmentAverageArea());
                         break;
+                    case "점포당_당월_매출_금액":
+                        factors.put(factor, data.getMonthlySalesPerStore());
+                        break;
                     default:
                         break;
 

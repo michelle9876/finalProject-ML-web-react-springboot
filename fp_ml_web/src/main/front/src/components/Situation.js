@@ -99,7 +99,7 @@ function Situation({ data, factorKeys }) {
       {factorKeys.map((factor, index) => (
         <ChartSection
           key={factor}
-          title={factor.replace('_', ' ')}
+          title={factor.replace(/_/g, ' ')}
           chartComponent={
             <SituationChart
               data={data}
@@ -107,7 +107,7 @@ function Situation({ data, factorKeys }) {
               color={colors[index % colors.length]}
             />
           }
-          analysisText={`${factor.replace('_', ' ')}의 추이를 나타내는 그래프입니다.`}
+          analysisText={`${factor.replace(/_/g, ' ')}의 추이를 나타내는 그래프입니다.`}
         />
       ))}
     </div>
