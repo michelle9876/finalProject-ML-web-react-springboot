@@ -163,7 +163,7 @@ const RegionFilter = ({ onDataFetched, singleSelect = false, maxSelect = 500, mo
           <Typography variant="subtitle2" className="filter-subtitle">선택한 상권</Typography>
           <Box className="selected-items-container">
             {selectedRegions.length > 0 ? (
-              <Stack direction="row" spacing={1} flexWrap="wrap">
+              <Stack direction="row" spacing={1} flexWrap="wrap"  gap={0.5}>
                 {selectedRegions.map(area => (
                   <Chip
                     key={area.name}

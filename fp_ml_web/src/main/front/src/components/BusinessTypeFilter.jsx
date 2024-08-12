@@ -130,7 +130,7 @@ const BusinessTypeFilter = ({ onDataFetched, singleSelect = false, maxSelect = 5
           <Typography variant="subtitle2" className="filter-subtitle">선택한 업종</Typography>
           <Box className="selected-items-container">
             {selectedBusinessTypes.length > 0 ? (
-              <Stack direction="row" spacing={1} flexWrap="wrap">
+              <Stack direction="row" spacing={1} flexWrap="wrap" gap={0.5} >
                 {selectedBusinessTypes.map(businessType => (
                   <Chip
                     key={businessType.code}
