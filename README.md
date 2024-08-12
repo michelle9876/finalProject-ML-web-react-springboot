@@ -1,4 +1,4 @@
-![ai 맞춤추천](https://github.com/user-attachments/assets/4dfa1aa9-aed3-42cb-a57d-9af1e8c61f8a)# :loudspeaker: 사장님 구해요 :convenience_store:
+# :loudspeaker: 사장님 구해요 :convenience_store:
 ![image](https://github.com/user-attachments/assets/76f7b3de-09fa-4f20-a7b8-5ce3971d5789)
 
 - 배포URL : http://13.125.214.231/
