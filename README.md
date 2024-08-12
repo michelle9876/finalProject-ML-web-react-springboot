@@ -267,7 +267,7 @@
 
 - 김보경 : backend, ML, EDA
 - 최은서 : backend, ML
-- 윤소영 : frontend, backend, ML
+- 윤소영 : frontend, ML
 - 정제윤 : frontend, EDA
 
 ## :calendar: 개발 기간 및 작업 관리
