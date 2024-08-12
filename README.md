@@ -1,7 +1,7 @@
 # :loudspeaker: 사장님 구해요 :convenience_store:
 ![image](https://github.com/user-attachments/assets/76f7b3de-09fa-4f20-a7b8-5ce3971d5789)
 
-- 배포URL : (url 삽입 예정)
+- 배포URL : http://13.125.214.231/
 
 ## 목차
 
