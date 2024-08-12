@@ -1,4 +1,4 @@
-# :loudspeaker: 사장님 구해요 :convenience_store:
+![ai 맞춤추천](https://github.com/user-attachments/assets/4dfa1aa9-aed3-42cb-a57d-9af1e8c61f8a)# :loudspeaker: 사장님 구해요 :convenience_store:
 ![image](https://github.com/user-attachments/assets/76f7b3de-09fa-4f20-a7b8-5ce3971d5789)
 
 - 배포URL : http://13.125.214.231/
@@ -282,19 +282,67 @@
 - 공유 중인 Notion 페이지를 통해 코드 및 기능의 상세 내용을 기록했습니다.
 
 ## :calling: 페이지별 기능
+### 홈페이지
+![리드미홈](https://github.com/user-attachments/assets/2af3cca4-7c1a-4419-85ca-1444d1beef51)
+웹사이트 홈페이지입니다. 
+![리드미 닉네임](https://github.com/user-attachments/assets/05c7005d-91ca-4b88-a431-a2af383bc245)
+홈페이지 최초 접속 시, 닉네임을 입력할 수 있습니다. 
+
+### 기능 1 AI 맞춤추천
+**“ 업종과 상권을 선택하세요! AI가 매출액을 예측해드립니다”**    
+     
+1. [ 지역(상권) / 업종 / 임대료 / 면적 ]을 사용자가 중복선택합니다.    
+![image](https://github.com/user-attachments/assets/21b01138-a5d7-4072-98f5-a1b5d8f61e0b)   
+   
+3. 선택한 옵션 내에서 최적의 매출액을 낼 수 있는 순위를 머신러닝을 통해 도출해줍니다.    
+![image](https://github.com/user-attachments/assets/2b2bed81-6cf8-492f-b623-5a442aa9c0a9)
+   
+4. 각 순위를 클릭하면, 세부정보 리포트를 확인할 수 있습니다.   
+![image](https://github.com/user-attachments/assets/ec1e89e2-f7fc-4467-bc5b-35407b82fd6b)   
+![image](https://github.com/user-attachments/assets/b89250ce-26fa-4c6e-9065-415062c9abf3)   
+   
+### 기능 2 랭킹 IN 지도
+**“원하는 업종을 선택하세요! 지도로 한 눈에 보여드립니다.”**    
+   
+1. 개업을 원하는 업종을 사용자가 중복선택합니다.   
+   ![image](https://github.com/user-attachments/assets/3d44000d-4fbb-4f6d-b774-9dd6218c8e88)   
+    
+2. 최상의 매출을 낼 수 있는 상권을 업종별로 1위부터 5위까지 지도상에 표시해줍니다. (업종에 따라 색상 구분)
+ ![리드미 지도2](https://github.com/user-attachments/assets/acb12afc-6ab0-4814-a5e7-ebfde2d22c05)
+
+  
+### 기능 3 내 생각 확인하기
+**“누구나 갖고 있는 나만의 가설! 지금 검증해보세요.”**     
+
+1. [ 업종 / 요인 / 조건 ]을 선택합니다.
+   ex. **완구**는 **연령대 10 상주인구 수**가 **높으면** 매출이 높을 것이다. 
+![image](https://github.com/user-attachments/assets/5eeee4c6-a7f0-45a1-977d-a4c4d38f7897)
+   
+2. 업종과 요인 간의 상관계수를 토대로 해당 가정의 통계적 유의미성을 판별해줍니다. 
+![image](https://github.com/user-attachments/assets/069cf0af-840f-40c8-9cce-b57e2f5a5d77)
+
+
+### 기능 4 휴일 추천
+**“고민되는 정기 휴무일 선정. 데이터를 기반으로 추천해드립니다”**    
+   
+1. 운영 중인 사업장의 업종과 지역(상권)을 선택합니다.
+   ![image](https://github.com/user-attachments/assets/9fa82aa0-c4a7-4ff0-9a78-3ac4bdc41397)
+
+2. 선택한 옵션의 요일별 매출액 현황을 그래프로 제공하고, 일주일 중 매출액이 가장 적은 요일을 정기휴무일로 추천합니다.
+ ![image](https://github.com/user-attachments/assets/e8aa92bf-c2be-4e76-b57e-7c8b23ab2bf6)
 
 
 ## :collision: 트러블 슈팅
 ### 김보경
-**Local DB에서 aws RDS로 전환!**    
+**Local DB에서 aws RDS로 전환 !**    
 초반에는 개발작업을 local DB(MariaDB)를 사용하여, local DB가 있는 컴퓨터가 꺼지거나 다른 네트워크에 있는 경우, local DB에 접속에 어려운 문제를 격었습니다. 팀원들과 상의후 저희는 조금더 수월하게 DB에 접속하고 공유, 개발하고자 충분한 aws RDS비용리서치 후, aws RDS로 전환하여 DB접속 문제를 해결하였습니다!    
 
 ### 최은서
-**DB 구조 개선을 통한 로직 단순화 및 성능 향상!**    
+**DB 구조 개선을 통한 로직 단순화 및 성능 향상 !**    
 DB에 있는 하나의 테이블에 모든 데이터들을 적재해놓고 다수의 api가 이를 공유해 사용하도록 했습니다. 그러나 그 과정에서 로직이 복잡해지고 데이터를 잘 불러오지 못하는 문제가 발생해, 기능별로 각각 테이블을 세분화하여 db에 업로드했습니다.   
    
 ### 윤소영
-**안되는 건 없다!**    
+**안되는 건 없다 !**    
 문제가 발생하면 바로바로 해결합니다. 문제 해결을 위해서 새로운 기술을 도입하는 것에 겁먹지 않아요.
 너무 직진만 해서 정리가 안되는 편!  이제 체계적으로 관리하고 싶어요.
 좀 더 시간이 된다면 데이터를 정확도를 높이고 싶어요.    
