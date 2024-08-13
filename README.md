@@ -190,7 +190,7 @@ TPOT model code has been saved to /content/drive/MyDrive/tpot_best_model.py
 
 ```
    
-- **결과해석**
+- **결과해석**     
 **내부 교차 검증 점수 (Internal CV Score)**   
 - 모든 세대에서 내부 교차 검증 점수가 동일하고 매우 큰 음수 값을 가지고 있습니다. 이는 모델이 데이터에 대해 제대로 학습되지 않았음을 나타낼 수 있습니다. 매우 높은 음수 값은 모델의 예측 오류가 크다는 것을 의미합니다.   
    
