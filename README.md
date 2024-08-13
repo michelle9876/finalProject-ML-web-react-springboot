@@ -198,14 +198,14 @@ TPOT model code has been saved to /content/drive/MyDrive/tpot_best_model.py
    
 **최적화된 모델 (Best Pipeline)**   
     
-- TPOT이 선택한 최적의 파이프라인은 **`ExtraTreesRegressor`**입니다.
-- 이 모델은 **`StandardScaler`**를 통해 표준화된 입력 데이터(**`input_matrix`**)를 사용합니다.   
+- TPOT이 선택한 최적의 파이프라인은 **ExtraTreesRegressor**입니다.
+- 이 모델은 **StandardScaler**를 통해 표준화된 입력 데이터(**input_matrix**)를 사용합니다.   
 - Hyperparameter로는 다음과 같습니다:
-    - **`bootstrap=True`**: 부트스트랩 샘플링을 사용하여 각 트리를 훈련합니다.
-    - **`max_features=0.9000000000000001`**: 각 트리가 사용할 최대 특성의 비율입니다.
-    - **`min_samples_leaf=15`**: 리프 노드가 가져야 하는 최소 샘플 수입니다.
-    - **`min_samples_split=20`**: 노드를 분할하기 위해 필요한 최소 샘플 수입니다.
-    - **`n_estimators=100`**: 사용할 트리의 수입니다.   
+    - **bootstrap=True**: 부트스트랩 샘플링을 사용하여 각 트리를 훈련합니다.
+    - **max_features=0.9000000000000001**: 각 트리가 사용할 최대 특성의 비율입니다.
+    - **min_samples_leaf=15**: 리프 노드가 가져야 하는 최소 샘플 수입니다.
+    - **min_samples_split=20**: 노드를 분할하기 위해 필요한 최소 샘플 수입니다.
+    - **n_estimators=100**: 사용할 트리의 수입니다.   
    
 **평가 지표 (Evaluation Metrics)**   
     
