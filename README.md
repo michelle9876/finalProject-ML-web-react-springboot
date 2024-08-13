@@ -98,9 +98,8 @@
 ### [Modeling]
 ### `Machine Learning`
 - Model Ensemble-Bagging, Gradient Boosting, Random Forest, LASSO, XGBoost, AutoML-TPOT 등 최적의 성능을 내기 위해 각 팀원마다 다양한 모델을 시도해 보았습니다.   
-
+   
 **1. Model Ensemble-Bagging (윤소영)**   
--    
 
 **2. AutoML-TPOT (최은서)**
 - **TPOT**
