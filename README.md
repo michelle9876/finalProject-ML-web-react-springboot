@@ -283,25 +283,33 @@
 
 ## :calling: 페이지별 기능
 ### 홈페이지
+   
 ![리드미홈](https://github.com/user-attachments/assets/2af3cca4-7c1a-4419-85ca-1444d1beef51)
-웹사이트 홈페이지입니다. 
-![리드미 닉네임](https://github.com/user-attachments/assets/05c7005d-91ca-4b88-a431-a2af383bc245)
-홈페이지 최초 접속 시, 닉네임을 입력할 수 있습니다. 
+   
+웹사이트 홈페이지입니다.    
+    
+![리드미 닉네임](https://github.com/user-attachments/assets/05c7005d-91ca-4b88-a431-a2af383bc245)   
+   
+홈페이지 최초 접속 시, 닉네임을 입력할 수 있습니다.   
+  
 
-### 기능 1 AI 맞춤추천
+### :mag: 기능 1 AI 맞춤추천
 **“ 업종과 상권을 선택하세요! AI가 매출액을 예측해드립니다”**    
      
-1. [ 지역(상권) / 업종 / 임대료 / 면적 ]을 사용자가 중복선택합니다.    
+1. [ 지역(상권) / 업종 / 임대료 / 면적 ]을 사용자가 중복선택합니다.
+      
 ![image](https://github.com/user-attachments/assets/21b01138-a5d7-4072-98f5-a1b5d8f61e0b)   
    
-3. 선택한 옵션 내에서 최적의 매출액을 낼 수 있는 순위를 머신러닝을 통해 도출해줍니다.    
+2. 선택한 옵션 내에서 최적의 매출액을 낼 수 있는 순위를 머신러닝을 통해 도출해줍니다.
+      
 ![image](https://github.com/user-attachments/assets/2b2bed81-6cf8-492f-b623-5a442aa9c0a9)
-   
-4. 각 순위를 클릭하면, 세부정보 리포트를 확인할 수 있습니다.   
+
+3. 각 순위를 클릭하면, 세부정보 리포트를 확인할 수 있습니다.
+      
 ![image](https://github.com/user-attachments/assets/ec1e89e2-f7fc-4467-bc5b-35407b82fd6b)   
 ![image](https://github.com/user-attachments/assets/b89250ce-26fa-4c6e-9065-415062c9abf3)   
    
-### 기능 2 랭킹 IN 지도
+### :round_pushpin: 기능 2 랭킹 IN 지도
 **“원하는 업종을 선택하세요! 지도로 한 눈에 보여드립니다.”**    
    
 1. 개업을 원하는 업종을 사용자가 중복선택합니다.   
@@ -311,7 +319,7 @@
  ![리드미 지도2](https://github.com/user-attachments/assets/acb12afc-6ab0-4814-a5e7-ebfde2d22c05)
 
   
-### 기능 3 내 생각 확인하기
+### :thought_balloon: 기능 3 내 생각 확인하기
 **“누구나 갖고 있는 나만의 가설! 지금 검증해보세요.”**     
 
 1. [ 업종 / 요인 / 조건 ]을 선택합니다.
@@ -322,13 +330,15 @@
 ![image](https://github.com/user-attachments/assets/069cf0af-840f-40c8-9cce-b57e2f5a5d77)
 
 
-### 기능 4 휴일 추천
+### :date: 기능 4 휴일 추천
 **“고민되는 정기 휴무일 선정. 데이터를 기반으로 추천해드립니다”**    
    
 1. 운영 중인 사업장의 업종과 지역(상권)을 선택합니다.
+      
    ![image](https://github.com/user-attachments/assets/9fa82aa0-c4a7-4ff0-9a78-3ac4bdc41397)
 
-2. 선택한 옵션의 요일별 매출액 현황을 그래프로 제공하고, 일주일 중 매출액이 가장 적은 요일을 정기휴무일로 추천합니다.
+2.  선택한 옵션의 요일별 매출액 현황을 그래프로 제공하고, 일주일 중 매출액이 가장 적은 요일을 정기휴무일로 추천합니다.
+      
  ![image](https://github.com/user-attachments/assets/e8aa92bf-c2be-4e76-b57e-7c8b23ab2bf6)
 
 
@@ -359,8 +369,6 @@ DB에 있는 하나의 테이블에 모든 데이터들을 적재해놓고 다�
 구상만 해두었던 아이디어들이 서서히 현실화되는 과정을 경험하면서, 큰 성취감을 느꼈습니다. 그동안 배워왔던 기술 스택을 실제 프로젝트에 적용해보면서, 앞으로 어떻게 더 효율적이고 창의적으로 활용할 수 있을지에 대한 감이 잡혔습니다. 또한, 수업시간에 배우지 않았던 새로운 기술들을 독학하고 실전에 사용해보면서, 기술 스택을 다룰 수 있는 범위와 역량이 이전보다 확연히 확장된 것 같아 매우 뿌듯합니다. 이 과정에서 얻은 경험과 자신감이 앞으로의 학습 과정에도 큰 자산이 될 수 있을 것 같습니다. 
 
 ### 윤소영
-
-### 정제윤
 
 ## :open_file_folder: 산출물
 - **갠트차트** : https://docs.google.com/spreadsheets/d/1D-ZymRVpYW4Ke9zWyekrmF3GOLdZIHlE07zJBrou3NY/edit?gid=1216572366#gid=1216572366
