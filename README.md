@@ -219,6 +219,180 @@ TPOT model code has been saved to /content/drive/MyDrive/tpot_best_model.py
 - 이유는 데이터의 품질 문제일 수 있습니다. 데이터셋에 중요한 피처가 누락되었거나, 데이터의 분포가 불균형할 수 있습니다. 또한, 결측치 처리나 데이터 전처리가 불충분할 수 있습니다.
 - 모델을 개선하기 위해서는 데이터의 질을 높이고, 피처 엔지니어링을 통해 더 중요한 피처를 추가하거나 다른 전처리 방법을 시도해 볼 필요가 있습니다. 모델의 하이퍼파라미터를 튜닝하거나 다른 모델을 시도해 보는 것도 한 방법입니다.
    
+**3. Random Forest & Gradient Boosting Regressor & MultiOutputRegressor(김보경)**
+- **Random Forest**
+
+랜덤 포레스트(Random Forest)는 여러개의 결정 트리를 앙상블하여 예측 성능을 향상시키는 머신러닝 알고리즘입니다.
+렌덤 포레스트의 주요장점은 다음과 같습니다.
+1. **높은 예측 정확도**: 여러개의 결정 트리를 결합하여 예측을 수행하기 때문에, 단일 결정 트리보다 예측 정확도가 높습니다.
+2. **과적합 방지**: 랜덤 포레스트는 여러 트리를 사용해 평균화된 결과를 도출하기 때문에 단일 트리에 비해 과적합(Overfitting)이 덜 발생합ㅂ니다.
+3. **변수의 중요도 평가**: 랜덤 포레스트는 각 변수(특성)의 중요도를 측정할 수 있는 기능을 제공합니다.
+4. **다양항 문제에 적용 가능**: 분류(Clssification)와 회귀(Regression)모두에서 사용할 수 있는 유연한 알고리즘입니다. 다양한 유혀으이 문제에 적용할 수 있습니다.
+
+- **코드**
+```
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler, OneHotEncoder
+from sklearn.compose import ColumnTransformer
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.pipeline import Pipeline
+from sklearn.metrics import mean_squared_error, r2_score
+
+model = Pipeline(steps=[
+    ('preprocessor', preprocessor),
+    ('regressor', RandomForestRegressor(n_estimators=100, random_state=42))
+])
+
+# 데이터를 학습 세트와 테스트 세트로 분리
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# 모델 학습
+model.fit(X_train, y_train.values.ravel())
+
+
+# 모델 저장
+import joblib
+joblib.dump(model, '/content/drive/MyDrive/FinalProject_data/ml_model/trained_model2.pkl')
+
+# 모델 로드
+loaded_pipeline = joblib.load('/content/drive/MyDrive/FinalProject_data/ml_model/trained_model2.pkl')
+
+# 예측 수행
+predictions = loaded_pipeline.predict(X_test)
+
+# 성능 지표 계산
+mse = mean_squared_error(y_test, predictions)
+rmse = np.sqrt(mse)
+r2 = r2_score(y_test, predictions)
+
+print(f"Mean Squared Error (MSE): {mse:.4f}")
+print(f"Root Mean Squared Error (RMSE): {rmse:.4f}")
+print(f"R² Score: {r2:.4f}")
+
+np.argsort( predictions)[-5:]
+```
+
+- **Gradient Boosting Regressor**
+
+Gradient Boosting Regressor는 여러개의 약한 학습자(주로 결정트리)를 순차적으로 결합하여 강력한 예측 모델을 만드는 앙상블 학습방법입니다. Gradient Boosting Regressor의 주요 장점은 다음과 같습니다.
+1. **높은 예측 정확도**: Gradient Boosting Regressor는 모델을 점진적으로 개선해 나가기 때문에 매우 높은 예측 정확도를 달성할 수 있습니다.
+2. **유연성**: Gradient Boosting Regressor은 다양한 손실 함수(loss function)사용할 수 있어, 회귀, 분류, 순위 예측 등 다양한 문제에 적용할 수 있는 유연성을 제공합니다. 득정 문제의 특성에 맞는 맞춤형 모델을 만들 수 있습니다.
+3. **특성 중요도 평가**: Gradient Boosting Regressor모델은 각 특성이 예측에 기여하는 중요도를 평가할 수 있습니다.
+4. **다양한 데이터 처리 능력**: Gradient Boosting Regressor는 결측값 처리, 비선형 데이터, 상호작용 효과가 있는 데이터에 대해 강력한 성을을 발휘합니다. 다양한 유형의 데이터를 효과적으로 다룰 수 있습니다.
+
+- **코드**
+
+
+```
+from sklearn.ensemble import GradientBoostingRegressor
+
+# 모델 파이프라인 설정
+model = Pipeline(steps=[
+    ('preprocessor', preprocessor),
+    ('regressor', GradientBoostingRegressor(random_state=42))
+])
+
+# 모델 학습
+model.fit(X_train, y_train)
+
+# 특성 중요도 추출
+regressor = model.named_steps['regressor']
+importances = regressor.feature_importances_
+
+# 변수명 추출
+feature_names = numerical_features.tolist() + list(model.named_steps['preprocessor'].named_transformers_['cat']['onehot'].get_feature_names_out(categorical_features))
+
+
+# 중요도와 변수명을 데이터프레임으로 정리
+importance_df = pd.DataFrame({'Feature': feature_names, 'Importance': importances})
+
+# 중요도 기준으로 내림차순 정렬
+importance_df = importance_df.sort_values(by='Importance', ascending=False)
+
+# 상위 8개 변수 출력
+top_features_gradient_boosting = importance_df.head(8)
+print(top_features_gradient_boosting)
+
+```
+
+- **MultiOutputRegressor**
+MultiOutputRegressor는 여러 개의 회귀 문제를 동시에 해결할 수 있도록 설계된 멀티아웃풋 회귀 모델입니다. 단일 모델을 각각의 출력(target) 변수에 대해 독립적으로 학습시키는 방식으로 동작합니다. MultiOutputRegressor의 주요 장점은 다음과 같습니다.
+1. **다중 출력 예측 가능**: MultiOutputRegressor는 여러 개의 출력 변수를 동시에 예측할 수 있도록 설계되었습니다. 이로 인해 다중 목표(출력)가 있는 회귀 문제를 효율적으로 해결할 수 있습니다. 각 출력 변수를 독립적으로 처리하면서도, 하나의 통합된 프레임워크 내에서 관리할 수 있습니다.
+2. **모델의 독립성**: 각 출력 변수에 대해 독립적인 회귀 모델을 학습하므로, 특정 출력 변수에 대한 예측 성능이 다른 변수에 영향을 받지 않습니다. 이는 각 목표 변수가 서로 독립적이거나 관계가 약한 경우 유리합니다.
+3.** 다양한 기반 회귀 모델 적용 가능**: MultiOutputRegressor는 기본 회귀 모델로 사용할 알고리즘을 자유롭게 선택할 수 있습니다. 선형 회귀, 결정 트리, 랜덤 포레스트, 서포트 벡터 머신 등 다양한 회귀 모델을 사용하여 멀티아웃풋 회귀 문제를 해결할 수 있습니다.
+4. **단순하고 직관적인 접근**: MultiOutputRegressor는 복잡한 구조나 알고리즘을 필요로 하지 않으며, 단순히 여러 개의 출력 변수에 대해 각각의 회귀 모델을 학습시키는 직관적인 방법을 제공합니다. 이를 통해 복잡한 데이터 전처리 없이도 쉽게 구현할 수 있습니다.
+5. **확장성**: MultiOutputRegressor는 출력 변수가 증가하더라도 쉽게 확장할 수 있습니다. 각 출력 변수에 대해 독립적인 모델을 학습시키기 때문에, 출력 변수가 많아질 때에도 관리가 용이합니다.
+   
+- **코드 **
+  
+```
+# 모델 정의
+model = MultiOutputRegressor(RandomForestRegressor(n_estimators=100, random_state=42))
+
+# 파이프라인 생성
+pipeline = Pipeline(steps=[
+    ('preprocessor', preprocessor),
+    ('model', model)
+])
+
+# 데이터 분할
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# 모델 학습
+pipeline.fit(X_train, y_train)
+
+# # 테스트 데이터에 대한 예측
+predictions = pipeline.predict(X_test)
+
+# 각 타겟 변수에 대해 MAE, MSE 계산
+mae_scores = []
+mse_scores = []
+
+for i, column in enumerate(target):
+    mae = mean_absolute_error(y_test.iloc[:, i], predictions[:, i])
+    mse = mean_squared_error(y_test.iloc[:, i], predictions[:, i])
+    mae_scores.append(mae)
+    mse_scores.append(mse)
+    print(f"{column} - MAE: {mae:.4f}, MSE: {mse:.4f}")
+
+# 전체 평균 MAE, MSE 계산
+avg_mae = np.mean(mae_scores)
+avg_mse = np.mean(mse_scores)
+
+print(f"\nAverage MAE: {avg_mae:.4f}")
+print(f"Average MSE: {avg_mse:.4f}")
+
+# monthly_sales_per_store 기준으로 상위 5개 항목 추천
+top_5_indices = np.argsort(predictions[:, -1])[-5:]
+top_5_info = X_test.iloc[top_5_indices].copy()
+top_5_info.loc[:, 'predicted_monthly_sales_per_store'] = predictions[top_5_indices, -1]
+
+# 상세 정보 출력
+print("Top 5 Recommendations based on monthly_sales_per_store:")
+for index in top_5_info.index:
+    row = top_5_info.loc[index]
+    print(f"Service Industry: {row['service_industry_name']}, Business District: {row['business_district_name']}")
+    print(f"Predicted Monthly Sales Per Store: {row['predicted_monthly_sales_per_store']}")
+    print(f"Monthly Average Income: {y_test.loc[index, 'monthly_average_income_amount']}")
+    print(f"Total Floating Population: {y_test.loc[index, 'total_floating_population']}")
+    print(f"Total Working Population: {y_test.loc[index, 'total_working_population']}")
+    print(f"Apartment Average Price: {y_test.loc[index, 'apartment_average_price']}")
+    print(f"Total Households: {y_test.loc[index, 'total_households']}")
+    print(f"Total Expenditure Amount: {y_test.loc[index, 'total_expenditure_amount']}")
+    print(f"Total Stores: {y_test.loc[index, 'total_stores']}")
+    print(f"Average Operating Months: {y_test.loc[index, 'average_operating_months']}")
+    print(f"Total Attraction Facilities: {y_test.loc[index, 'total_attraction_facilities']}")
+    print()
+
+# monthly_sales_per_store 기준으로 상위 5개 항목 추천
+top_5_indices = np.argsort(predictions[:, -1])[-5:]
+top_5_info = X_test.iloc[top_5_indices]
+top_5_info['predicted_monthly_sales_per_store'] = predictions[top_5_indices, -1]
+
+print("Top 5 Recommendations based on monthly_sales_per_store:")
+top_5_info
+```
 
 
 ### [DB]
