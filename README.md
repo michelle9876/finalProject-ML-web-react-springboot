@@ -817,6 +817,7 @@ DB에 있는 하나의 테이블에 모든 데이터들을 적재해놓고 다�
 <img src="https://velog.velcdn.com/images/devysy55/post/2308d404-8a54-4749-904f-1af00691673e/image.png" height="300" align="left">
 
 <br clear="all"/>
+
 - **갠트차트** : https://docs.google.com/spreadsheets/d/1D-ZymRVpYW4Ke9zWyekrmF3GOLdZIHlE07zJBrou3NY/edit?gid=1216572366#gid=1216572366
 - **요구사항 정의서** : https://docs.google.com/spreadsheets/d/1UZflufgHaNtIHRyIJyky6rDAbLGrwatrjvRqxVuMKr4/edit?gid=0#gid=0
 - **API 명세서** : https://docs.google.com/spreadsheets/d/1UEhghTYeV4GfCqCy38M5FT2DGRtcNG0WFXV3UNSw3HI/edit?gid=0#gid=0
