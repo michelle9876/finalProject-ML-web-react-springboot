@@ -74,31 +74,181 @@
 
 
 ## :wrench: 개발 환경 
-- Front : React
-- Back-end : Spring Boot
-- 버전 및 이슈 관리 : Github, Jira
-- 협업 툴 : Notion, Slack
-- 서비스 배포 환경 : AWS
-- 디자인 : Figma
+- Front : `React`
+- Back-end : `Spring Boot`
+- 버전 및 이슈 관리 : `Github`, `Jira`
+- 협업 툴 : `Notion`, Slack`
+- 서비스 배포 환경 : `AWS`
+- 디자인 : `Figma`
 
 ## :bulb: 채택한 개발 기술과 브랜치 전략
-
-### SpringBoot
+### [Backend]
+### `SpringBoot`
 - **빠른 개발 속도**: Spring Boot는 개발자에게 설정이 간단하고 빠른 시작을 제공하는 프레임워크여서 선택을 하였습니다. 기존의 Spring Framework에 비해 설정이 단순화되어 있으며, 다양한 내장 기능이 있어 생산성이 높다고 판단했습니다.
 - **마이크로서비스 아키텍처**: Spring Boot는 마이크로서비스 아키텍처를 쉽게 구현할 수 있도록 설계가 되어, 프로젝트 확장성과 유지 보수성을 높이는데 유리하다고 생각이되어 선택하였습니다.
-- **안정성과 확장성**: Spring Boot는 대규모 트래픽을 처리할 수 있는 안정적이고 확장 가능한 솔루션을 제공하고 있어, Spring Boot를 선택하였습니다.
+- **안정성과 확장성**: Spring Boot는 대규모 트래픽을 처리할 수 있는 안정적이고 확장 가능한 솔루션을 제공하고 있어, Spring Boot를 선택하였습니다.   
+   
+### [Frontend]
+### `React`
+- 학습 자료가 풍부하고, 다른 라이브러리나 도구와 통합이 자유롭기에 `React`를 선택하게 되었습니다.
+.   
+(소영언니 수정 예정)   
+.   
 
-### React
-- (상세설명)
+### [Modeling]
+### `Machine Learning`
+- Model Ensemble-Bagging, Gradient Boosting, Random Forest, LASSO, XGBoost, AutoML-TPOT 등 최적의 성능을 내기 위해 각 팀원마다 다양한 모델을 시도해 보았습니다.   
 
-### Machine Learning
-- (상세설명)
+**1. Model Ensemble-Bagging (윤소영)**   
+-    
 
-### AWS RDS
+**2. AutoML-TPOT (최은서)**
+- **TPOT**
+     
+![image](https://github.com/user-attachments/assets/a5d15fda-9f0f-4850-af1d-9869cfd90c39)   
+    
+TPOT은 딥러닝 모델보다는 트리 기반 모델 혹은 회귀 모델에 특화되어있습니다. 특정 configuration을 지정해줌으로써 딥러닝 학습도 가능합니다. Windows 운영체제에서 사용할 수 있는 가장 간단하고 성능 좋은 automl 패키지라고 볼 수 있습니다. TPOT은 수천 개에 달하는 pipeline을 탐색해서 최적의 성능을 내는 모델을 찾습니다.   
+
+- **코드**
+```
+# Import libraries
+import pandas as pd
+from tpot import TPOTRegressor
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
+from sklearn.impute import SimpleImputer
+
+# CSV 파일 경로 설정
+file_path = "/content/drive/MyDrive/merged_output.csv"
+
+# CSV 파일 읽기
+df = pd.read_csv(file_path)
+
+# 피처와 타겟 설정
+selected_features = [
+    '월_평균_소득_금액', '지출_총금액','총_유동인구_수',
+    '총_상주인구_수', '총_가구_수', '아파트_평균_시가', '총_직장_인구_수',
+    '집객시설_수'
+]
+X = df[selected_features]
+y = df['점포당_당월_매출_금액']
+
+# 결측치 처리
+imputer = SimpleImputer(strategy='mean')
+X = imputer.fit_transform(X)
+y = imputer.fit_transform(y.values.reshape(-1, 1)).ravel()
+
+# 데이터셋 분할
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# TPOT 모델 생성 및 학습
+tpot = TPOTRegressor(
+    generations=5,        # 세대 수 줄임
+    population_size=5,    # 개체 수 줄임
+    verbosity=2,           # 출력 로그를 줄임
+    random_state=42,
+    n_jobs=-1
+)
+tpot.fit(X_train, y_train)
+
+# 예측
+y_pred = tpot.predict(X_test)
+
+# 평가 지표 계산
+mae = mean_absolute_error(y_test, y_pred)
+mse = mean_squared_error(y_test, y_pred)
+r2 = r2_score(y_test, y_pred)
+
+print(f'Mean Absolute Error: {mae:.2f}')
+print(f'Mean Squared Error: {mse:.2f}')
+print(f'R-squared: {r2:.2f}')
+
+# 최적 모델 코드 출력
+tpot.export('tpot_best_model.py')
+```
+    
+- **성능**
+
+```
+
+Drive already mounted at /content/drive; to attempt to forcibly remount, call drive.mount("/content/drive", force_remount=True).
+
+Generation 1 - Current best internal CV score: -1.9594205961084084e+16
+
+Generation 2 - Current best internal CV score: -1.9594205961084084e+16
+
+Generation 3 - Current best internal CV score: -1.9594205961084084e+16
+
+Generation 4 - Current best internal CV score: -1.913944229937482e+16
+
+Generation 5 - Current best internal CV score: -1.913944229937482e+16
+
+Best pipeline: ExtraTreesRegressor(StandardScaler(input_matrix), bootstrap=True, max_features=0.9000000000000001, min_samples_leaf=15, min_samples_split=20, n_estimators=100)
+Mean Absolute Error: 60895405.41
+Mean Squared Error: 17969009768218358.00
+R-squared: 0.07
+TPOT model code has been saved to /content/drive/MyDrive/tpot_best_model.py
+
+```
+   
+- **결과해석**
+### **내부 교차 검증 점수 (Internal CV Score)**   
+- 모든 세대에서 내부 교차 검증 점수가 동일하고 매우 큰 음수 값을 가지고 있습니다. 이는 모델이 데이터에 대해 제대로 학습되지 않았음을 나타낼 수 있습니다. 매우 높은 음수 값은 모델의 예측 오류가 크다는 것을 의미합니다.   
+   
+### **최적화된 모델 (Best Pipeline)**   
+- TPOT이 선택한 최적의 파이프라인은 **`ExtraTreesRegressor`**입니다.
+- 이 모델은 **`StandardScaler`**를 통해 표준화된 입력 데이터(**`input_matrix`**)를 사용합니다.   
+- Hyperparameter로는 다음과 같습니다:
+    - **`bootstrap=True`**: 부트스트랩 샘플링을 사용하여 각 트리를 훈련합니다.
+    - **`max_features=0.9000000000000001`**: 각 트리가 사용할 최대 특성의 비율입니다.
+    - **`min_samples_leaf=15`**: 리프 노드가 가져야 하는 최소 샘플 수입니다.
+    - **`min_samples_split=20`**: 노드를 분할하기 위해 필요한 최소 샘플 수입니다.
+    - **`n_estimators=100`**: 사용할 트리의 수입니다.   
+   
+### **평가 지표 (Evaluation Metrics)**   
+- **Mean Absolute Error (MAE)**: 평균 절대 오차는 약 60,895,405.41입니다. 이는 모델이 예측한 값과 실제 값의 절대 차이의 평균이 이 값만큼 난다는 것을 의미합니다.
+- **Mean Squared Error (MSE)**: 평균 제곱 오차는 약 17,969,009,768,218,358.00입니다. 이는 모델의 예측 오류의 제곱 평균을 나타내며, 값이 매우 큽니다.
+- **R-squared (R²)**: 결정 계수는 0.07로, 이는 모델이 전체 데이터 변동성의 7%만 설명할 수 있음을 의미합니다. R² 값이 1에 가까울수록 모델의 설명력이 높지만, 0.07는 매우 낮은 설명력을 의미합니다.   
+    
+### **종합 해석**   
+- 모델의 성능이 매우 좋지 않다는 것을 알 수 있습니다. 내부 교차 검증 점수와 평가 지표 모두 높은 오류와 낮은 설명력을 나타냅니다.
+- 이유는 데이터의 품질 문제일 수 있습니다. 데이터셋에 중요한 피처가 누락되었거나, 데이터의 분포가 불균형할 수 있습니다. 또한, 결측치 처리나 데이터 전처리가 불충분할 수 있습니다.
+- 모델을 개선하기 위해서는 데이터의 질을 높이고, 피처 엔지니어링을 통해 더 중요한 피처를 추가하거나 다른 전처리 방법을 시도해 볼 필요가 있습니다. 모델의 하이퍼파라미터를 튜닝하거나 다른 모델을 시도해 보는 것도 한 방법입니다.
+   
+
+
+### [DB]
+### `AWS RDS`
 - **관리 용이성**: AWS RDS는 자동화된 백업, 패치, 복구 기능을 제공하여 데이터베이스 관리 부담을 줄여줄 수 있어 AWS RDS를 선택하였습니다.
 - **보안**: VPC, 암호화, IAM통합 등 강력한 보안 기능을 제공하여 데이터 보호를 강화해줄 수 있다고 판단이 되어 AWS RDS를 선택하였습니다.
 - **비용 효율성**: 사용한 만큼만 비용을 지불하는 유연한 요금제와 다영한 인스턴스 옵션으로 비용을 최적화할 수 있다고 판단하여 AWS RDS를 선택하였습니다.
-- **성능**: 자동화된 성능 조정과 최적화를 통해 일관된 데이터베이스 성능을 유지할 수 있다는 장점으로 AWS RDS를 선택하였습니다.
+- **성능**: 자동화된 성능 조정과 최적화를 통해 일관된 데이터베이스 성능을 유지할 수 있다는 장점으로 AWS RDS를 선택하였습니다.   
+   
+### [배포&CI/CD]
+- **프로젝트 배포 및 CI/CD 전략**
+  1. 배포 전략
+     - 단일 EC2 인스턴스에 백엔드와 프론트엔드 통합 배포
+     - GitHub Actions를 활용한 CI/CD 파이프라인 구축
+  2. 도입 이유
+     - 비용 효율성: 단일 서버로 인프라 비용 절감
+     - 간편한 관리: 통합 환경으로 유지보수 용이성 증대
+     - 배포 자동화, 동일 도메인 배포로 CORS 이슈 최소화 등
+  3. 워크플로우
+     - 코드 푸시/PR → GitHub Actions 트리거
+     - 환경 설정 및 의존성 설치
+     - 프론트엔드 및 백엔드 빌드
+     - 아티팩트 생성 및 S3 업로드
+     - CodeDeploy를 통한 EC2 배포
+
+
+
+
+
+
+
+
+
+
 
 ### 브랜치 전략
 - Git-flow 전략을 기반으로 main, develop 브랜치와 feature 보조 브랜치를 운용했습니다.
