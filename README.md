@@ -320,7 +320,7 @@ print(top_features_gradient_boosting)
 MultiOutputRegressor는 여러 개의 회귀 문제를 동시에 해결할 수 있도록 설계된 멀티아웃풋 회귀 모델입니다. 단일 모델을 각각의 출력(target) 변수에 대해 독립적으로 학습시키는 방식으로 동작합니다. MultiOutputRegressor의 주요 장점은 다음과 같습니다.
 1. **다중 출력 예측 가능**: MultiOutputRegressor는 여러 개의 출력 변수를 동시에 예측할 수 있도록 설계되었습니다. 이로 인해 다중 목표(출력)가 있는 회귀 문제를 효율적으로 해결할 수 있습니다. 각 출력 변수를 독립적으로 처리하면서도, 하나의 통합된 프레임워크 내에서 관리할 수 있습니다.
 2. **모델의 독립성**: 각 출력 변수에 대해 독립적인 회귀 모델을 학습하므로, 특정 출력 변수에 대한 예측 성능이 다른 변수에 영향을 받지 않습니다. 이는 각 목표 변수가 서로 독립적이거나 관계가 약한 경우 유리합니다.
-3.** 다양한 기반 회귀 모델 적용 가능**: MultiOutputRegressor는 기본 회귀 모델로 사용할 알고리즘을 자유롭게 선택할 수 있습니다. 선형 회귀, 결정 트리, 랜덤 포레스트, 서포트 벡터 머신 등 다양한 회귀 모델을 사용하여 멀티아웃풋 회귀 문제를 해결할 수 있습니다.
+3. **다양한 기반 회귀 모델 적용 가능**: MultiOutputRegressor는 기본 회귀 모델로 사용할 알고리즘을 자유롭게 선택할 수 있습니다. 선형 회귀, 결정 트리, 랜덤 포레스트, 서포트 벡터 머신 등 다양한 회귀 모델을 사용하여 멀티아웃풋 회귀 문제를 해결할 수 있습니다.
 4. **단순하고 직관적인 접근**: MultiOutputRegressor는 복잡한 구조나 알고리즘을 필요로 하지 않으며, 단순히 여러 개의 출력 변수에 대해 각각의 회귀 모델을 학습시키는 직관적인 방법을 제공합니다. 이를 통해 복잡한 데이터 전처리 없이도 쉽게 구현할 수 있습니다.
 5. **확장성**: MultiOutputRegressor는 출력 변수가 증가하더라도 쉽게 확장할 수 있습니다. 각 출력 변수에 대해 독립적인 모델을 학습시키기 때문에, 출력 변수가 많아질 때에도 관리가 용이합니다.
    
@@ -393,6 +393,8 @@ top_5_info['predicted_monthly_sales_per_store'] = predictions[top_5_indices, -1]
 print("Top 5 Recommendations based on monthly_sales_per_store:")
 top_5_info
 ```
+![mae](https://github.com/user-attachments/assets/10e831d6-4128-4c3f-92c5-04d2a5ad2d73)
+![image](https://github.com/user-attachments/assets/56f444bd-da64-4cac-9e6b-f13894badff4)
 
 
 ### [DB]
