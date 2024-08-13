@@ -91,9 +91,14 @@
 ### [Frontend]
 ### `React`
 - 학습 자료가 풍부하고, 다른 라이브러리나 도구와 통합이 자유롭기에 `React`를 선택하게 되었습니다.
-.   
-(소영언니 수정 예정)   
-.   
+- `React`를 핵심 프레임워크로 사용하여 사용자 인터페이스를 구축하고, `React DOM`을 통해 컴포넌트를 웹 브라우저에 렌더링했습니다.
+- 동일한 필터 컴포넌트가 여러 컴포넌트에 사용되어 불필요한 로딩을 방지하고 필터 상태 일관성을 유지하기 위해 `Redux`, `React Redux`, `Redux Toolkit`을 도입하였습니다.
+  - 애플리케이션의 상태를 중앙 집중식으로 관리하고 `React`와의 통합을 간소화했습니다. 
+- 라우팅은 `React Router DOM`을 사용하여 SPA에서의 페이지 간 네비게이션을 구현했습니다. 
+- UI 컴포넌트와 스타일링을 위해 `Material-UI (MUI)`와 `Tailwind CSS`를 활용하여 Material Design을 구현하고 빠른 UI 개발을 가능하게 했습니다. 
+- 데이터 시각화에는 `Highcharts`와 `Recharts`를 사용하여 인터랙티브한 차트와 그래프를 생성했습니다. 
+- API 통신을 위해 `Axios`를 사용하여 Promise 기반의 HTTP 요청을 처리하고, `React Query`를 도입하여 서버 상태 관리와 데이터 페칭을 간소화했습니다.
+- 디자인의 경우 Figma 무료 템플릿을 활용하여 제작하였고, 카카오에서 제작한 'Figma to Code’도구인 'OROR Forge’ 플러그인을 사용하여 css와 컴포넌트를 추출했습니다. 이런 과정을 통해 구현 속도를 향상시켰습니다
 
 ### [Modeling]
 ### `Machine Learning`
@@ -439,7 +444,7 @@ top_5_info
   - Feat 브랜치는 기능 단위로 독립적인 개발 환경을 구축하기 위한 목적으로 사용하고 merge 후 각 브랜치를 삭제했습니다.
 
 ## :link: 프로젝트 구조
-
+- 백엔드드
 ```
 
 │  FpMlWebApplication.java
@@ -552,6 +557,101 @@ top_5_info
             UserService.java
             UserServiceImpl.java
             
+```
+
+-  프론트
+```
+\DE30-final-4\fp_ml_web\src\main\front
+│  .eslintrc.js
+│  .gitignore
+│  .prettierrc
+│  package-lock.json
+│  package.json
+│  postcss.config.js
+│  README.md
+│  tailwind.config.js
+│  
+├─public
+│
+└─src
+    │  App.css
+    │  App.js
+    │  index.css
+    │  index.js
+    │  logo.svg
+    │  reportWebVitals.js
+    │  setupProxy.js
+    │  setupTests.js
+    │
+    ├─components
+    │  │  BarChart.jsx
+    │  │  BusinessTypeFilter.jsx
+    │  │  CombinedChart.jsx
+    │  │  CommonFilter.css
+    │  │  Container.jsx
+    │  │  CustomMapMarker.jsx
+    │  │  DetailModal.jsx
+    │  │  MapComponent.css
+    │  │  MapComponent.jsx
+    │  │  MapSelectionModal.jsx
+    │  │  NicknameInputDialog.jsx
+    │  │  RecommendationResults.jsx
+    │  │  RegionFilter.jsx
+    │  │  Sales.jsx
+    │  │  Situation.jsx
+    │  │  Situation.less
+    │  │  TOC.jsx
+    │  │
+    │  ├─navigation
+    │  │      BottomNav.jsx
+    │  │      TopNav.jsx
+    │  │
+    │  └─table
+    │          TableHeader.jsx
+    │          TableRowContent.jsx
+    │
+    ├─fonts
+    │      GmarketSansBold.otf
+    │      GmarketSansBold.woff
+    │      GmarketSansLight.otf
+    │      GmarketSansLight.woff
+    │      GmarketSansMedium.otf
+    │      GmarketSansMedium.woff
+    │
+    ├─hooks
+    │      useApi.js
+    │      useInfiniteScroll.js
+    │
+    ├─pages
+    │  ├─aiRecommend
+    │  │      AiRecommend.jsx
+    │  │      Ranking.jsx
+    │  │
+    │  ├─checkThought
+    │  │      CheckThought.jsx
+    │  │
+    │  ├─holiday
+    │  │      holiday.css
+    │  │      Holiday.jsx
+    │  │
+    │  ├─home
+    │  │      Home.jsx
+    │  │
+    │  └─rankMap
+    │          RankMap.jsx
+    │
+    ├─redux
+    │  │  configureStore.js
+    │  │  rootReducer.js
+    │  │
+    │  └─modules
+    │          filter.js
+    │
+    ├─services
+    │      api.js
+    │
+    └─utils
+            filterUtils.js
 ```
 
 ## :chart_with_upwards_trend: 데이터셋
@@ -701,8 +801,22 @@ DB에 있는 하나의 테이블에 모든 데이터들을 적재해놓고 다�
 구상만 해두었던 아이디어들이 서서히 현실화되는 과정을 경험하면서, 큰 성취감을 느꼈습니다. 그동안 배워왔던 기술 스택을 실제 프로젝트에 적용해보면서, 앞으로 어떻게 더 효율적이고 창의적으로 활용할 수 있을지에 대한 감이 잡혔습니다. 또한, 수업시간에 배우지 않았던 새로운 기술들을 독학하고 실전에 사용해보면서, 기술 스택을 다룰 수 있는 범위와 역량이 이전보다 확연히 확장된 것 같아 매우 뿌듯합니다. 이 과정에서 얻은 경험과 자신감이 앞으로의 학습 과정에도 큰 자산이 될 수 있을 것 같습니다. 
 
 ### 윤소영
+처음으로 프론트를 개발할 수 있는 시간이었습니다. 웹을
 
 ## :open_file_folder: 산출물
+- [기획서 및 디자인 Figma](https://www.figma.com/design/jeuAW77eJx2rllhCnIrxGz/%EC%82%AC%EC%9E%A5%EB%8B%98-%EA%B5%AC%ED%95%B4%EC%9A%94---%EB%8D%B0%EC%9D%B4%ED%84%B0%EC%97%94%EC%A7%80%EB%8B%88%EC%96%B4%EB%A7%81-30%EA%B8%B0-4%EC%A1%B0-%EC%B5%9C%EC%A2%85%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8?node-id=1138-882&t=b5hsHMAMhYdDK9qg-1)
+![](https://velog.velcdn.com/images/devysy55/post/d3196b77-86f9-460e-8250-7af6898dfbf9/image.png)
+
+
+- [brainstorming](https://www.figma.com/board/zUP9KENiW84KrknrW1MriG/Brainstorming?node-id=0-1&t=KDgraKbM3PlEI4ln-1) 
+<img src="https://velog.velcdn.com/images/devysy55/post/ce9ff342-9ea7-4dc9-92e4-7cccb3ceaef7/image.png" width="400" height="300" align="left">
+
+<br clear="all"/>
+
+- Jira
+<img src="https://velog.velcdn.com/images/devysy55/post/2308d404-8a54-4749-904f-1af00691673e/image.png" height="300" align="left">
+
+<br clear="all"/>
 - **갠트차트** : https://docs.google.com/spreadsheets/d/1D-ZymRVpYW4Ke9zWyekrmF3GOLdZIHlE07zJBrou3NY/edit?gid=1216572366#gid=1216572366
 - **요구사항 정의서** : https://docs.google.com/spreadsheets/d/1UZflufgHaNtIHRyIJyky6rDAbLGrwatrjvRqxVuMKr4/edit?gid=0#gid=0
 - **API 명세서** : https://docs.google.com/spreadsheets/d/1UEhghTYeV4GfCqCy38M5FT2DGRtcNG0WFXV3UNSw3HI/edit?gid=0#gid=0
