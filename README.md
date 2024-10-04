@@ -65,13 +65,6 @@
 - **타 경쟁 업체와의 차별화**: 통계적으로 유의미한 데이터를 기반으로 개인화된 맞춤형 서비스 제공 가능
 - **대표적인 경쟁업체**: 상권 분석 서비스 (서울상권정보, 오픈업)
 
-## :crown: 팀원구성
-| 김보경 | 최은서 | 윤소영 | 정제윤 |
-|:-:|:-:|:-:|:-:|
-|<img src="https://avatars.githubusercontent.com/u/50590112?v=4" width="150" height="150"/>|<img src="https://avatars.githubusercontent.com/u/127280706?v=4" width="150" height="150"/>|<img src="https://avatars.githubusercontent.com/u/161932948?v=4" width="150" height="150"/>|<img src="https://avatars.githubusercontent.com/u/163943897?v=4" width="150" height="150"/>|
-|[@michelle9876](https://github.com/michelle9876)|[@dmschoi](https://github.com/dmschoi)|[@Soyeong124](https://github.com/Soyeong124)|[@JeongJeaYoon](https://github.com/JeongJeaYoon)|
-
-
 
 ## :wrench: 개발 환경 
 - Front : `React`
@@ -694,12 +687,6 @@ top_5_info
 ![image](https://github.com/user-attachments/assets/33fe856c-4c7e-49c7-a734-3526d701948a)
 
 
-## :pushpin: 역할분담
-
-- **김보경** : backend, ML, EDA
-- **최은서** : backend, ML
-- **윤소영** : frontend, ML
-- **정제윤** : frontend, EDA
 
 ## :calendar: 개발 기간 및 작업 관리
 ### 개발기간
@@ -773,35 +760,6 @@ top_5_info
       
  ![image](https://github.com/user-attachments/assets/e8aa92bf-c2be-4e76-b57e-7c8b23ab2bf6)
 
-
-## :collision: 트러블 슈팅
-### 김보경
-**Local DB에서 aws RDS로 전환 !**    
-초반에는 개발작업을 local DB(MariaDB)를 사용하여, local DB가 있는 컴퓨터가 꺼지거나 다른 네트워크에 있는 경우, local DB에 접속에 어려운 문제를 격었습니다. 팀원들과 상의후 저희는 조금더 수월하게 DB에 접속하고 공유, 개발하고자 충분한 aws RDS비용리서치 후, aws RDS로 전환하여 DB접속 문제를 해결하였습니다!    
-
-### 최은서
-**DB 구조 개선을 통한 로직 단순화 및 성능 향상 !**    
-DB에 있는 하나의 테이블에 모든 데이터들을 적재해놓고 다수의 api가 이를 공유해 사용하도록 했습니다. 그러나 그 과정에서 로직이 복잡해지고 데이터를 잘 불러오지 못하는 문제가 발생해, 기능별로 각각 테이블을 세분화하여 db에 업로드했습니다.   
-   
-### 윤소영
-**안되는 건 없다 !**    
-문제가 발생하면 바로바로 해결합니다. 문제 해결을 위해서 새로운 기술을 도입하는 것에 겁먹지 않아요.
-너무 직진만 해서 정리가 안되는 편!  이제 체계적으로 관리하고 싶어요.
-좀 더 시간이 된다면 데이터를 정확도를 높이고 싶어요.    
-   
-
-## :magic_wand: 개선 목표
-
-## :speech_balloon: 프로젝트가 끝난 후
-
-### 김보경
-프로젝트 초반에는 마무리 과정이 막막하게 느껴졌지만, 리서치와 팀원들, 멘토님과의 지속적인 소통을 통해 프로젝트를 성공적으로 마무리할 수 있었습니다. 결과물도 기대 이상으로 나와 매우 뿌듯하며, 이번 프로젝트를 통해 팀워크와 소통의 중요성을 실감할 수 있었고, 다양한 기술적 역량도 크게 향상시킬 수 있었습니다. 매우 알찬 프로젝트 기간이었고, 많은 것을 배우고 얻어갈 수 있어 감사한 경험이었습니다. 
-   
-### 최은서
-구상만 해두었던 아이디어들이 서서히 현실화되는 과정을 경험하면서, 큰 성취감을 느꼈습니다. 그동안 배워왔던 기술 스택을 실제 프로젝트에 적용해보면서, 앞으로 어떻게 더 효율적이고 창의적으로 활용할 수 있을지에 대한 감이 잡혔습니다. 또한, 수업시간에 배우지 않았던 새로운 기술들을 독학하고 실전에 사용해보면서, 기술 스택을 다룰 수 있는 범위와 역량이 이전보다 확연히 확장된 것 같아 매우 뿌듯합니다. 이 과정에서 얻은 경험과 자신감이 앞으로의 학습 과정에도 큰 자산이 될 수 있을 것 같습니다. 
-
-### 윤소영
-처음으로 프론트를 개발할 수 있는 시간이었습니다. 웹을
 
 ## :open_file_folder: 산출물
 - [기획서 및 디자인 Figma](https://www.figma.com/design/jeuAW77eJx2rllhCnIrxGz/%EC%82%AC%EC%9E%A5%EB%8B%98-%EA%B5%AC%ED%95%B4%EC%9A%94---%EB%8D%B0%EC%9D%B4%ED%84%B0%EC%97%94%EC%A7%80%EB%8B%88%EC%96%B4%EB%A7%81-30%EA%B8%B0-4%EC%A1%B0-%EC%B5%9C%EC%A2%85%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8?node-id=1138-882&t=b5hsHMAMhYdDK9qg-1)
